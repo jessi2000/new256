@@ -98,6 +98,8 @@ def calculate_hashes(file_content: bytes) -> Dict[str, str]:
 
 def calculate_entropy(data: bytes) -> float:
     """Calculate Shannon entropy of data"""
+    import math
+    
     if not data:
         return 0.0
     
@@ -112,7 +114,7 @@ def calculate_entropy(data: bytes) -> float:
     for count in frequency:
         if count > 0:
             probability = count / data_len
-            entropy -= probability * (probability.bit_length() - 1)
+            entropy -= probability * math.log2(probability)
     
     return entropy
 
