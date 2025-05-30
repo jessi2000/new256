@@ -92,7 +92,7 @@ const HomePage = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               <Link to="/tools" className="btn-primary group">
-                <Tool size={20} className="inline mr-2" />
+                <Wrench size={20} className="inline mr-2" />
                 Explore Tools
                 <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
