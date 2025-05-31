@@ -775,8 +775,17 @@ const ToolsPage = () => {
 
         {/* Tool Modal */}
         {selectedTool && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                closeToolModal();
+              }
+            }}
+          >
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+                 onClick={(e) => e.stopPropagation()}
+            >
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">
                 <div className="flex items-center space-x-3">
