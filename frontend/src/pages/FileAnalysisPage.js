@@ -721,42 +721,69 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
   );
 };
 
-// Hex Tab Component
-const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => (
-  <div className="space-y-6">
-    {/* Search */}
-    <div className="relative">
-      <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      <input
-        type="text"
-        placeholder="Search hex data..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="input-field pl-10"
-      />
-    </div>
+// Hex Tab Component with Highlighting
+const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm) return text;
+    
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <span key={index} className="bg-yellow-500/30 text-yellow-200 px-1 rounded">
+          {part}
+        </span>
+      ) : part
+    );
+  };
 
-    {/* Hex Dump */}
-    <div className="tool-card">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-100">Hex Dump</h3>
-        <button
-          onClick={() => onCopy(hexData)}
-          className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
-        >
-          <Copy size={16} />
-          <span>Copy</span>
-        </button>
+  return (
+    <div className="space-y-6">
+      {/* Search Bar */}
+      <div className="relative">
+        <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search hex data..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="input-field pl-10"
+        />
+        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+          Search
+        </span>
       </div>
 
-      <div className="code-viewer max-h-96 overflow-auto">
-        <pre className="text-xs text-gray-200 whitespace-pre">
-          {hexData || 'Generating hex dump...'}
-        </pre>
+      {/* Hex Dump */}
+      <div className="tool-card">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-100">
+            Hex Dump
+            {searchTerm && (
+              <span className="text-sm text-yellow-400 ml-2">
+                (filtered by "{searchTerm}")
+              </span>
+            )}
+          </h3>
+          <button
+            onClick={() => onCopy(hexData)}
+            className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
+          >
+            <Copy size={16} />
+            <span>Copy</span>
+          </button>
+        </div>
+
+        <div className="code-viewer max-h-96 overflow-auto">
+          <pre className="text-xs text-gray-200 whitespace-pre">
+            {highlightText(hexData || 'Generating hex dump...', searchTerm)}
+          </pre>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Hashes Tab Component
 const HashesTab = ({ hashes, onCopy }) => (
