@@ -23,6 +23,51 @@ const API = `${BACKEND_URL}/api`;
 const HomePage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  // Mock tools data for search functionality
+  const tools = [
+    { name: 'Base64 Encoder/Decoder', description: 'Encode/decode Base64 with multi-layer support', category: 'encoding' },
+    { name: 'URL Encoder/Decoder', description: 'Encode/decode URL text', category: 'encoding' },
+    { name: 'HTML Entity Encoder/Decoder', description: 'Encode/decode HTML entities', category: 'encoding' },
+    { name: 'Hex Encoder/Decoder', description: 'Convert text to/from hexadecimal', category: 'encoding' },
+    { name: 'Binary Encoder/Decoder', description: 'Convert text to/from binary', category: 'encoding' },
+    { name: 'ASCII Encoder/Decoder', description: 'Convert text to/from ASCII codes', category: 'encoding' },
+    { name: 'Caesar Cipher', description: 'Classical substitution cipher with shift', category: 'crypto' },
+    { name: 'ROT13 Cipher', description: 'ROT13 substitution cipher', category: 'crypto' },
+    { name: 'ROT47 Cipher', description: 'ROT47 substitution cipher', category: 'crypto' },
+    { name: 'Vigenère Encrypt', description: 'Encrypt using Vigenère cipher', category: 'crypto' },
+    { name: 'Vigenère Decrypt', description: 'Decrypt Vigenère cipher', category: 'crypto' },
+    { name: 'Atbash Cipher', description: 'Hebrew substitution cipher', category: 'crypto' },
+    { name: 'Morse Code Encoder', description: 'Convert text to Morse code', category: 'crypto' },
+    { name: 'Morse Code Decoder', description: 'Convert Morse code to text', category: 'crypto' },
+    { name: 'MD5 Hash', description: 'Generate MD5 hash', category: 'hash' },
+    { name: 'SHA1 Hash', description: 'Generate SHA1 hash', category: 'hash' },
+    { name: 'SHA256 Hash', description: 'Generate SHA256 hash', category: 'hash' },
+    { name: 'SHA512 Hash', description: 'Generate SHA512 hash', category: 'hash' },
+    { name: 'Hash Identifier', description: 'Identify hash type', category: 'hash' },
+    { name: 'Case Converter', description: 'Convert text case (upper/lower/title)', category: 'text' },
+    { name: 'Text Length Counter', description: 'Count characters, words, lines', category: 'text' },
+    { name: 'Whitespace Remover', description: 'Remove extra whitespace', category: 'text' },
+    { name: 'Line Sorter', description: 'Sort lines alphabetically', category: 'text' },
+    { name: 'Unique Lines', description: 'Remove duplicate lines', category: 'text' },
+    { name: 'Grep Tool', description: 'Search for patterns in text', category: 'text' },
+    { name: 'Text Diff', description: 'Compare two texts', category: 'text' },
+    { name: 'Word Frequency', description: 'Count word occurrences', category: 'text' }
+  ];
+
+  const filteredTools = tools.filter(tool => 
+    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleToolSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate('/tools');
+    }
+  };
 
   useEffect(() => {
     fetchAnnouncements();
