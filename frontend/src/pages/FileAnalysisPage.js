@@ -179,7 +179,7 @@ const FileAnalysisPage = () => {
 
   const generateHexDump = (data, bytesPerLine = 16) => {
     let hex = '';
-    for (let i = 0; i < Math.min(data.length, 10000); i += bytesPerLine) { // Limit to first 10KB for performance
+    for (let i = 0; i < data.length; i += bytesPerLine) { // Show full hex dump
       const address = i.toString(16).padStart(8, '0').toUpperCase();
       const hexBytes = [];
       const asciiChars = [];
@@ -196,10 +196,6 @@ const FileAnalysisPage = () => {
       }
       
       hex += `${address}  ${hexBytes.slice(0, 8).join(' ')}  ${hexBytes.slice(8).join(' ')}  |${asciiChars.join('')}|\n`;
-    }
-    
-    if (data.length > 10000) {
-      hex += '\n... (truncated for performance - showing first 10KB only)';
     }
     
     return hex;
