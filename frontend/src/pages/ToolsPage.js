@@ -849,6 +849,7 @@ const ToolsPage = () => {
                   onCopy={copyToClipboard}
                   selectedAction={selectedAction}
                   setSelectedAction={setSelectedAction}
+                  base64Result={base64Result}
                 />
               </div>
             </div>
