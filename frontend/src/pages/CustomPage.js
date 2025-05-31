@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, 
-  Upload, 
-  Trash2, 
-  Plus,
   Code,
   Terminal,
   Copy,
-  Download,
   AlertCircle,
   CheckCircle,
   Clock,
-  FileCode
+  FileCode,
+  FolderOpen,
+  RefreshCw
 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -25,7 +23,6 @@ const CustomPage = () => {
   const [executionResult, setExecutionResult] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showUploadModal, setShowUploadModal] = useState(false);
 
   useEffect(() => {
     fetchScripts();
@@ -63,24 +60,6 @@ const CustomPage = () => {
     }
   };
 
-  const deleteScript = async (scriptName) => {
-    if (!window.confirm(`Are you sure you want to delete the script "${scriptName}"?`)) {
-      return;
-    }
-
-    try {
-      await axios.delete(`${API}/custom-scripts/${scriptName}`);
-      setScripts(scripts.filter(s => s.name !== scriptName));
-      if (selectedScript?.name === scriptName) {
-        setSelectedScript(null);
-        setExecutionResult('');
-      }
-      toast.success('Script deleted successfully!');
-    } catch (error) {
-      toast.error('Failed to delete script');
-    }
-  };
-
   const copyToClipboard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -90,33 +69,72 @@ const CustomPage = () => {
     }
   };
 
+  const refreshScripts = () => {
+    setLoading(true);
+    fetchScripts();
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
+      {/* Floating Particles Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-slate-500/20 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 10}s`,
+                animationDuration: `${15 + Math.random() * 10}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="heading-xl mb-4">Custom Scripts</h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Upload and execute your custom Python scripts with command configurations
+            Manually added Python scripts from the custom-scripts directory
           </p>
         </div>
 
         {/* Action Bar */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-8">
           <div className="flex items-center space-x-3">
-            <FileCode size={24} className="text-slate-400" />
+            <FolderOpen size={24} className="text-slate-400" />
             <h2 className="text-xl font-semibold text-gray-200">
               Available Scripts ({scripts.length})
             </h2>
           </div>
           <button
-            onClick={() => setShowUploadModal(true)}
-            className="bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 hover:shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"
+            onClick={refreshScripts}
+            disabled={loading}
+            className="bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 hover:shadow-lg hover:shadow-slate-500/25 transform hover:scale-105 disabled:opacity-50"
           >
-            <Plus size={20} />
-            <span>Upload Script</span>
+            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+            <span>Refresh</span>
           </button>
+        </div>
+
+        {/* Instructions */}
+        <div className="mb-8 bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-gray-200 mb-4 flex items-center space-x-2">
+            <AlertCircle size={20} className="text-blue-400" />
+            <span>How to Add Custom Scripts</span>
+          </h3>
+          <div className="text-gray-400 space-y-2">
+            <p>1. Navigate to the <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">custom-scripts</code> directory</p>
+            <p>2. Create a new folder with your script name (e.g., <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">my-tool</code>)</p>
+            <p>3. Inside the folder, add your Python script file and a <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">config.json</code> file</p>
+            <p>4. The config.json should contain: Script Name, Command to run, and Description</p>
+            <p>5. Click refresh to load your new script</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -141,14 +159,18 @@ const CustomPage = () => {
             ) : scripts.length === 0 ? (
               <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
                 <Code size={48} className="mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">No custom scripts</h3>
-                <p className="text-gray-500 mb-4">Upload your first Python script to get started!</p>
-                <button
-                  onClick={() => setShowUploadModal(true)}
-                  className="btn-primary"
-                >
-                  Upload Script
-                </button>
+                <h3 className="text-xl font-semibold text-gray-400 mb-2">No custom scripts found</h3>
+                <p className="text-gray-500 mb-4">Add scripts manually to the custom-scripts directory</p>
+                <div className="bg-gray-700/30 rounded-lg p-4 text-left max-w-md mx-auto">
+                  <p className="text-sm text-gray-400 mb-2">Example config.json:</p>
+                  <pre className="text-xs text-gray-300">
+{`{
+  "name": "Test Script",
+  "command": "python script.py",
+  "description": "A test script"
+}`}
+                  </pre>
+                </div>
               </div>
             ) : (
               scripts.map((script) => (
@@ -192,16 +214,6 @@ const CustomPage = () => {
                         title="Execute Script"
                       >
                         <Play size={16} />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteScript(script.name);
-                        }}
-                        className="p-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition-colors"
-                        title="Delete Script"
-                      >
-                        <Trash2 size={16} />
                       </button>
                     </div>
                   </div>
@@ -273,210 +285,6 @@ const CustomPage = () => {
             )}
           </div>
         </div>
-
-        {/* Upload Modal */}
-        {showUploadModal && (
-          <ScriptUploadModal
-            onClose={() => setShowUploadModal(false)}
-            onSuccess={() => {
-              setShowUploadModal(false);
-              fetchScripts();
-            }}
-          />
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Script Upload Modal Component
-const ScriptUploadModal = ({ onClose, onSuccess }) => {
-  const [scriptName, setScriptName] = useState('');
-  const [command, setCommand] = useState('');
-  const [description, setDescription] = useState('');
-  const [scriptFile, setScriptFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!scriptName.trim() || !command.trim() || !scriptFile) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    setIsUploading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append('script_name', scriptName.trim());
-      formData.append('command', command.trim());
-      formData.append('description', description.trim());
-      formData.append('script_file', scriptFile);
-
-      await axios.post(`${API}/upload-script`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      toast.success('Script uploaded successfully!');
-      onSuccess();
-    } catch (error) {
-      const errorMsg = error.response?.data?.detail || 'Failed to upload script';
-      toast.error(errorMsg);
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (!file.name.endsWith('.py')) {
-        toast.error('Please select a Python (.py) file');
-        return;
-      }
-      setScriptFile(file);
-      
-      // Auto-suggest script name from filename
-      if (!scriptName) {
-        const name = file.name.replace('.py', '');
-        setScriptName(name);
-      }
-      
-      // Auto-suggest command
-      if (!command) {
-        setCommand(`python ${file.name}`);
-      }
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-100 flex items-center space-x-3">
-            <Upload size={24} className="text-slate-400" />
-            <span>Upload Custom Script</span>
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          >
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Script Name *
-              </label>
-              <input
-                type="text"
-                value={scriptName}
-                onChange={(e) => setScriptName(e.target.value)}
-                placeholder="my-script"
-                className="input-field"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Command *
-              </label>
-              <input
-                type="text"
-                value={command}
-                onChange={(e) => setCommand(e.target.value)}
-                placeholder="python run.py"
-                className="input-field"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Description (Optional)
-            </label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Brief description of what this script does..."
-              className="textarea-field"
-              rows={3}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Python Script File *
-            </label>
-            <div className="relative">
-              <input
-                type="file"
-                accept=".py"
-                onChange={handleFileChange}
-                className="hidden"
-                id="script-file"
-                required
-              />
-              <label
-                htmlFor="script-file"
-                className="flex items-center justify-center w-full p-6 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-slate-500 transition-colors"
-              >
-                <div className="text-center">
-                  <Upload size={32} className="mx-auto mb-2 text-gray-500" />
-                  <p className="text-gray-400">
-                    {scriptFile ? scriptFile.name : 'Click to select Python file'}
-                  </p>
-                  <p className="text-gray-500 text-sm mt-1">Only .py files are supported</p>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div className="bg-gray-700/30 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-gray-300 mb-2 flex items-center space-x-2">
-              <AlertCircle size={16} className="text-yellow-400" />
-              <span>Upload Instructions</span>
-            </h4>
-            <ul className="text-sm text-gray-400 space-y-1">
-              <li>• Upload a Python (.py) script file</li>
-              <li>• Specify the exact command to run your script</li>
-              <li>• Make sure your script handles command-line execution</li>
-              <li>• Scripts will be executed in a secure sandboxed environment</li>
-            </ul>
-          </div>
-
-          <div className="flex justify-end space-x-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="btn-secondary"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isUploading}
-              className="bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isUploading ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Upload size={16} />
-              )}
-              <span>{isUploading ? 'Uploading...' : 'Upload Script'}</span>
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
