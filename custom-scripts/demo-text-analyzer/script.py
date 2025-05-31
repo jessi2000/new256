@@ -115,7 +115,8 @@ def analyze_text_patterns(text):
         for char in set(text):
             freq = text.count(char) / len(text)
             if freq > 0:
-                entropy -= freq * (freq).bit_length()
+                import math
+                entropy -= freq * math.log2(freq)
         results.append(f"📈 Text entropy: {entropy:.2f}")
         
         results.append("")
