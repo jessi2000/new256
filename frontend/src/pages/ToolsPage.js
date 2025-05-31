@@ -46,7 +46,9 @@ const ToolsPage = () => {
         
         // If decoded result is the same as input, or not base64, we're done
         if (decoded === current || !base64Regex.test(decoded)) {
-          return `Decoded ${attempts + 1} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${decoded}`;
+          const finalResult = `Final Result: ${decoded}`;
+          const layerDetails = layers.length > 1 ? `\n\nDecoding Layers:\n${layers.join('\n')}` : '';
+          return `${finalResult}${layerDetails}\n\nDecoded ${attempts + 1} time(s)`;
         }
         
         current = decoded;
@@ -60,7 +62,9 @@ const ToolsPage = () => {
       return 'Not a valid Base64 string';
     }
 
-    return `Decoded ${attempts} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${current}`;
+    const finalResult = `Final Result: ${current}`;
+    const layerDetails = layers.length > 1 ? `\n\nDecoding Layers:\n${layers.join('\n')}` : '';
+    return `${finalResult}${layerDetails}\n\nDecoded ${attempts} time(s)`;
   };
 
   // CTF Tools Data - Combined encode/decode tools
