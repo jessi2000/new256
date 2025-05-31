@@ -53,6 +53,54 @@
   }
 }
 
+/* Enhanced Random Float Animation for Particles */
+@keyframes randomFloat {
+  0% {
+    transform: translateX(0px) translateY(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+  10% {
+    transform: translateX(30px) translateY(-40px) rotate(36deg);
+    opacity: 0.3;
+  }
+  20% {
+    transform: translateX(-20px) translateY(-80px) rotate(72deg);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateX(50px) translateY(-60px) rotate(108deg);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateX(-40px) translateY(-100px) rotate(144deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(60px) translateY(-120px) rotate(180deg);
+    opacity: 0.3;
+  }
+  60% {
+    transform: translateX(-30px) translateY(-140px) rotate(216deg);
+    opacity: 0.5;
+  }
+  70% {
+    transform: translateX(40px) translateY(-160px) rotate(252deg);
+    opacity: 0.4;
+  }
+  80% {
+    transform: translateX(-50px) translateY(-180px) rotate(288deg);
+    opacity: 0.6;
+  }
+  90% {
+    transform: translateX(20px) translateY(-200px) rotate(324deg);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(0px) translateY(-220px) rotate(360deg);
+    opacity: 0.1;
+  }
+}
+
 .animate-fadeInUp {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -64,6 +112,30 @@
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
+}
+
+/* Floating particles animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px) rotate(90deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px) rotate(180deg);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-20px) translateX(15px) rotate(270deg);
+    opacity: 0.3;
+  }
+}
+
+.animate-float {
+  animation: float infinite ease-in-out;
 }
 
 /* Tool card hover effects */
@@ -133,30 +205,6 @@
   width: 20px;
   height: 20px;
   animation: spin 1s linear infinite;
-}
-
-/* Floating particles animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg);
-    opacity: 0.1;
-  }
-  25% {
-    transform: translateY(-20px) translateX(10px) rotate(90deg);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-40px) translateX(-10px) rotate(180deg);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translateY(-20px) translateX(15px) rotate(270deg);
-    opacity: 0.3;
-  }
-}
-
-.animate-float {
-  animation: float infinite ease-in-out;
 }
 
 @keyframes spin {
