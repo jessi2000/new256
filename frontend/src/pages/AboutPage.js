@@ -3,7 +3,26 @@ import { Shield, Users, Code, Zap, Heart } from 'lucide-react';
 
 const AboutPage = () => {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 relative overflow-hidden">
+      {/* Floating Particles Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-slate-500/20 rounded-full animate-float"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 10}s`,
+                animationDuration: `${15 + Math.random() * 10}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+      
+      <div className="container mx-auto px-4 py-12 relative z-10">
       <div className="max-w-4xl mx-auto">
         {/* Platform Description */}
         <section className="mb-16">
