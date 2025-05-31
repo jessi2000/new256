@@ -5,8 +5,6 @@ const AboutPage = () => {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-12 text-white">About SectoolBox</h1>
-        
         {/* Platform Description */}
         <section className="mb-16">
           <h2 className="text-2xl font-semibold mb-6 text-purple-400">Our Platform</h2>
