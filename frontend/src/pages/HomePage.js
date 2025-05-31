@@ -141,25 +141,89 @@ const HomePage = () => {
               SectoolBox
             </h1>
             
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <Link 
-                to="/tools" 
-                className="group bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-3 hover:shadow-xl hover:shadow-slate-500/25 transform hover:scale-105"
-              >
-                <Wrench size={24} />
-                <span>Explore Tools</span>
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+            {/* Tool Search Section */}
+            <div className="max-w-2xl mx-auto mb-16">
+              <form onSubmit={handleToolSearch} className="relative">
+                <div className="relative group">
+                  <Search size={24} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-gray-300 transition-colors z-10" />
+                  <input
+                    type="text"
+                    placeholder="Search 40+ CTF tools..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-gray-800/80 backdrop-blur-sm border-2 border-gray-600 hover:border-slate-500 focus:border-blue-500 rounded-2xl pl-14 pr-6 py-6 text-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 shadow-xl shadow-gray-900/50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-blue-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
+                
+                {/* Search Results Dropdown */}
+                {searchTerm && filteredTools.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600 rounded-xl shadow-2xl shadow-black/50 max-h-96 overflow-y-auto z-20">
+                    <div className="p-2">
+                      {filteredTools.slice(0, 8).map((tool, index) => (
+                        <div
+                          key={index}
+                          onClick={() => {
+                            setSearchTerm('');
+                            navigate('/tools');
+                          }}
+                          className="p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition-colors group"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="text-gray-100 font-medium group-hover:text-white transition-colors">
+                                {tool.name}
+                              </h4>
+                              <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">
+                                {tool.description}
+                              </p>
+                            </div>
+                            <span className="text-xs px-2 py-1 bg-gray-700/50 text-gray-400 rounded">
+                              {tool.category}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                      {filteredTools.length > 8 && (
+                        <div className="p-3 text-center border-t border-gray-700">
+                          <button 
+                            onClick={() => navigate('/tools')}
+                            className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                          >
+                            View all {filteredTools.length} results →
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {searchTerm && filteredTools.length === 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600 rounded-xl shadow-2xl shadow-black/50 p-6 text-center z-20">
+                    <AlertCircle size={32} className="mx-auto mb-2 text-gray-500" />
+                    <p className="text-gray-400">No tools found matching "{searchTerm}"</p>
+                  </div>
+                )}
+              </form>
               
-              <Link 
-                to="/file-analysis" 
-                className="group bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-3 hover:shadow-xl hover:shadow-gray-500/25 transform hover:scale-105"
-              >
-                <FileText size={24} />
-                <span>Analyze Files</span>
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              {/* Quick Action Buttons */}
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                <Link 
+                  to="/tools" 
+                  className="group bg-gradient-to-r from-slate-600/20 to-gray-700/20 hover:from-slate-600/30 hover:to-gray-700/30 backdrop-blur-sm border border-gray-600 hover:border-slate-500 text-gray-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105"
+                >
+                  <Wrench size={20} />
+                  <span>Browse All Tools</span>
+                </Link>
+                
+                <Link 
+                  to="/analysis" 
+                  className="group bg-gradient-to-r from-slate-600/20 to-gray-700/20 hover:from-slate-600/30 hover:to-gray-700/30 backdrop-blur-sm border border-gray-600 hover:border-slate-500 text-gray-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105"
+                >
+                  <FileText size={20} />
+                  <span>File Analysis</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
