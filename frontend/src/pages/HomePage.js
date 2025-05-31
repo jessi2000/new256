@@ -9,7 +9,10 @@ import {
   AlertCircle,
   CheckCircle,
   Wrench,
-  FileText
+  FileText,
+  Github,
+  PenTool,
+  ExternalLink
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -64,107 +67,85 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
       {/* Hero Section */}
-      <section className="relative px-4 sm:px-6 lg:px-8 pt-20 pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/20"></div>
-        <div className="relative max-w-7xl mx-auto text-center">
-          <div className="animate-fadeInUp">
-            <div className="flex justify-center mb-8">
-              <div className="p-4 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-2xl animate-pulse-glow">
-                <Shield size={48} className="text-white" />
-              </div>
-            </div>
-            
-            <h1 className="heading-xl mb-6 animate-gradient">
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="relative px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="max-w-7xl mx-auto text-center">
+            {/* Main Heading */}
+            <h1 className="heading-xl mb-8 max-w-4xl mx-auto">
               SectoolBox
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto">
-              Your Complete CTF Toolkit
-            </p>
-            
-            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              Professional-grade tools for Capture The Flag competitions, penetration testing, 
-              and cybersecurity analysis. All tools run locally for maximum security.
-            </p>
-
-            {/* CTA Buttons */}
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <Link to="/tools" className="btn-primary group">
-                <Wrench size={20} className="inline mr-2" />
-                Explore Tools
-                <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+              <Link 
+                to="/tools" 
+                className="group bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-3 hover:shadow-xl hover:shadow-slate-500/25 transform hover:scale-105"
+              >
+                <Wrench size={24} />
+                <span>Explore Tools</span>
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               
-              <Link to="/analysis" className="btn-secondary group">
-                <FileText size={20} className="inline mr-2" />
-                Analyze Files
-                <ArrowRight size={20} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+              <Link 
+                to="/file-analysis" 
+                className="group bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center space-x-3 hover:shadow-xl hover:shadow-gray-500/25 transform hover:scale-105"
+              >
+                <FileText size={24} />
+                <span>Analyze Files</span>
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto animate-fadeInUp">
-            <div className="tool-card text-center">
-              <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Zap size={24} className="text-purple-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-100 mb-2">40+ CTF Tools</h3>
-              <p className="text-gray-400">
-                Complete suite of encoding, decoding, cryptographic, and analysis tools
-              </p>
-            </div>
-
-            <div className="tool-card text-center">
-              <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Shield size={24} className="text-blue-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-100 mb-2">Secure Analysis</h3>
-              <p className="text-gray-400">
-                All processing happens locally - your files never leave your browser
-              </p>
-            </div>
-
-            <div className="tool-card text-center">
-              <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users size={24} className="text-green-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-100 mb-2">Professional Grade</h3>
-              <p className="text-gray-400">
-                Used by cybersecurity professionals and CTF teams worldwide
-              </p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Announcements Section */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-20">
+      <div className="px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center mb-8">
-            <Calendar size={24} className="text-purple-400 mr-3" />
-            <h2 className="heading-lg">Latest Announcements</h2>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="heading-lg flex items-center space-x-3">
+              <Calendar size={32} className="text-slate-400" />
+              <span>Latest Updates</span>
+            </h2>
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="spinner"></div>
+            <div className="space-y-4">
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="bg-gray-800 border border-gray-700 rounded-xl p-6 animate-pulse">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
+                    <div className="flex-1 space-y-3">
+                      <div className="h-5 bg-gray-700 rounded w-1/3"></div>
+                      <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+                      <div className="h-3 bg-gray-700 rounded w-1/4"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="space-y-6">
-              {announcements.length > 0 ? (
+              {announcements.length === 0 ? (
+                <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
+                  <AlertCircle size={48} className="mx-auto mb-4 text-gray-600" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No announcements</h3>
+                  <p className="text-gray-500">Check back later for updates!</p>
+                </div>
+              ) : (
                 announcements.map((announcement) => (
-                  <div 
+                  <div
                     key={announcement.id}
-                    className={`tool-card ${announcement.is_important ? 'border-amber-500/30 bg-amber-500/5' : ''}`}
+                    className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 hover:shadow-lg hover:shadow-slate-500/10 transition-all duration-300 transform hover:scale-[1.02]"
                   >
                     <div className="flex items-start space-x-4">
                       <div className={`flex-shrink-0 p-2 rounded-lg ${
                         announcement.is_important 
-                          ? 'bg-amber-500/20 text-amber-400' 
-                          : 'bg-blue-500/20 text-blue-400'
+                          ? 'bg-red-500/20 text-red-400' 
+                          : 'bg-slate-500/20 text-slate-400'
                       }`}>
                         {announcement.is_important ? (
                           <AlertCircle size={20} />
@@ -172,51 +153,85 @@ const HomePage = () => {
                           <CheckCircle size={20} />
                         )}
                       </div>
-                      
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="text-lg font-semibold text-gray-100">
                             {announcement.title}
                           </h3>
-                          <span className="text-sm text-gray-400 flex-shrink-0">
+                          <span className="text-sm text-gray-500">
                             {formatDate(announcement.date)}
                           </span>
                         </div>
-                        <p className="text-gray-300">{announcement.content}</p>
+                        <p className="text-gray-300 leading-relaxed">
+                          {announcement.content}
+                        </p>
                       </div>
                     </div>
                   </div>
                 ))
-              ) : (
-                <div className="text-center py-12 text-gray-400">
-                  <Calendar size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>No announcements yet. Check back later for updates!</p>
-                </div>
               )}
             </div>
           )}
         </div>
-      </section>
+      </div>
 
-      {/* Call to Action Footer */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="tool-card">
-            <h3 className="heading-md mb-4">Ready to Start?</h3>
-            <p className="text-gray-400 mb-8">
-              Join thousands of cybersecurity professionals using SectoolBox for their CTF challenges.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/tools" className="btn-primary">
-                Browse All Tools
-              </Link>
-              <Link to="/about" className="btn-secondary">
-                Learn More
-              </Link>
+      {/* Footer */}
+      <footer className="bg-gradient-to-r from-gray-900 to-slate-900 border-t border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {/* Left: Brand */}
+            <div className="text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gradient mb-2">SectoolBox</h3>
+              <p className="text-gray-400">Professional CTF & Security Analysis Toolkit</p>
+            </div>
+
+            {/* Center: Profile */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center space-x-4 bg-gray-800/50 border border-gray-700 rounded-xl px-6 py-4 hover:bg-gray-800/70 transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-slate-600 to-gray-700 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">Z</span>
+                </div>
+                <div className="text-left">
+                  <p className="text-gray-200 font-medium">zebbern</p>
+                  <p className="text-gray-400 text-sm">Security Researcher</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Social Links */}
+            <div className="flex justify-center md:justify-end space-x-4">
+              <a
+                href="https://github.com/zebbern"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"
+              >
+                <Github size={20} className="text-gray-400 group-hover:text-white" />
+                <span className="text-gray-300 group-hover:text-white font-medium">GitHub</span>
+                <ExternalLink size={16} className="text-gray-500 group-hover:text-gray-300" />
+              </a>
+              
+              <a
+                href="https://medium.com/@zebbern"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 px-4 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-500/25 transform hover:scale-105"
+              >
+                <PenTool size={20} className="text-gray-400 group-hover:text-white" />
+                <span className="text-gray-300 group-hover:text-white font-medium">Medium</span>
+                <ExternalLink size={16} className="text-gray-500 group-hover:text-gray-300" />
+              </a>
             </div>
           </div>
+
+          {/* Bottom Bar */}
+          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
+            <p className="text-gray-500">
+              © {new Date().getFullYear()} SectoolBox. Built for cybersecurity professionals and CTF enthusiasts.
+            </p>
+          </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 };
