@@ -68,7 +68,7 @@
 
 /* Tool card hover effects */
 .tool-card {
-  @apply bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10 cursor-pointer;
+  @apply bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-slate-500/40 hover:shadow-lg hover:shadow-slate-500/20 cursor-pointer;
   backdrop-filter: blur(10px);
 }
 
