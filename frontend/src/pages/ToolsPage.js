@@ -62,6 +62,44 @@ const ToolsPage = () => {
 
     return `Decoded ${attempts} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${current}`;
   };
+  const [selectedAction, setSelectedAction] = useState('encode');
+
+  // Multi-layer Base64 decoding function
+  const multiLayerBase64Decode = (input) => {
+    let current = input.trim();
+    let layers = [];
+    let attempts = 0;
+    const maxAttempts = 50;
+
+    while (attempts < maxAttempts) {
+      // Check if current string is valid base64
+      const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+      if (!base64Regex.test(current) || current.length % 4 !== 0) {
+        break;
+      }
+
+      try {
+        const decoded = decodeURIComponent(escape(atob(current)));
+        layers.push(`Layer ${attempts + 1}: ${decoded}`);
+        
+        // If decoded result is the same as input, or not base64, we're done
+        if (decoded === current || !base64Regex.test(decoded)) {
+          return `Decoded ${attempts + 1} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${decoded}`;
+        }
+        
+        current = decoded;
+        attempts++;
+      } catch (e) {
+        break;
+      }
+    }
+
+    if (attempts === 0) {
+      return 'Not a valid Base64 string';
+    }
+
+    return `Decoded ${attempts} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${current}`;
+  };
 
   // CTF Tools Data - Combined encode/decode tools
   const tools = [
