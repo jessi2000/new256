@@ -71,6 +71,18 @@ frontend:
         agent: "testing"
         comment: "Navigation between all pages works correctly. Overall design is consistent across all pages. Responsive design works correctly on different screen sizes."
 
+  - task: "Custom scripts availability"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/pages/CustomPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "The 'Sample Hash Tool' script mentioned in the review request is not present in the Script Library. Only 'Demo Text Analyzer' and 'Example Tool' are available. This needs to be implemented."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
