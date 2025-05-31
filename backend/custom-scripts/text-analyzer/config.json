@@ -1,0 +1,5 @@
+{
+  "name": "Demo Text Analyzer",
+  "command": "python script.py",
+  "description": "A tool that analyzes text for various metrics and patterns"
+}
