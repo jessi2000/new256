@@ -101,3 +101,112 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Test the SectoolBox backend to ensure all functionality is working correctly"
+
+backend:
+  - task: "Health check endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Health check endpoint is working correctly, returning status and timestamp."
+
+  - task: "Root endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Root endpoint is working correctly, returning message and version."
+
+  - task: "Announcements CRUD"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Announcements CRUD operations (create, read, delete) are working correctly with MongoDB integration."
+
+  - task: "File analysis upload and processing"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "File analysis functionality is working correctly. Files can be uploaded, analyzed, and results are stored in MongoDB."
+
+  - task: "Tool usage logging"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Tool usage logging is working correctly, storing usage data in MongoDB."
+
+  - task: "Custom scripts functionality"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Custom scripts functionality is working correctly. Scripts can be uploaded, listed, executed, and deleted."
+
+  - task: "MongoDB connection"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "MongoDB connection is working correctly. All database operations are successful."
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Health check endpoint"
+    - "Root endpoint"
+    - "Announcements CRUD"
+    - "File analysis upload and processing"
+    - "Custom scripts functionality"
+    - "MongoDB connection"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: "Completed comprehensive testing of the SectoolBox backend. All functionality is working correctly including health check, announcements, file analysis, and custom scripts. MongoDB integration is working properly for all operations."
