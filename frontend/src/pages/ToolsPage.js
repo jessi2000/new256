@@ -25,104 +25,57 @@ const ToolsPage = () => {
   const [toolOutput, setToolOutput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // CTF Tools Data - 40 fully functional tools
+  // CTF Tools Data - Combined encode/decode tools
   const tools = [
-    // Encoding/Decoding Tools (12 tools)
+    // Encoding/Decoding Tools (6 combined tools)
     {
-      id: 'base64-encode',
-      name: 'Base64 Encoder',
-      description: 'Encode text to Base64 format',
+      id: 'base64',
+      name: 'Base64 Encoder/Decoder',
+      description: 'Encode/decode Base64 with multi-layer support',
       category: 'encoding',
       icon: Code,
-      action: 'encode'
+      action: 'dual',
+      supportsMultiLayer: true
     },
     {
-      id: 'base64-decode',
-      name: 'Base64 Decoder',
-      description: 'Decode Base64 encoded text',
+      id: 'url',
+      name: 'URL Encoder/Decoder',
+      description: 'Encode/decode URL text',
       category: 'encoding',
       icon: Code,
-      action: 'decode'
+      action: 'dual'
     },
     {
-      id: 'url-encode',
-      name: 'URL Encoder',
-      description: 'Encode text for URL usage',
+      id: 'html',
+      name: 'HTML Entity Encoder/Decoder',
+      description: 'Encode/decode HTML entities',
       category: 'encoding',
       icon: Code,
-      action: 'encode'
+      action: 'dual'
     },
     {
-      id: 'url-decode',
-      name: 'URL Decoder',
-      description: 'Decode URL encoded text',
+      id: 'hex',
+      name: 'Hex Encoder/Decoder',
+      description: 'Convert text to/from hexadecimal',
       category: 'encoding',
       icon: Code,
-      action: 'decode'
+      action: 'dual'
     },
     {
-      id: 'html-encode',
-      name: 'HTML Entity Encoder',
-      description: 'Encode text to HTML entities',
+      id: 'binary',
+      name: 'Binary Encoder/Decoder',
+      description: 'Convert text to/from binary',
       category: 'encoding',
       icon: Code,
-      action: 'encode'
+      action: 'dual'
     },
     {
-      id: 'html-decode',
-      name: 'HTML Entity Decoder',
-      description: 'Decode HTML entities to text',
+      id: 'ascii',
+      name: 'ASCII Encoder/Decoder',
+      description: 'Convert text to/from ASCII codes',
       category: 'encoding',
       icon: Code,
-      action: 'decode'
-    },
-    {
-      id: 'hex-encode',
-      name: 'Hex Encoder',
-      description: 'Convert text to hexadecimal',
-      category: 'encoding',
-      icon: Code,
-      action: 'encode'
-    },
-    {
-      id: 'hex-decode',
-      name: 'Hex Decoder',
-      description: 'Convert hexadecimal to text',
-      category: 'encoding',
-      icon: Code,
-      action: 'decode'
-    },
-    {
-      id: 'binary-encode',
-      name: 'Binary Encoder',
-      description: 'Convert text to binary',
-      category: 'encoding',
-      icon: Code,
-      action: 'encode'
-    },
-    {
-      id: 'binary-decode',
-      name: 'Binary Decoder',
-      description: 'Convert binary to text',
-      category: 'encoding',
-      icon: Code,
-      action: 'decode'
-    },
-    {
-      id: 'ascii-encode',
-      name: 'ASCII Encoder',
-      description: 'Convert text to ASCII codes',
-      category: 'encoding',
-      icon: Code,
-      action: 'encode'
-    },
-    {
-      id: 'ascii-decode',
-      name: 'ASCII Decoder',
-      description: 'Convert ASCII codes to text',
-      category: 'encoding',
-      icon: Code,
-      action: 'decode'
+      action: 'dual'
     },
 
     // Cryptographic Tools (12 tools)
