@@ -186,13 +186,13 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 flex flex-col">
-        {/* Enhanced Background Particles */}
+        {/* Consistent Background Particles */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute inset-0">
-            {/* Primary smooth particles */}
+            {/* Primary particles */}
             {[...Array(15)].map((_, i) => (
               <div
-                key={`smooth1-${i}`}
+                key={`particle-${i}`}
                 className="absolute w-2 h-2 bg-slate-500/20 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
@@ -203,10 +203,10 @@ function App() {
               />
             ))}
             
-            {/* Secondary variant particles */}
+            {/* Secondary particles */}
             {[...Array(12)].map((_, i) => (
               <div
-                key={`smooth2-${i}`}
+                key={`particle2-${i}`}
                 className="absolute w-1.5 h-1.5 bg-purple-500/15 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
@@ -217,10 +217,10 @@ function App() {
               />
             ))}
             
-            {/* Tertiary variant particles */}
+            {/* Tertiary particles */}
             {[...Array(10)].map((_, i) => (
               <div
-                key={`smooth3-${i}`}
+                key={`particle3-${i}`}
                 className="absolute w-1 h-1 bg-blue-500/10 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
