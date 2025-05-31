@@ -82,7 +82,7 @@
 }
 
 .file-upload-area.dragover {
-  @apply border-purple-500 bg-purple-500/5;
+  @apply border-slate-500 bg-slate-500/5;
 }
 
 /* Modal overlay */
