@@ -552,6 +552,9 @@ const ToolsPage = () => {
         }
 
         setToolOutput(result);
+        if (toolId !== 'base64' || action !== 'decode') {
+          setBase64Result(null);
+        }
         toast.success('Tool executed successfully!');
       } catch (error) {
         setToolOutput(`Error: ${error.message}`);
