@@ -63,6 +63,23 @@ class FileAnalysisResult(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
     exif_data: Optional[Dict[str, Any]] = None
 
+class CustomScript(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: Optional[str] = ""
+    command: str
+    file_path: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_executed: Optional[datetime] = None
+    execution_count: int = 0
+
+class ScriptExecutionResult(BaseModel):
+    script_name: str
+    output: str
+    error: Optional[str] = None
+    execution_time: float
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
 # Basic endpoints
 @api_router.get("/")
 async def root():
