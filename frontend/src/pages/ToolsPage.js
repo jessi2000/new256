@@ -700,6 +700,7 @@ const ToolsPage = () => {
     setSelectedTool(tool);
     setToolInput('');
     setToolOutput('');
+    setBase64Result(null);
     setSelectedAction('encode'); // Reset action selection
   };
 
