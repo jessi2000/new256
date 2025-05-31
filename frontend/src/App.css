@@ -162,7 +162,7 @@
 
 /* Typography */
 .heading-xl {
-  @apply text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent;
+  @apply text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-400 via-gray-300 to-slate-400 bg-clip-text text-transparent;
 }
 
 .heading-lg {
@@ -174,7 +174,7 @@
 }
 
 .text-gradient {
-  @apply bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-slate-400 to-gray-400 bg-clip-text text-transparent;
 }
 
 /* Dark theme specific styles */
