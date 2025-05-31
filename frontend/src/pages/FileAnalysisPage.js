@@ -639,30 +639,20 @@ const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) 
 );
 
 // Strings Tab Component
-const StringsTab = ({ strings, searchTerm, setSearchTerm, filterType, setFilterType, onCopy }) => (
+const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => (
   <div className="space-y-6">
-    {/* Search and Filter */}
+    {/* Search Only */}
     <div className="flex flex-col sm:flex-row gap-4">
       <div className="relative flex-1">
         <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         <input
           type="text"
-          placeholder="Search strings..."
+          placeholder="Search string data..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="input-field pl-10"
         />
       </div>
-      <select
-        value={filterType}
-        onChange={(e) => setFilterType(e.target.value)}
-        className="input-field"
-      >
-        <option value="all">All Strings</option>
-        <option value="urls">URLs</option>
-        <option value="emails">Email Addresses</option>
-        <option value="ips">IP Addresses</option>
-      </select>
     </div>
 
     {/* Strings List */}
