@@ -1006,7 +1006,7 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-medium text-gray-300">
-              Output
+              {base64Result && tool.id === 'base64' ? 'Final Result' : 'Output'}
             </label>
             <button
               onClick={() => onCopy(output)}
@@ -1018,6 +1018,69 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
           </div>
           <div className="bg-gray-900 border border-gray-600 rounded-lg p-4 max-h-64 overflow-y-auto">
             <pre className="whitespace-pre-wrap text-gray-100 text-sm">{output}</pre>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Base64 Layers Display */}
+      {base64Result && tool.id === 'base64' && base64Result.layers.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-300">
+              Decoding Layers ({base64Result.totalLayers} layer{base64Result.totalLayers !== 1 ? 's' : ''})
+            </label>
+            <div className="flex items-center space-x-2">
+              <span className="text-xs px-2 py-1 bg-blue-600/20 text-blue-400 rounded">
+                Multi-layer Base64
+              </span>
+              <button
+                onClick={() => {
+                  const layersText = base64Result.layers.map(layer => 
+                    `Layer ${layer.layer}:\nInput: ${layer.input}\nOutput: ${layer.output}\n`
+                  ).join('\n');
+                  onCopy(`Final Result: ${base64Result.finalResult}\n\n${layersText}`);
+                }}
+                className="flex items-center space-x-1 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <Copy size={16} />
+                <span>Copy All</span>
+              </button>
+            </div>
+          </div>
+          <div className="bg-gray-900/80 border border-gray-600 rounded-lg overflow-hidden">
+            <div className="max-h-64 overflow-y-auto">
+              {base64Result.layers.map((layer, index) => (
+                <div key={index} className="border-b border-gray-700 last:border-b-0">
+                  <div className="p-3 bg-gray-800/50">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-sm font-medium text-blue-400">
+                        Layer {layer.layer}
+                      </h4>
+                      <button
+                        onClick={() => onCopy(layer.output)}
+                        className="text-xs text-gray-400 hover:text-gray-300 transition-colors"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-xs text-gray-500 uppercase tracking-wide">Input:</span>
+                        <pre className="text-xs text-gray-300 mt-1 p-2 bg-gray-900/60 rounded border-l-2 border-red-500/30 font-mono break-all whitespace-pre-wrap">
+                          {layer.input.length > 100 ? `${layer.input.substring(0, 100)}...` : layer.input}
+                        </pre>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500 uppercase tracking-wide">Output:</span>
+                        <pre className="text-xs text-gray-100 mt-1 p-2 bg-gray-900/60 rounded border-l-2 border-green-500/30 font-mono break-all whitespace-pre-wrap">
+                          {layer.output}
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
