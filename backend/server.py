@@ -254,6 +254,186 @@ async def log_tool_usage(tool_name: str, input_data: str = ""):
     await db.tool_usage.insert_one(usage_log)
     return {"message": "Usage logged"}
 
+# Custom Scripts API Endpoints
+
+@api_router.get("/custom-scripts", response_model=List[CustomScript])
+async def get_custom_scripts():
+    """Get all custom scripts"""
+    try:
+        scripts = await db.custom_scripts.find().sort("created_at", -1).to_list(100)
+        return [CustomScript(**script) for script in scripts]
+    except Exception as e:
+        logger.error(f"Error fetching custom scripts: {str(e)}")
+        raise HTTPException(status_code=500, detail="Error fetching custom scripts")
+
+@api_router.post("/upload-script")
+async def upload_script(
+    script_name: str = Form(...),
+    command: str = Form(...),
+    description: str = Form(""),
+    script_file: UploadFile = File(...)
+):
+    """Upload a custom script"""
+    try:
+        # Validate file type
+        if not script_file.filename.endswith('.py'):
+            raise HTTPException(status_code=400, detail="Only Python (.py) files are allowed")
+        
+        # Check if script name already exists
+        existing = await db.custom_scripts.find_one({"name": script_name})
+        if existing:
+            raise HTTPException(status_code=400, detail="Script name already exists")
+        
+        # Create script directory
+        script_dir = SCRIPTS_DIR / script_name
+        script_dir.mkdir(exist_ok=True)
+        
+        # Save the uploaded script file
+        script_path = script_dir / script_file.filename
+        with open(script_path, "wb") as f:
+            content = await script_file.read()
+            f.write(content)
+        
+        # Create command.txt file
+        command_file = script_dir / "command.txt"
+        with open(command_file, "w") as f:
+            f.write(command)
+        
+        # Create script record in database
+        script_record = CustomScript(
+            name=script_name,
+            description=description,
+            command=command,
+            file_path=str(script_path)
+        )
+        
+        await db.custom_scripts.insert_one(script_record.dict())
+        
+        return {"message": "Script uploaded successfully", "script_name": script_name}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error uploading script: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error uploading script: {str(e)}")
+
+@api_router.post("/execute-script")
+async def execute_script(request: dict):
+    """Execute a custom script"""
+    try:
+        script_name = request.get("script_name")
+        if not script_name:
+            raise HTTPException(status_code=400, detail="Script name is required")
+        
+        # Get script from database
+        script_doc = await db.custom_scripts.find_one({"name": script_name})
+        if not script_doc:
+            raise HTTPException(status_code=404, detail="Script not found")
+        
+        script = CustomScript(**script_doc)
+        script_dir = SCRIPTS_DIR / script_name
+        
+        if not script_dir.exists():
+            raise HTTPException(status_code=404, detail="Script directory not found")
+        
+        # Read command from command.txt if it exists
+        command_file = script_dir / "command.txt"
+        if command_file.exists():
+            with open(command_file, "r") as f:
+                command = f.read().strip()
+        else:
+            command = script.command
+        
+        # Execute the script
+        start_time = datetime.utcnow()
+        
+        try:
+            # Change to script directory and execute
+            result = subprocess.run(
+                command.split(),
+                cwd=script_dir,
+                capture_output=True,
+                text=True,
+                timeout=30,  # 30 second timeout
+                check=False
+            )
+            
+            end_time = datetime.utcnow()
+            execution_time = (end_time - start_time).total_seconds()
+            
+            # Combine stdout and stderr
+            output = ""
+            if result.stdout:
+                output += "STDOUT:\n" + result.stdout + "\n"
+            if result.stderr:
+                output += "STDERR:\n" + result.stderr + "\n"
+            if not output:
+                output = "Script executed with no output"
+            
+            # Add return code info
+            output += f"\nReturn Code: {result.returncode}"
+            
+            # Update script statistics
+            await db.custom_scripts.update_one(
+                {"name": script_name},
+                {
+                    "$set": {"last_executed": datetime.utcnow()},
+                    "$inc": {"execution_count": 1}
+                }
+            )
+            
+            # Store execution result
+            execution_result = ScriptExecutionResult(
+                script_name=script_name,
+                output=output,
+                error=result.stderr if result.stderr else None,
+                execution_time=execution_time
+            )
+            
+            await db.script_executions.insert_one(execution_result.dict())
+            
+            return {"output": output, "execution_time": execution_time}
+            
+        except subprocess.TimeoutExpired:
+            return {"output": "Error: Script execution timed out (30 seconds)", "execution_time": 30.0}
+        except Exception as exec_error:
+            error_msg = f"Execution error: {str(exec_error)}"
+            return {"output": error_msg, "execution_time": 0.0}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error executing script: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error executing script: {str(e)}")
+
+@api_router.delete("/custom-scripts/{script_name}")
+async def delete_script(script_name: str):
+    """Delete a custom script"""
+    try:
+        # Check if script exists
+        script_doc = await db.custom_scripts.find_one({"name": script_name})
+        if not script_doc:
+            raise HTTPException(status_code=404, detail="Script not found")
+        
+        # Remove script directory
+        script_dir = SCRIPTS_DIR / script_name
+        if script_dir.exists():
+            shutil.rmtree(script_dir)
+        
+        # Remove from database
+        await db.custom_scripts.delete_one({"name": script_name})
+        
+        # Remove execution history
+        await db.script_executions.delete_many({"script_name": script_name})
+        
+        return {"message": "Script deleted successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting script: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error deleting script: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
