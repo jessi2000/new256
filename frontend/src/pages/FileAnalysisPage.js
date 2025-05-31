@@ -336,14 +336,6 @@ const FileAnalysisPage = () => {
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="heading-xl mb-4">File Analysis</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Comprehensive file analysis with string extraction, hex dump, metadata, and security scanning
-          </p>
-        </div>
-
         {/* File Upload Area */}
         {!file && (
           <div 
