@@ -42,13 +42,15 @@ const ToolsPage = () => {
 
       try {
         const decoded = decodeURIComponent(escape(atob(current)));
-        layers.push(`Layer ${attempts + 1}: ${decoded}`);
+        layers.push({
+          layer: attempts + 1,
+          input: current,
+          output: decoded
+        });
         
         // If decoded result is the same as input, or not base64, we're done
         if (decoded === current || !base64Regex.test(decoded)) {
-          const finalResult = `Final Result: ${decoded}`;
-          const layerDetails = layers.length > 1 ? `\n\nDecoding Layers:\n${layers.join('\n')}` : '';
-          return `${finalResult}${layerDetails}\n\nDecoded ${attempts + 1} time(s)`;
+          break;
         }
         
         current = decoded;
@@ -59,12 +61,18 @@ const ToolsPage = () => {
     }
 
     if (attempts === 0) {
-      return 'Not a valid Base64 string';
+      return {
+        finalResult: 'Not a valid Base64 string',
+        layers: [],
+        totalLayers: 0
+      };
     }
 
-    const finalResult = `Final Result: ${current}`;
-    const layerDetails = layers.length > 1 ? `\n\nDecoding Layers:\n${layers.join('\n')}` : '';
-    return `${finalResult}${layerDetails}\n\nDecoded ${attempts} time(s)`;
+    return {
+      finalResult: layers[layers.length - 1]?.output || current,
+      layers: layers,
+      totalLayers: layers.length
+    };
   };
 
   // CTF Tools Data - Combined encode/decode tools
