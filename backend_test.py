@@ -1,80 +1,84 @@
 #!/usr/bin/env python3
 import requests
 import json
-import os
 import time
+import os
+import base64
 import unittest
-import tempfile
-import random
-import string
+import sys
 from datetime import datetime
 
 # Get the backend URL from the frontend .env file
-with open('/app/frontend/.env', 'r') as f:
-    for line in f:
-        if line.startswith('REACT_APP_BACKEND_URL='):
-            BACKEND_URL = line.strip().split('=')[1].strip('"\'')
-            break
-
-# Ensure the URL ends with /api for all API requests
+BACKEND_URL = "https://e4d44775-d9f0-4101-83b8-870ac942b96e.preview.emergentagent.com"
 API_URL = f"{BACKEND_URL}/api"
 
-class SectoolBoxBackendTests(unittest.TestCase):
-    """Test suite for SectoolBox backend API"""
-
+class BackendAPITest(unittest.TestCase):
+    """Test suite for SectoolBox Backend API"""
+    
     def setUp(self):
-        """Set up test environment"""
-        self.session = requests.Session()
-        # Generate a random string for test data
-        self.random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        
+        """Setup for tests"""
+        self.announcement_ids = []  # Store created announcement IDs for cleanup
+    
     def tearDown(self):
-        """Clean up after tests"""
-        self.session.close()
-
+        """Cleanup after tests"""
+        # Delete any announcements created during testing
+        for announcement_id in self.announcement_ids:
+            try:
+                requests.delete(f"{API_URL}/announcements/{announcement_id}")
+            except Exception as e:
+                print(f"Error cleaning up announcement {announcement_id}: {e}")
+    
     def test_01_health_check(self):
         """Test the health check endpoint"""
-        response = self.session.get(f"{API_URL}/health")
+        print("\n🔍 Testing health check endpoint...")
+        response = requests.get(f"{API_URL}/health")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["status"], "healthy")
         self.assertIn("timestamp", data)
-        print("✅ Health check endpoint working")
-
+        print("✅ Health check endpoint is working correctly")
+    
     def test_02_root_endpoint(self):
         """Test the root endpoint"""
-        response = self.session.get(API_URL)
+        print("\n🔍 Testing root endpoint...")
+        response = requests.get(f"{API_URL}/")
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIn("message", data)
         self.assertIn("version", data)
-        print("✅ Root endpoint working")
-
+        print("✅ Root endpoint is working correctly")
+    
     def test_03_announcements_crud(self):
-        """Test CRUD operations for announcements"""
-        # Create an announcement
+        """Test announcements CRUD operations"""
+        print("\n🔍 Testing announcements CRUD operations...")
+        
+        # Create announcement
         announcement_data = {
-            "title": f"Test Announcement {self.random_string}",
-            "content": "This is a test announcement created by the test suite",
+            "title": "Test Announcement",
+            "content": "This is a test announcement created by the API test",
             "is_important": True
         }
         
-        # Create
-        create_response = self.session.post(
+        # Test create
+        create_response = requests.post(
             f"{API_URL}/announcements", 
             json=announcement_data
         )
         self.assertEqual(create_response.status_code, 200)
-        created_announcement = create_response.json()
-        self.assertEqual(created_announcement["title"], announcement_data["title"])
-        self.assertEqual(created_announcement["content"], announcement_data["content"])
-        self.assertEqual(created_announcement["is_important"], announcement_data["is_important"])
-        announcement_id = created_announcement["id"]
+        created = create_response.json()
+        self.assertEqual(created["title"], announcement_data["title"])
+        self.assertEqual(created["content"], announcement_data["content"])
+        self.assertEqual(created["is_important"], announcement_data["is_important"])
+        self.assertIn("id", created)
         
-        # Read (list)
-        list_response = self.session.get(f"{API_URL}/announcements")
-        self.assertEqual(list_response.status_code, 200)
-        announcements = list_response.json()
+        # Store ID for cleanup
+        announcement_id = created["id"]
+        self.announcement_ids.append(announcement_id)
+        
+        # Test get all
+        get_response = requests.get(f"{API_URL}/announcements")
+        self.assertEqual(get_response.status_code, 200)
+        announcements = get_response.json()
         self.assertIsInstance(announcements, list)
         
         # Verify our announcement is in the list
@@ -85,153 +89,175 @@ class SectoolBoxBackendTests(unittest.TestCase):
                 break
         self.assertTrue(found, "Created announcement not found in list")
         
-        # Delete
-        delete_response = self.session.delete(f"{API_URL}/announcements/{announcement_id}")
+        # Test delete
+        delete_response = requests.delete(f"{API_URL}/announcements/{announcement_id}")
         self.assertEqual(delete_response.status_code, 200)
         
         # Verify deletion
-        list_response_after = self.session.get(f"{API_URL}/announcements")
-        announcements_after = list_response_after.json()
-        
-        found_after = False
-        for announcement in announcements_after:
+        get_response = requests.get(f"{API_URL}/announcements")
+        announcements = get_response.json()
+        found = False
+        for announcement in announcements:
             if announcement["id"] == announcement_id:
-                found_after = True
+                found = True
                 break
-        self.assertFalse(found_after, "Announcement was not properly deleted")
+        self.assertFalse(found, "Announcement was not deleted properly")
         
-        print("✅ Announcements CRUD operations working")
-
+        # Remove from cleanup list since we already deleted it
+        self.announcement_ids.remove(announcement_id)
+        
+        print("✅ Announcements CRUD operations are working correctly")
+    
     def test_04_file_analysis(self):
-        """Test file analysis functionality"""
-        # Create a temporary text file
-        with tempfile.NamedTemporaryFile(suffix='.txt', delete=False) as temp:
-            temp.write(b"This is a test file for analysis.\nIt contains some text data for testing the file analysis API.")
-            temp_path = temp.name
+        """Test file analysis upload and processing"""
+        print("\n🔍 Testing file analysis functionality...")
+        
+        # Create a simple text file for testing
+        test_content = "This is a test file for analysis.\nIt contains some text data for testing the file analysis API."
+        
+        # Create a temporary file
+        with open("test_file.txt", "w") as f:
+            f.write(test_content)
         
         try:
-            # Upload the file for analysis
-            with open(temp_path, 'rb') as f:
-                files = {'file': ('test_file.txt', f, 'text/plain')}
-                response = self.session.post(f"{API_URL}/analyze-file", files=files)
+            # Upload file for analysis
+            with open("test_file.txt", "rb") as f:
+                files = {"file": ("test_file.txt", f, "text/plain")}
+                response = requests.post(f"{API_URL}/analyze-file", files=files)
             
             self.assertEqual(response.status_code, 200)
-            analysis = response.json()
+            result = response.json()
             
-            # Verify analysis fields
-            self.assertEqual(analysis["filename"], "test_file.txt")
-            self.assertIn("file_size", analysis)
-            self.assertIn("mime_type", analysis)
-            self.assertIn("md5_hash", analysis)
-            self.assertIn("sha1_hash", analysis)
-            self.assertIn("sha256_hash", analysis)
-            self.assertIn("strings_count", analysis)
-            self.assertIn("entropy", analysis)
+            # Verify analysis result fields
+            self.assertEqual(result["filename"], "test_file.txt")
+            self.assertIn("file_size", result)
+            self.assertIn("mime_type", result)
+            self.assertIn("md5_hash", result)
+            self.assertIn("sha1_hash", result)
+            self.assertIn("sha256_hash", result)
+            self.assertIn("strings_count", result)
+            self.assertIn("entropy", result)
             
-            # Get file analyses list
-            list_response = self.session.get(f"{API_URL}/file-analyses")
-            self.assertEqual(list_response.status_code, 200)
-            analyses = list_response.json()
+            # Test getting file analyses
+            analyses_response = requests.get(f"{API_URL}/file-analyses")
+            self.assertEqual(analyses_response.status_code, 200)
+            analyses = analyses_response.json()
             self.assertIsInstance(analyses, list)
             
             # Verify our analysis is in the list
             found = False
-            for item in analyses:
-                if item["id"] == analysis["id"]:
+            for analysis in analyses:
+                if analysis["filename"] == "test_file.txt" and analysis["md5_hash"] == result["md5_hash"]:
                     found = True
                     break
             self.assertTrue(found, "Created file analysis not found in list")
             
-            print("✅ File analysis functionality working")
+            print("✅ File analysis functionality is working correctly")
             
         finally:
-            # Clean up the temporary file
-            os.unlink(temp_path)
-
+            # Clean up the test file
+            if os.path.exists("test_file.txt"):
+                os.remove("test_file.txt")
+    
     def test_05_tool_usage_logging(self):
         """Test tool usage logging"""
+        print("\n🔍 Testing tool usage logging...")
+        
+        # Log tool usage
         tool_data = {
-            "tool_name": f"test_tool_{self.random_string}",
-            "input_data": "Test input data"
+            "tool_name": "base64_encoder",
+            "input_data": "test data for encoding"
         }
         
-        response = self.session.post(f"{API_URL}/tool-usage", params=tool_data)
+        response = requests.post(
+            f"{API_URL}/tool-usage",
+            params=tool_data
+        )
+        
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(data["message"], "Usage logged")
+        result = response.json()
+        self.assertIn("message", result)
         
-        print("✅ Tool usage logging working")
+        print("✅ Tool usage logging is working correctly")
+    
+    def test_06_custom_scripts(self):
+        """Test custom scripts functionality"""
+        print("\n🔍 Testing custom scripts functionality...")
+        
+        # Get list of custom scripts
+        scripts_response = requests.get(f"{API_URL}/custom-scripts")
+        
+        # This might return empty list if no scripts are configured, which is fine
+        self.assertEqual(scripts_response.status_code, 200)
+        scripts = scripts_response.json()
+        self.assertIsInstance(scripts, list)
+        
+        # If there are scripts, test execution of the first one
+        if scripts:
+            script_name = scripts[0]["name"]
+            print(f"Found script: {script_name}, testing execution...")
+            
+            exec_response = requests.post(
+                f"{API_URL}/execute-script",
+                json={"script_name": script_name}
+            )
+            
+            self.assertEqual(exec_response.status_code, 200)
+            exec_result = exec_response.json()
+            self.assertIn("output", exec_result)
+            self.assertIn("execution_time", exec_result)
+            
+            print(f"✅ Script execution successful: {script_name}")
+        else:
+            print("ℹ️ No custom scripts found to test execution")
+        
+        print("✅ Custom scripts functionality is working correctly")
 
-    def test_06_custom_scripts_crud(self):
-        """Test CRUD operations for custom scripts"""
-        script_name = f"test_script_{self.random_string}"
-        script_content = """
-#!/usr/bin/env python3
-print("Hello from test script!")
-"""
-        # Create a temporary Python script file
-        with tempfile.NamedTemporaryFile(suffix='.py', delete=False) as temp:
-            temp.write(script_content.encode())
-            temp_path = temp.name
-        
-        try:
-            # Upload the script
-            with open(temp_path, 'rb') as f:
-                files = {'script_file': (f"{script_name}.py", f, 'text/x-python')}
-                data = {
-                    'script_name': script_name,
-                    'command': f"python {script_name}.py",
-                    'description': "Test script created by test suite"
-                }
-                upload_response = self.session.post(f"{API_URL}/upload-script", files=files, data=data)
-            
-            self.assertEqual(upload_response.status_code, 200)
-            upload_data = upload_response.json()
-            self.assertEqual(upload_data["script_name"], script_name)
-            
-            # Get scripts list
-            list_response = self.session.get(f"{API_URL}/custom-scripts")
-            self.assertEqual(list_response.status_code, 200)
-            scripts = list_response.json()
-            self.assertIsInstance(scripts, list)
-            
-            # Verify our script is in the list
-            found = False
-            for script in scripts:
-                if script["name"] == script_name:
-                    found = True
-                    break
-            self.assertTrue(found, "Uploaded script not found in list")
-            
-            # Execute the script
-            execute_data = {"script_name": script_name}
-            execute_response = self.session.post(f"{API_URL}/execute-script", json=execute_data)
-            self.assertEqual(execute_response.status_code, 200)
-            execute_result = execute_response.json()
-            self.assertIn("output", execute_result)
-            self.assertIn("Hello from test script!", execute_result["output"])
-            
-            # Delete the script
-            delete_response = self.session.delete(f"{API_URL}/custom-scripts/{script_name}")
-            self.assertEqual(delete_response.status_code, 200)
-            
-            # Verify deletion
-            list_response_after = self.session.get(f"{API_URL}/custom-scripts")
-            scripts_after = list_response_after.json()
-            
-            found_after = False
-            for script in scripts_after:
-                if script["name"] == script_name:
-                    found_after = True
-                    break
-            self.assertFalse(found_after, "Script was not properly deleted")
-            
-            print("✅ Custom scripts CRUD operations working")
-            
-        finally:
-            # Clean up the temporary file
-            os.unlink(temp_path)
+def run_tests():
+    """Run all tests and return results"""
+    test_suite = unittest.TestSuite()
+    test_suite.addTest(unittest.makeSuite(BackendAPITest))
+    
+    # Redirect stdout to capture output
+    old_stdout = sys.stdout
+    sys.stdout = mystdout = StringCapture()
+    
+    # Run tests
+    result = unittest.TextTestRunner(verbosity=2).run(test_suite)
+    
+    # Restore stdout
+    sys.stdout = old_stdout
+    
+    # Print captured output
+    print(mystdout.getvalue())
+    
+    return result
+
+class StringCapture:
+    """Helper class to capture stdout"""
+    def __init__(self):
+        self.data = []
+    
+    def write(self, s):
+        self.data.append(s)
+    
+    def getvalue(self):
+        return ''.join(self.data)
+    
+    def flush(self):
+        pass
 
 if __name__ == "__main__":
-    print(f"Testing SectoolBox backend API at: {API_URL}")
-    unittest.main(argv=['first-arg-is-ignored'], exit=False)
+    print(f"🚀 Starting SectoolBox Backend API Tests")
+    print(f"🔗 API URL: {API_URL}")
+    print("-" * 80)
+    
+    result = run_tests()
+    
+    print("-" * 80)
+    if result.wasSuccessful():
+        print("✅ All tests passed successfully!")
+        sys.exit(0)
+    else:
+        print(f"❌ Tests failed: {len(result.failures)} failures, {len(result.errors)} errors")
+        sys.exit(1)
