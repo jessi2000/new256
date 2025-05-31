@@ -391,7 +391,9 @@ const ToolsPage = () => {
         
         // Multi-layer Base64 decoding
         if (toolId === 'base64' && action === 'decode') {
-          result = multiLayerBase64Decode(input);
+          const base64Decoded = multiLayerBase64Decode(input);
+          setBase64Result(base64Decoded);
+          result = base64Decoded.finalResult;
         } else {
           switch (`${toolId}-${action}`) {
             // Encoding/Decoding
