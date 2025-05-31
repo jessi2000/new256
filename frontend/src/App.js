@@ -48,6 +48,7 @@ const Navigation = () => {
     { to: '/', label: 'Home', icon: Home },
     { to: '/tools', label: 'Tools', icon: Wrench },
     { to: '/analysis', label: 'File Analysis', icon: FileText },
+    { to: '/custom', label: 'Custom', icon: Code },
     { to: '/about', label: 'About', icon: Users }
   ];
 
