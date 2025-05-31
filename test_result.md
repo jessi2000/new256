@@ -96,7 +96,9 @@ test_plan:
     - "Tools page Base64 improvements"
     - "Custom page cleanup"
     - "Navigation and general functionality"
-  stuck_tasks: []
+    - "Custom scripts availability"
+  stuck_tasks: 
+    - "Custom scripts availability"
   test_all: true
   test_priority: "high_first"
 
