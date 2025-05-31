@@ -26,7 +26,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # Create directories for custom scripts
-SCRIPTS_DIR = ROOT_DIR / "scriptscustom"
+SCRIPTS_DIR = ROOT_DIR / "custom-scripts"
 SCRIPTS_DIR.mkdir(exist_ok=True)
 
 # MongoDB connection
