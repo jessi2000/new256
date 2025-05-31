@@ -36,8 +36,6 @@ const HomePage = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHoveringHero, setIsHoveringHero] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const navigate = useNavigate();
 
