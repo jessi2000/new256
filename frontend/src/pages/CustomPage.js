@@ -99,21 +99,12 @@ const CustomPage = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="heading-xl mb-4">Custom Scripts</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Manually added Python scripts from the custom-scripts directory
-          </p>
         </div>
 
-        <div className="space-y-8">
-          {/* Custom Scripts Section */}
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 shadow-xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Upload Script */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-100 mb-4 flex items-center space-x-2">
-                  <Upload size={20} className="text-blue-400" />
-                  <span>Upload Script</span>
-                </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Scripts List */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">Script Library</h3>
             
             {loading ? (
               <div className="space-y-4">
