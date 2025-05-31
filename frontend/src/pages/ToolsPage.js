@@ -25,6 +25,7 @@ const ToolsPage = () => {
   const [toolOutput, setToolOutput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedAction, setSelectedAction] = useState('encode');
+  const [base64Result, setBase64Result] = useState(null);
 
   // Multi-layer Base64 decoding function
   const multiLayerBase64Decode = (input) => {
