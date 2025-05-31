@@ -129,6 +129,7 @@ const AboutPage = () => {
         </section>
       </div>
     </div>
+    </div>
   );
 };
 
