@@ -24,81 +24,6 @@ const ToolsPage = () => {
   const [toolInput, setToolInput] = useState('');
   const [toolOutput, setToolOutput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-
-  // Multi-layer Base64 decoding function
-  const multiLayerBase64Decode = (input) => {
-    let current = input.trim();
-    let layers = [];
-    let attempts = 0;
-    const maxAttempts = 50;
-
-    while (attempts < maxAttempts) {
-      // Check if current string is valid base64
-      const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
-      if (!base64Regex.test(current) || current.length % 4 !== 0) {
-        break;
-      }
-
-      try {
-        const decoded = decodeURIComponent(escape(atob(current)));
-        layers.push(`Layer ${attempts + 1}: ${decoded}`);
-        
-        // If decoded result is the same as input, or not base64, we're done
-        if (decoded === current || !base64Regex.test(decoded)) {
-          return `Decoded ${attempts + 1} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${decoded}`;
-        }
-        
-        current = decoded;
-        attempts++;
-      } catch (e) {
-        break;
-      }
-    }
-
-    if (attempts === 0) {
-      return 'Not a valid Base64 string';
-    }
-
-    return `Decoded ${attempts} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${current}`;
-  };
-  const [selectedAction, setSelectedAction] = useState('encode');
-
-  // Multi-layer Base64 decoding function
-  const multiLayerBase64Decode = (input) => {
-    let current = input.trim();
-    let layers = [];
-    let attempts = 0;
-    const maxAttempts = 50;
-
-    while (attempts < maxAttempts) {
-      // Check if current string is valid base64
-      const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
-      if (!base64Regex.test(current) || current.length % 4 !== 0) {
-        break;
-      }
-
-      try {
-        const decoded = decodeURIComponent(escape(atob(current)));
-        layers.push(`Layer ${attempts + 1}: ${decoded}`);
-        
-        // If decoded result is the same as input, or not base64, we're done
-        if (decoded === current || !base64Regex.test(decoded)) {
-          return `Decoded ${attempts + 1} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${decoded}`;
-        }
-        
-        current = decoded;
-        attempts++;
-      } catch (e) {
-        break;
-      }
-    }
-
-    if (attempts === 0) {
-      return 'Not a valid Base64 string';
-    }
-
-    return `Decoded ${attempts} time(s):\n\n${layers.join('\n\n')}\n\nFinal Result: ${current}`;
-  };
   const [selectedAction, setSelectedAction] = useState('encode');
 
   // Multi-layer Base64 decoding function
@@ -499,115 +424,116 @@ const ToolsPage = () => {
               result = Array.from(input).map(c => c.charCodeAt(0)).join(' ');
               break;
             case 'ascii-decode':
-            result = input.split(/\s+/).map(code => String.fromCharCode(parseInt(code))).join('');
-            break;
+              result = input.split(/\s+/).map(code => String.fromCharCode(parseInt(code))).join('');
+              break;
 
-          // Cryptographic
-          case 'caesar-cipher':
-            result = input.replace(/[a-zA-Z]/g, (char) => {
-              const base = char <= 'Z' ? 65 : 97;
-              return String.fromCharCode(((char.charCodeAt(0) - base + shift) % 26) + base);
-            });
-            break;
-          case 'rot13':
-            result = input.replace(/[a-zA-Z]/g, (char) => {
-              const base = char <= 'Z' ? 65 : 97;
-              return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base);
-            });
-            break;
-          case 'rot47':
-            result = input.replace(/[\x21-\x7E]/g, (char) => 
-              String.fromCharCode(33 + ((char.charCodeAt(0) - 33 + 47) % 94))
-            );
-            break;
-          case 'vigenere-encrypt':
-            result = vigenereProcess(input, key, true);
-            break;
-          case 'vigenere-decrypt':
-            result = vigenereProcess(input, key, false);
-            break;
-          case 'atbash-cipher':
-            result = input.replace(/[a-zA-Z]/g, (char) => {
-              if (char <= 'Z') return String.fromCharCode(155 - char.charCodeAt(0));
-              return String.fromCharCode(219 - char.charCodeAt(0));
-            });
-            break;
-          case 'morse-encode':
-            result = textToMorse(input);
-            break;
-          case 'morse-decode':
-            result = morseToText(input);
-            break;
-          case 'reverse-text':
-            result = input.split('').reverse().join('');
-            break;
-          case 'xor-cipher':
-            result = xorCipher(input, key);
-            break;
-          case 'bacon-cipher':
-            result = baconCipher(input);
-            break;
+            // Cryptographic
+            case 'caesar-cipher':
+              result = input.replace(/[a-zA-Z]/g, (char) => {
+                const base = char <= 'Z' ? 65 : 97;
+                return String.fromCharCode(((char.charCodeAt(0) - base + shift) % 26) + base);
+              });
+              break;
+            case 'rot13':
+              result = input.replace(/[a-zA-Z]/g, (char) => {
+                const base = char <= 'Z' ? 65 : 97;
+                return String.fromCharCode(((char.charCodeAt(0) - base + 13) % 26) + base);
+              });
+              break;
+            case 'rot47':
+              result = input.replace(/[\x21-\x7E]/g, (char) => 
+                String.fromCharCode(33 + ((char.charCodeAt(0) - 33 + 47) % 94))
+              );
+              break;
+            case 'vigenere-encrypt':
+              result = vigenereProcess(input, key, true);
+              break;
+            case 'vigenere-decrypt':
+              result = vigenereProcess(input, key, false);
+              break;
+            case 'atbash-cipher':
+              result = input.replace(/[a-zA-Z]/g, (char) => {
+                if (char <= 'Z') return String.fromCharCode(155 - char.charCodeAt(0));
+                return String.fromCharCode(219 - char.charCodeAt(0));
+              });
+              break;
+            case 'morse-encode':
+              result = textToMorse(input);
+              break;
+            case 'morse-decode':
+              result = morseToText(input);
+              break;
+            case 'reverse-text':
+              result = input.split('').reverse().join('');
+              break;
+            case 'xor-cipher':
+              result = xorCipher(input, key);
+              break;
+            case 'bacon-cipher':
+              result = baconCipher(input);
+              break;
 
-          // Hash functions
-          case 'md5-hash':
-            result = CryptoJS.MD5(input).toString();
-            break;
-          case 'md4-hash':
-            result = CryptoJS.MD4 ? CryptoJS.MD4(input).toString() : 'MD4 not available';
-            break;
-          case 'sha1-hash':
-            result = CryptoJS.SHA1(input).toString();
-            break;
-          case 'sha256-hash':
-            result = CryptoJS.SHA256(input).toString();
-            break;
-          case 'sha512-hash':
-            result = CryptoJS.SHA512(input).toString();
-            break;
-          case 'crc32-hash':
-            result = crc32(input).toString(16);
-            break;
-          case 'ntlm-hash':
-            result = 'NTLM: ' + CryptoJS.MD4(CryptoJS.enc.Utf16LE.parse(input)).toString().toUpperCase();
-            break;
-          case 'bcrypt-hash':
-            result = 'BCrypt hash generation requires backend processing';
-            break;
-          case 'hash-identifier':
-            result = identifyHash(input);
-            break;
+            // Hash functions
+            case 'md5-hash':
+              result = CryptoJS.MD5(input).toString();
+              break;
+            case 'md4-hash':
+              result = CryptoJS.MD4 ? CryptoJS.MD4(input).toString() : 'MD4 not available';
+              break;
+            case 'sha1-hash':
+              result = CryptoJS.SHA1(input).toString();
+              break;
+            case 'sha256-hash':
+              result = CryptoJS.SHA256(input).toString();
+              break;
+            case 'sha512-hash':
+              result = CryptoJS.SHA512(input).toString();
+              break;
+            case 'crc32-hash':
+              result = crc32(input).toString(16);
+              break;
+            case 'ntlm-hash':
+              result = 'NTLM: ' + CryptoJS.MD4(CryptoJS.enc.Utf16LE.parse(input)).toString().toUpperCase();
+              break;
+            case 'bcrypt-hash':
+              result = 'BCrypt hash generation requires backend processing';
+              break;
+            case 'hash-identifier':
+              result = identifyHash(input);
+              break;
 
-          // Text processing
-          case 'case-converter':
-            result = `Upper: ${input.toUpperCase()}\nLower: ${input.toLowerCase()}\nTitle: ${input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}`;
-            break;
-          case 'text-length':
-            const lines = input.split('\n');
-            const words = input.trim().split(/\s+/).filter(w => w.length > 0);
-            result = `Characters: ${input.length}\nWords: ${words.length}\nLines: ${lines.length}`;
-            break;
-          case 'remove-whitespace':
-            result = input.replace(/\s+/g, ' ').trim();
-            break;
-          case 'sort-lines':
-            result = input.split('\n').sort().join('\n');
-            break;
-          case 'unique-lines':
-            result = [...new Set(input.split('\n'))].join('\n');
-            break;
-          case 'grep-tool':
-            const regex = new RegExp(pattern, 'gi');
-            result = input.split('\n').filter(line => regex.test(line)).join('\n');
-            break;
-          case 'text-diff':
-            result = findTextDifferences(input, input2);
-            break;
-          case 'word-frequency':
-            result = getWordFrequency(input);
-            break;
+            // Text processing
+            case 'case-converter':
+              result = `Upper: ${input.toUpperCase()}\nLower: ${input.toLowerCase()}\nTitle: ${input.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}`;
+              break;
+            case 'text-length':
+              const lines = input.split('\n');
+              const words = input.trim().split(/\s+/).filter(w => w.length > 0);
+              result = `Characters: ${input.length}\nWords: ${words.length}\nLines: ${lines.length}`;
+              break;
+            case 'remove-whitespace':
+              result = input.replace(/\s+/g, ' ').trim();
+              break;
+            case 'sort-lines':
+              result = input.split('\n').sort().join('\n');
+              break;
+            case 'unique-lines':
+              result = [...new Set(input.split('\n'))].join('\n');
+              break;
+            case 'grep-tool':
+              const regex = new RegExp(pattern, 'gi');
+              result = input.split('\n').filter(line => regex.test(line)).join('\n');
+              break;
+            case 'text-diff':
+              result = findTextDifferences(input, input2);
+              break;
+            case 'word-frequency':
+              result = getWordFrequency(input);
+              break;
 
-          default:
-            result = 'Tool not implemented yet';
+            default:
+              result = 'Tool not implemented yet';
+          }
         }
 
         setToolOutput(result);
@@ -756,25 +682,19 @@ const ToolsPage = () => {
     setSelectedTool(tool);
     setToolInput('');
     setToolOutput('');
+    setSelectedAction('encode'); // Reset action selection
   };
 
   const closeToolModal = () => {
     setSelectedTool(null);
     setToolInput('');
     setToolOutput('');
+    setSelectedAction('encode');
   };
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="heading-xl mb-4">CTF Tools</h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            40 professional-grade tools for CTF competitions and cybersecurity analysis
-          </p>
-        </div>
-
         {/* Search and Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative max-w-md mx-auto">
@@ -784,7 +704,7 @@ const ToolsPage = () => {
               placeholder="Search tools..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-field pl-10"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
             />
           </div>
 
@@ -793,10 +713,10 @@ const ToolsPage = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${
                   selectedCategory === category.id
-                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25'
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:shadow-lg'
                 }`}
               >
                 {category.name} ({category.count})
@@ -806,31 +726,31 @@ const ToolsPage = () => {
         </div>
 
         {/* Tools Grid */}
-        <div className="tools-grid">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredTools.map((tool) => {
             const IconComponent = tool.icon;
             return (
               <div
                 key={tool.id}
-                className="tool-card"
+                className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:border-blue-500/50 cursor-pointer group"
                 onClick={() => openToolModal(tool)}
               >
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-3 bg-purple-600/20 rounded-lg">
-                    <IconComponent size={24} className="text-purple-400" />
+                  <div className="flex-shrink-0 p-3 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-lg group-hover:from-blue-600/30 group-hover:to-purple-600/30 transition-all duration-300">
+                    <IconComponent size={24} className="text-blue-400 group-hover:text-blue-300 transition-colors" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-100 mb-2">
+                    <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-white transition-colors">
                       {tool.name}
                     </h3>
-                    <p className="text-gray-400 text-sm mb-3">
+                    <p className="text-gray-400 text-sm mb-3 group-hover:text-gray-300 transition-colors">
                       {tool.description}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs px-2 py-1 bg-gray-700 rounded text-gray-300">
+                      <span className="text-xs px-2 py-1 bg-gray-700 rounded text-gray-300 group-hover:bg-gray-600 transition-colors">
                         {tool.category}
                       </span>
-                      <button className="text-purple-400 hover:text-purple-300 transition-colors">
+                      <button className="text-blue-400 hover:text-blue-300 transition-colors transform group-hover:scale-110">
                         <Play size={16} />
                       </button>
                     </div>
@@ -851,12 +771,12 @@ const ToolsPage = () => {
 
         {/* Tool Modal */}
         {selectedTool && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 modal-overlay flex items-center justify-center p-4 z-50">
-            <div className="bg-gray-800 border border-gray-700 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">
                 <div className="flex items-center space-x-3">
-                  <selectedTool.icon size={24} className="text-purple-400" />
+                  <selectedTool.icon size={24} className="text-blue-400" />
                   <h2 className="text-xl font-semibold text-gray-100">
                     {selectedTool.name}
                   </h2>
@@ -881,6 +801,8 @@ const ToolsPage = () => {
                   isProcessing={isProcessing}
                   onExecute={executeTool}
                   onCopy={copyToClipboard}
+                  selectedAction={selectedAction}
+                  setSelectedAction={setSelectedAction}
                 />
               </div>
             </div>
@@ -892,18 +814,18 @@ const ToolsPage = () => {
 };
 
 // Tool Interface Component
-const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute, onCopy }) => {
+const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute, onCopy, selectedAction, setSelectedAction }) => {
   const [key, setKey] = useState('');
   const [shift, setShift] = useState(3);
   const [input2, setInput2] = useState('');
   const [pattern, setPattern] = useState('');
 
-  const handleExecute = () => {
+  const handleExecute = (action) => {
     if (!input.trim() && !tool.hasTwoInputs) {
       toast.error('Please enter some input text');
       return;
     }
-    onExecute(tool.id, input, key, shift, input2, pattern);
+    onExecute(tool.id, input, action, key, shift, input2, pattern);
   };
 
   return (
@@ -917,7 +839,7 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Enter your text here..."
-          className="textarea-field"
+          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
           rows={6}
         />
       </div>
@@ -933,7 +855,7 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
             value={key}
             onChange={(e) => setKey(e.target.value)}
             placeholder="Enter key for cipher..."
-            className="input-field"
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
         </div>
       )}
@@ -947,7 +869,7 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
             type="number"
             value={shift}
             onChange={(e) => setShift(parseInt(e.target.value) || 0)}
-            className="input-field"
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
             min="0"
             max="25"
           />
@@ -963,7 +885,7 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
             value={input2}
             onChange={(e) => setInput2(e.target.value)}
             placeholder="Enter second text here..."
-            className="textarea-field"
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
             rows={4}
           />
         </div>
@@ -979,28 +901,57 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
             value={pattern}
             onChange={(e) => setPattern(e.target.value)}
             placeholder="Enter search pattern..."
-            className="input-field"
+            className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           />
         </div>
       )}
 
-      {/* Execute Button */}
+      {/* Execute Buttons */}
       <div className="flex justify-center">
-        <button
-          onClick={handleExecute}
-          disabled={isProcessing}
-          className="btn-primary flex items-center space-x-2"
-        >
-          {isProcessing ? (
-            <div className="spinner"></div>
-          ) : (
-            <Play size={20} />
-          )}
-          <span>
-            {tool.action === 'encode' ? 'Encode' : 
-             tool.action === 'decode' ? 'Decode' : 'Execute'}
-          </span>
-        </button>
+        {tool.action === 'dual' ? (
+          <div className="flex space-x-3">
+            <button
+              onClick={() => handleExecute('encode')}
+              disabled={isProcessing}
+              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            >
+              {isProcessing && selectedAction === 'encode' ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <Code size={20} />
+              )}
+              <span>Encode</span>
+            </button>
+            <button
+              onClick={() => handleExecute('decode')}
+              disabled={isProcessing}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            >
+              {isProcessing && selectedAction === 'decode' ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <Play size={20} />
+              )}
+              <span>Decode</span>
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleExecute(tool.action)}
+            disabled={isProcessing}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            {isProcessing ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <Play size={20} />
+            )}
+            <span>
+              {tool.action === 'encode' ? 'Encode' : 
+               tool.action === 'decode' ? 'Decode' : 'Execute'}
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Output Section */}
@@ -1012,14 +963,14 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
             </label>
             <button
               onClick={() => onCopy(output)}
-              className="flex items-center space-x-1 text-sm text-purple-400 hover:text-purple-300 transition-colors"
+              className="flex items-center space-x-1 text-sm text-blue-400 hover:text-blue-300 transition-colors"
             >
               <Copy size={16} />
               <span>Copy</span>
             </button>
           </div>
-          <div className="code-viewer">
-            <pre className="whitespace-pre-wrap text-gray-100">{output}</pre>
+          <div className="bg-gray-900 border border-gray-600 rounded-lg p-4 max-h-64 overflow-y-auto">
+            <pre className="whitespace-pre-wrap text-gray-100 text-sm">{output}</pre>
           </div>
         </div>
       )}
