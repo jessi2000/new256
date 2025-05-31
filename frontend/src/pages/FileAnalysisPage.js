@@ -492,8 +492,6 @@ const FileAnalysisPage = () => {
                   strings={filteredStrings}
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
-                  filterType={filterType}
-                  setFilterType={setFilterType}
                   onCopy={copyToClipboard}
                 />
               )}
