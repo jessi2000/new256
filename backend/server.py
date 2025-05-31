@@ -25,6 +25,10 @@ from PIL.ExifTags import TAGS
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Create directories for custom scripts
+SCRIPTS_DIR = ROOT_DIR / "scriptscustom"
+SCRIPTS_DIR.mkdir(exist_ok=True)
+
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
