@@ -115,6 +115,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/analysis" element={<FileAnalysisPage />} />
+            <Route path="/custom" element={<CustomPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
