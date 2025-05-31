@@ -301,64 +301,6 @@ const HomePage = () => {
           )}
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-gray-900 to-slate-900 border-t border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            {/* Left: Brand & Links */}
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-4 mb-3">
-                <h3 className="text-xl font-bold text-gradient">SectoolBox</h3>
-                <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">Z</span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">Professional CTF & Security Analysis Platform</p>
-              
-              {/* Social Links */}
-              <div className="flex justify-center md:justify-start space-x-3">
-                <a
-                  href="https://github.com/zebbern"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center space-x-2 bg-gray-800/60 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-md"
-                >
-                  <Github size={16} className="text-gray-400 group-hover:text-white" />
-                  <span className="text-gray-300 group-hover:text-white text-sm">GitHub</span>
-                </a>
-                
-                <a
-                  href="https://medium.com/@zebbern"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center space-x-2 bg-gray-800/60 hover:bg-gray-700 border border-gray-600 hover:border-slate-500 px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-md"
-                >
-                  <PenTool size={16} className="text-gray-400 group-hover:text-white" />
-                  <span className="text-gray-300 group-hover:text-white text-sm">Medium</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Right: Quick Stats & Info */}
-            <div className="text-center md:text-right">
-              <div className="grid grid-cols-2 gap-4 mb-3">
-                <div className="bg-gray-800/30 rounded-lg p-3">
-                  <div className="text-slate-400 text-lg font-bold">40+</div>
-                  <div className="text-gray-500 text-xs">CTF Tools</div>
-                </div>
-                <div className="bg-gray-800/30 rounded-lg p-3">
-                  <div className="text-slate-400 text-lg font-bold">24/7</div>
-                  <div className="text-gray-500 text-xs">Available</div>
-                </div>
-              </div>
-              <p className="text-gray-500 text-xs">
-                © {new Date().getFullYear()} • Built for Security Professionals
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
