@@ -183,8 +183,6 @@ const HomePage = () => {
         {/* Hero Section */}
         <div 
           className="text-center mb-16 relative"
-          onMouseEnter={() => setIsHoveringHero(true)}
-          onMouseLeave={() => setIsHoveringHero(false)}
         >
           {/* Animated Background Gradient */}
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-blue-600/10 to-cyan-600/10 rounded-3xl blur-3xl transform transition-all duration-1000 hover:scale-110 hover:from-purple-600/20 hover:via-blue-600/20 hover:to-cyan-600/20"></div>
