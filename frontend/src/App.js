@@ -18,6 +18,7 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import ToolsPage from './pages/ToolsPage';
 import FileAnalysisPage from './pages/FileAnalysisPage';
+import CustomPage from './pages/CustomPage';
 import AboutPage from './pages/AboutPage';
 
 const NavLink = ({ to, children, icon: Icon }) => {
