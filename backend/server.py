@@ -1,21 +1,26 @@
-from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
-from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
-import logging
-from pathlib import Path
+import uuid
+import subprocess
+import tempfile
+import shutil
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
-import uuid
 from datetime import datetime
 import hashlib
 import magic
+import io
+import logging
+from motor.motor_asyncio import AsyncIOMotorClient
+import exifread
+import json
+from pathlib import Path
+from dotenv import load_dotenv
 from PIL import Image
 from PIL.ExifTags import TAGS
-import io
-import json
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
