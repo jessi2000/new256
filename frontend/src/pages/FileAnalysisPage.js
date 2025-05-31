@@ -29,7 +29,6 @@ const FileAnalysisPage = () => {
   const [analysisResult, setAnalysisResult] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('all');
 
   // File analysis states
   const [extractedStrings, setExtractedStrings] = useState([]);
