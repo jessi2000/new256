@@ -331,53 +331,61 @@ const ToolsPage = () => {
   });
 
   // Tool execution functions
-  const executeTool = (toolId, input, key = '', shift = 0, input2 = '', pattern = '') => {
+  const executeTool = (toolId, input, action = 'encode', key = '', shift = 0, input2 = '', pattern = '') => {
     setIsProcessing(true);
     
     setTimeout(() => {
       try {
         let result = '';
         
-        switch (toolId) {
-          // Encoding/Decoding
-          case 'base64-encode':
-            result = btoa(unescape(encodeURIComponent(input)));
-            break;
-          case 'base64-decode':
-            result = decodeURIComponent(escape(atob(input)));
-            break;
-          case 'url-encode':
-            result = encodeURIComponent(input);
-            break;
-          case 'url-decode':
-            result = decodeURIComponent(input);
-            break;
-          case 'html-encode':
-            result = input.replace(/[&<>"']/g, (m) => ({
-              '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[m]));
-            break;
-          case 'html-decode':
-            result = input.replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => ({
-              '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'"
-            }[m]));
-            break;
-          case 'hex-encode':
-            result = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
-            break;
-          case 'hex-decode':
-            result = input.match(/.{1,2}/g)?.map(hex => String.fromCharCode(parseInt(hex, 16))).join('') || '';
-            break;
-          case 'binary-encode':
-            result = Array.from(input).map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
-            break;
-          case 'binary-decode':
-            result = input.split(/\s+/).map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
-            break;
-          case 'ascii-encode':
-            result = Array.from(input).map(c => c.charCodeAt(0)).join(' ');
-            break;
-          case 'ascii-decode':
+        // Multi-layer Base64 decoding
+        if (toolId === 'base64' && action === 'decode') {
+          result = multiLayerBase64Decode(input);
+        } else {
+          switch (`${toolId}-${action}`) {
+            // Encoding/Decoding
+            case 'base64-encode':
+              result = btoa(unescape(encodeURIComponent(input)));
+              break;
+            case 'base64-decode':
+              try {
+                result = decodeURIComponent(escape(atob(input)));
+              } catch (e) {
+                result = 'Invalid Base64 string';
+              }
+              break;
+            case 'url-encode':
+              result = encodeURIComponent(input);
+              break;
+            case 'url-decode':
+              result = decodeURIComponent(input);
+              break;
+            case 'html-encode':
+              result = input.replace(/[&<>"']/g, (m) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+              }[m]));
+              break;
+            case 'html-decode':
+              result = input.replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => ({
+                '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'"
+              }[m]));
+              break;
+            case 'hex-encode':
+              result = Array.from(input).map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+              break;
+            case 'hex-decode':
+              result = input.match(/.{1,2}/g)?.map(hex => String.fromCharCode(parseInt(hex, 16))).join('') || '';
+              break;
+            case 'binary-encode':
+              result = Array.from(input).map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+              break;
+            case 'binary-decode':
+              result = input.split(/\s+/).map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
+              break;
+            case 'ascii-encode':
+              result = Array.from(input).map(c => c.charCodeAt(0)).join(' ');
+              break;
+            case 'ascii-decode':
             result = input.split(/\s+/).map(code => String.fromCharCode(parseInt(code))).join('');
             break;
 
