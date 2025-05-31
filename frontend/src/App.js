@@ -177,15 +177,44 @@ function App() {
         {/* Enhanced Background Particles */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute inset-0">
-            {[...Array(25)].map((_, i) => (
+            {/* Primary smooth particles */}
+            {[...Array(15)].map((_, i) => (
               <div
-                key={i}
+                key={`smooth1-${i}`}
                 className="absolute w-2 h-2 bg-slate-500/20 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  animation: `randomFloat ${15 + Math.random() * 20}s linear infinite`,
-                  animationDelay: `${Math.random() * 15}s`,
+                  animation: `smoothRandomFloat ${20 + Math.random() * 15}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 20}s`,
+                }}
+              />
+            ))}
+            
+            {/* Secondary variant particles */}
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={`smooth2-${i}`}
+                className="absolute w-1.5 h-1.5 bg-purple-500/15 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `smoothRandomFloat2 ${25 + Math.random() * 10}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 25}s`,
+                }}
+              />
+            ))}
+            
+            {/* Tertiary variant particles */}
+            {[...Array(10)].map((_, i) => (
+              <div
+                key={`smooth3-${i}`}
+                className="absolute w-1 h-1 bg-blue-500/10 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `smoothRandomFloat3 ${18 + Math.random() * 12}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 18}s`,
                 }}
               />
             ))}
