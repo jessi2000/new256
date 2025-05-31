@@ -155,15 +155,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
-      {/* Interactive Mouse Follower */}
-      <div 
-        className="fixed w-96 h-96 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-full blur-3xl pointer-events-none z-0 transition-all duration-1000 ease-out"
-        style={{
-          left: mousePosition.x - 192,
-          top: mousePosition.y - 192,
-          opacity: isHoveringHero ? 0.6 : 0.3
-        }}
-      />
+
 
       {/* Enhanced Floating Particles */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
