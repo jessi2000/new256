@@ -9,7 +9,8 @@ import {
   Shield,
   Search,
   Menu,
-  X
+  X,
+  Code
 } from 'lucide-react';
 import './App.css';
 
