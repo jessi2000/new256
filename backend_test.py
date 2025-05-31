@@ -211,7 +211,7 @@ class SectoolBoxAPITester:
 
 def main():
     # Get backend URL from environment or use the one from frontend/.env
-    backend_url = "https://ec1e0bdf-1ef5-45b6-a1c9-9b383f35cdd2.preview.emergentagent.com"
+    backend_url = "https://0eec977e-fcbd-40e3-9278-0e7974813b84.preview.emergentagent.com"
     
     print(f"🚀 Testing SectoolBox API at: {backend_url}")
     
