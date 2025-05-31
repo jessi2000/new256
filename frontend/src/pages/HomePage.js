@@ -155,29 +155,6 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
-
-
-      {/* Enhanced Floating Particles */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute inset-0">
-          {/* Sparkle effects */}
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`sparkle-${i}`}
-              className="absolute"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            >
-              <Sparkles size={12 + Math.random() * 8} className="text-yellow-400/40" />
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Hero Section */}
