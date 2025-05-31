@@ -120,7 +120,7 @@ const HomePage = () => {
       </div>
 
       {/* Announcements Section */}
-      <div className="px-4 sm:px-6 lg:px-8 py-16">
+      <div className="px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="heading-lg flex items-center space-x-3">
