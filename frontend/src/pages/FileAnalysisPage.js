@@ -319,13 +319,7 @@ const FileAnalysisPage = () => {
     }
   };
 
-  const filteredStrings = extractedStrings.filter(str => {
-    if (filterType === 'all') return true;
-    if (filterType === 'urls') return /https?:\/\//.test(str.value);
-    if (filterType === 'emails') return /@/.test(str.value);
-    if (filterType === 'ips') return /\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(str.value);
-    return true;
-  }).filter(str => 
+  const filteredStrings = extractedStrings.filter(str => 
     str.value.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
