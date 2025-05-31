@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowRight, 
   Shield, 
@@ -12,7 +12,8 @@ import {
   FileText,
   Github,
   PenTool,
-  ExternalLink
+  ExternalLink,
+  Search
 } from 'lucide-react';
 import axios from 'axios';
 
