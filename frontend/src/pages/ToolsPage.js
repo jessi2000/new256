@@ -866,6 +866,10 @@ const ToolInterface = ({ tool, input, setInput, output, isProcessing, onExecute,
   const [input2, setInput2] = useState('');
   const [pattern, setPattern] = useState('');
 
+  // Access base64Result from parent component
+  const base64Result = tool.id === 'base64' && selectedAction === 'decode' ? 
+    ToolsPage.base64Result : null;
+
   const handleExecute = (action) => {
     if (!input.trim() && !tool.hasTwoInputs) {
       toast.error('Please enter some input text');
