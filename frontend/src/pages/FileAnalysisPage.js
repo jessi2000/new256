@@ -625,74 +625,101 @@ const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) 
   </div>
 );
 
-// Strings Tab Component
-const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => (
-  <div className="space-y-6">
-    {/* Search Only */}
-    <div className="flex flex-col sm:flex-row gap-4">
-      <div className="relative flex-1">
-        <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-        <input
-          type="text"
-          placeholder="Search string data..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="input-field pl-10"
-        />
-      </div>
-    </div>
+// Strings Tab Component with Highlighting
+const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm) return text;
+    
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <span key={index} className="bg-yellow-500/30 text-yellow-200 px-1 rounded">
+          {part}
+        </span>
+      ) : part
+    );
+  };
 
-    {/* Strings List */}
-    <div className="tool-card">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-100">
-          Extracted Strings ({strings.length})
-        </h3>
-        <button
-          onClick={() => onCopy(strings.map(s => s.value).join('\n'))}
-          className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
-        >
-          <Copy size={16} />
-          <span>Copy All</span>
-        </button>
+  return (
+    <div className="space-y-6">
+      {/* Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search strings..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="input-field pl-10"
+          />
+          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+            Search
+          </span>
+        </div>
       </div>
 
-      <div className="max-h-96 overflow-y-auto space-y-2">
-        {strings.length > 0 ? (
-          strings.slice(0, 500).map((str, index) => (
-            <div 
-              key={index}
-              className="flex items-center justify-between p-2 bg-gray-900/50 rounded border border-gray-700/50 hover:border-purple-500/30 transition-colors"
-            >
-              <div className="flex-1 min-w-0">
-                <code className="text-sm text-gray-200 break-all">{str.value}</code>
-                <div className="text-xs text-gray-500 mt-1">
-                  Offset: 0x{str.offset.toString(16).toUpperCase()} | Length: {str.length}
-                </div>
-              </div>
-              <button
-                onClick={() => onCopy(str.value)}
-                className="ml-2 p-1 text-gray-400 hover:text-purple-400 transition-colors"
+      {/* Strings List */}
+      <div className="tool-card">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-100">
+            Extracted Strings ({strings.length})
+            {searchTerm && (
+              <span className="text-sm text-yellow-400 ml-2">
+                (filtered by "{searchTerm}")
+              </span>
+            )}
+          </h3>
+          <button
+            onClick={() => onCopy(strings.map(s => s.value).join('\n'))}
+            className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
+          >
+            <Copy size={16} />
+            <span>Copy All</span>
+          </button>
+        </div>
+
+        <div className="max-h-96 overflow-y-auto space-y-2">
+          {strings.length > 0 ? (
+            strings.slice(0, 500).map((str, index) => (
+              <div 
+                key={index}
+                className="flex items-center justify-between p-2 bg-gray-900/50 rounded border border-gray-700/50 hover:border-purple-500/30 transition-colors"
               >
-                <Copy size={14} />
-              </button>
+                <div className="flex-1 min-w-0">
+                  <code className="text-sm text-gray-200 break-all">
+                    {highlightText(str.value, searchTerm)}
+                  </code>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Offset: 0x{str.offset.toString(16).toUpperCase()} | Length: {str.length}
+                  </div>
+                </div>
+                <button
+                  onClick={() => onCopy(str.value)}
+                  className="ml-2 p-1 text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  <Copy size={14} />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-400">
+              <FileText size={48} className="mx-auto mb-4 opacity-50" />
+              <p>No strings found matching your criteria</p>
             </div>
-          ))
-        ) : (
-          <div className="text-center py-8 text-gray-400">
-            <FileText size={48} className="mx-auto mb-4 opacity-50" />
-            <p>No strings found matching your criteria</p>
-          </div>
-        )}
-        {strings.length > 500 && (
-          <div className="text-center py-4 text-gray-400 text-sm">
-            Showing first 500 strings. Use search to narrow results.
-          </div>
-        )}
+          )}
+          {strings.length > 500 && (
+            <div className="text-center py-4 text-gray-400 text-sm">
+              Showing first 500 strings. Use search to narrow results.
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Hex Tab Component
 const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => (
