@@ -104,39 +104,6 @@ const CustomPage = () => {
           </p>
         </div>
 
-        {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-8">
-          <div className="flex items-center space-x-3">
-            <FolderOpen size={24} className="text-slate-400" />
-            <h2 className="text-xl font-semibold text-gray-200">
-              Available Scripts ({scripts.length})
-            </h2>
-          </div>
-          <button
-            onClick={refreshScripts}
-            disabled={loading}
-            className="bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 hover:shadow-lg hover:shadow-slate-500/25 transform hover:scale-105 disabled:opacity-50"
-          >
-            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
-            <span>Refresh</span>
-          </button>
-        </div>
-
-        {/* Instructions */}
-        <div className="mb-8 bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-gray-200 mb-4 flex items-center space-x-2">
-            <AlertCircle size={20} className="text-blue-400" />
-            <span>How to Add Custom Scripts</span>
-          </h3>
-          <div className="text-gray-400 space-y-2">
-            <p>1. Navigate to the <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">custom-scripts</code> directory</p>
-            <p>2. Create a new folder with your script name (e.g., <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">my-tool</code>)</p>
-            <p>3. Inside the folder, add your Python script file and a <code className="bg-gray-700 px-2 py-1 rounded text-gray-300">config.json</code> file</p>
-            <p>4. The config.json should contain: Script Name, Command to run, and Description</p>
-            <p>5. Click refresh to load your new script</p>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Scripts List */}
           <div className="space-y-4">
