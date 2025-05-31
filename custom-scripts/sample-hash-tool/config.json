@@ -1,0 +1,5 @@
+{
+  "name": "Sample Hash Tool",
+  "command": "python script.py",
+  "description": "A sample custom script that demonstrates hash analysis and text processing capabilities"
+}
