@@ -86,7 +86,7 @@ const HomePage = () => {
         </div>
       </div>
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden z-10">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative px-4 sm:px-6 lg:px-8 pt-20 pb-16">
           <div className="max-w-7xl mx-auto text-center">
