@@ -447,7 +447,7 @@ const FileAnalysisPage = () => {
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
                         activeTab === tab.id
-                          ? 'border-purple-500 text-purple-400'
+                          ? 'border-slate-500 text-slate-400'
                           : 'border-transparent text-gray-500 hover:text-gray-300'
                       }`}
                     >
