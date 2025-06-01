@@ -1,0 +1,5 @@
+{
+  "name": "Network Scanner",
+  "command": "python script.py",
+  "description": "Simple network scanner for basic reconnaissance and port discovery"
+}
