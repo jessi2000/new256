@@ -85,7 +85,7 @@ const Navigation = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -93,7 +93,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-700/50">
+          <div className="md:hidden py-4 border-t border-slate-700/30">
             <div className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <NavLink key={item.to} to={item.to} icon={item.icon}>
