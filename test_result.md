@@ -260,23 +260,13 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Homepage enhancements"
-    - "Footer on all pages"
-    - "Particle animations"
-    - "Tools page Base64 improvements"
-    - "Custom page cleanup"
-    - "Navigation and general functionality"
-    - "Custom scripts availability"
-    - "Blue theme visual changes"
-    - "Dark Navy Theme Implementation"
-    - "Tools Page Container Structure"
-    - "Homepage Redesign"
-    - "Color Scheme Update"
-    - "Visual Consistency"
-    - "Animation and Visual Improvements"
-  stuck_tasks: 
-    - "Custom scripts availability"
-    - "Color Scheme Update"
+    - "Tools Page Blue Border Animation"
+    - "Homepage Cleanup"
+    - "Enhanced Navigation Bar"
+    - "File Analysis Improvements"
+    - "Custom Page New Script"
+    - "Overall Theme Consistency"
+  stuck_tasks: []
   test_all: true
   test_priority: "high_first"
 
