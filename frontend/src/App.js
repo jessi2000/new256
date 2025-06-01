@@ -185,7 +185,7 @@ const Footer = () => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 flex flex-col">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-blue-950 flex flex-col">
         {/* Consistent Background Particles */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute inset-0">
