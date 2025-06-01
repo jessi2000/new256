@@ -57,19 +57,22 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/30 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/30 sticky top-0 z-50 relative">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-800/20 via-transparent to-slate-800/20 pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg shadow-lg">
-              <Shield size={24} className="text-slate-200" />
+          {/* Enhanced Logo */}
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="p-2 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+              <Shield size={24} className="text-slate-200 group-hover:text-white transition-colors duration-300" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-300 to-slate-400 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-300 to-slate-400 bg-clip-text text-transparent group-hover:from-slate-200 group-hover:to-slate-300 transition-all duration-300">
                 SectoolBox
               </h1>
-              <p className="text-xs text-slate-400">CTF Toolkit</p>
+              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors duration-300">CTF Toolkit</p>
             </div>
           </Link>
 
