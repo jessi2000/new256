@@ -742,9 +742,6 @@ const ToolsPage = () => {
             </div>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-200 to-gray-300 bg-clip-text text-transparent animate-fadeInUp">
-            CTF Tools
-          </h1>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
             Professional toolkit for security analysis and CTF challenges
           </p>
