@@ -720,6 +720,8 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
 
 // Hex Tab Component with Highlighting
 const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
+  const [isFiltering, setIsFiltering] = useState(false);
+  
   const highlightText = (text, searchTerm) => {
     if (!searchTerm) return text;
     
@@ -735,6 +737,16 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
     );
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (value && hexData.length > 10000) {
+      setIsFiltering(true);
+      setTimeout(() => setIsFiltering(false), 500);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Search Bar */}
@@ -744,16 +756,18 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
           type="text"
           placeholder="Search hex data..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           className="input-field pl-10"
         />
-        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-          Search
-        </span>
+        {isFiltering && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
 
       {/* Hex Dump */}
-      <div className="tool-card">
+      <div className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-100">
             Hex Dump
@@ -765,7 +779,7 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
           </h3>
           <button
             onClick={() => onCopy(hexData)}
-            className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
+            className="text-slate-400 hover:text-slate-300 transition-colors text-sm flex items-center space-x-1"
           >
             <Copy size={16} />
             <span>Copy</span>
@@ -773,9 +787,16 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
         </div>
 
         <div className="code-viewer max-h-96 overflow-auto">
-          <pre className="text-xs text-gray-200 whitespace-pre">
-            {highlightText(hexData || 'Generating hex dump...', searchTerm)}
-          </pre>
+          {isFiltering ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="w-6 h-6 border-2 border-slate-400 border-t-transparent rounded-full animate-spin mr-2"></div>
+              <span className="text-slate-400">Filtering hex data...</span>
+            </div>
+          ) : (
+            <pre className="text-xs text-gray-200 whitespace-pre">
+              {highlightText(hexData || 'Generating hex dump...', searchTerm)}
+            </pre>
+          )}
         </div>
       </div>
     </div>
