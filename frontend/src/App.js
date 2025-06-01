@@ -32,12 +32,12 @@ const NavLink = ({ to, children, icon: Icon }) => {
       to={to}
       className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 relative group ${
         isActive 
-          ? 'bg-purple-600/20 text-purple-400 shadow-lg shadow-purple-500/20' 
-          : 'text-gray-300 hover:text-white hover:bg-gray-700/50'
+          ? 'bg-slate-700/30 text-slate-200 shadow-lg shadow-slate-500/10' 
+          : 'text-gray-300 hover:text-white hover:bg-slate-700/20'
       }`}
     >
       {isActive && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-slate-500 to-slate-400 rounded-full"></div>
       )}
       <Icon size={20} />
       <span className="font-medium">{children}</span>
