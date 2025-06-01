@@ -659,7 +659,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
       </div>
 
       {/* Strings List */}
-      <div className="tool-card">
+      <div className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-100">
             Extracted Strings ({strings.length})
@@ -671,7 +671,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
           </h3>
           <button
             onClick={() => onCopy(strings.map(s => s.value).join('\n'))}
-            className="text-purple-400 hover:text-purple-300 transition-colors text-sm flex items-center space-x-1"
+            className="text-slate-400 hover:text-slate-300 transition-colors text-sm flex items-center space-x-1"
           >
             <Copy size={16} />
             <span>Copy All</span>
@@ -683,7 +683,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
             strings.slice(0, 500).map((str, index) => (
               <div 
                 key={index}
-                className="flex items-center justify-between p-2 bg-gray-900/50 rounded border border-gray-700/50 hover:border-purple-500/30 transition-colors"
+                className="flex items-center justify-between p-2 bg-gray-900/50 rounded border border-gray-700/50"
               >
                 <div className="flex-1 min-w-0">
                   <code className="text-sm text-gray-200 break-all">
@@ -695,7 +695,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
                 </div>
                 <button
                   onClick={() => onCopy(str.value)}
-                  className="ml-2 p-1 text-gray-400 hover:text-purple-400 transition-colors"
+                  className="ml-2 p-1 text-gray-400 hover:text-slate-300 transition-colors"
                 >
                   <Copy size={14} />
                 </button>
