@@ -733,6 +733,23 @@ const ToolsPage = () => {
       </div>
       
       <div className="max-w-7xl mx-auto relative z-10">
+        {/* Animated Header with Icon */}
+        <div className="text-center mb-8">
+          {/* Animated Logo Icon */}
+          <div className="mb-6 animate-fadeInScale">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl shadow-xl border border-slate-600/50 animate-pulseGlow">
+              <Shield size={32} className="text-slate-200 animate-floatSlow" />
+            </div>
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-200 to-gray-300 bg-clip-text text-transparent animate-fadeInUp">
+            CTF Tools
+          </h1>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+            Professional toolkit for security analysis and CTF challenges
+          </p>
+        </div>
+
         {/* Search and Filter */}
         <div className="mb-8 space-y-4">
           <div className="relative max-w-md mx-auto">
