@@ -52,6 +52,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "While most of the UI has been updated to the dark navy theme, there are still some purple accents present in the About page (16 elements with purple accents were found). These need to be replaced with slate/navy tones for complete consistency."
+      - working: false
+        agent: "testing"
+        comment: "The navigation bar now uses slate colors instead of purple for active links and the logo. However, there are still 12 purple particles in the background (class 'bg-purple-500/15') that need to be changed to slate colors for complete consistency with the dark navy theme."
 
   - task: "Visual Consistency"
     implemented: true
