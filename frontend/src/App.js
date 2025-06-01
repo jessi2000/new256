@@ -207,7 +207,7 @@ function App() {
             {[...Array(12)].map((_, i) => (
               <div
                 key={`particle2-${i}`}
-                className="absolute w-1.5 h-1.5 bg-purple-500/15 rounded-full"
+                className="absolute w-1.5 h-1.5 bg-slate-500/15 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
