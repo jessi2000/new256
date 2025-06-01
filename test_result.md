@@ -172,8 +172,14 @@ test_plan:
     - "Navigation and general functionality"
     - "Custom scripts availability"
     - "Blue theme visual changes"
+    - "Dark Navy Theme Implementation"
+    - "Tools Page Container Structure"
+    - "Homepage Redesign"
+    - "Color Scheme Update"
+    - "Visual Consistency"
   stuck_tasks: 
     - "Custom scripts availability"
+    - "Color Scheme Update"
   test_all: true
   test_priority: "high_first"
 
