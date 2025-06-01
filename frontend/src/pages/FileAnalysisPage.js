@@ -664,7 +664,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
       {/* Search Bar */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <CustomSearchIcon size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder="Search strings..."
