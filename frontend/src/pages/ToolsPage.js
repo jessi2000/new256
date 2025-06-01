@@ -816,7 +816,6 @@ const ToolsPage = () => {
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700">
                 <div className="flex items-center space-x-3">
-                  <selectedTool.icon size={24} className="text-blue-400" />
                   <h2 className="text-xl font-semibold text-gray-100">
                     {selectedTool.name}
                   </h2>
