@@ -146,6 +146,129 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
+      
+      {/* Enhanced Floating Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Twinkling Stars */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={`star-${i}`}
+            className="absolute w-1 h-1 bg-slate-300 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 2}s`,
+            }}
+          />
+        ))}
+        
+        {/* Floating Geometric Particles */}
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={`particle1-${i}`}
+            className="absolute w-2 h-2 border border-slate-400/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `floatParticle1 ${10 + Math.random() * 5}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
+        
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={`particle2-${i}`}
+            className="absolute w-3 h-3 bg-gradient-to-r from-slate-500/20 to-slate-600/20 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `floatParticle2 ${15 + Math.random() * 5}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
+        
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={`particle3-${i}`}
+            className="absolute w-1.5 h-1.5 bg-slate-400/40 rotate-45"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `floatParticle3 ${12 + Math.random() * 8}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* 3D Walking Man Animation */}
+      <div className="fixed top-1/2 z-5 pointer-events-none">
+        <div 
+          className="relative"
+          style={{
+            animation: 'walk3D 25s linear infinite',
+            animationDelay: '3s'
+          }}
+        >
+          {/* 3D Figure */}
+          <div className="relative w-8 h-12 transform-gpu">
+            {/* Head */}
+            <div 
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-slate-400 to-slate-500 rounded-full shadow-lg"
+              style={{ animation: 'walkBob 0.8s ease-in-out infinite' }}
+            />
+            
+            {/* Body */}
+            <div 
+              className="absolute top-3 left-1/2 transform -translate-x-1/2 w-2 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm shadow-lg"
+              style={{ animation: 'walkBob 0.8s ease-in-out infinite', animationDelay: '0.1s' }}
+            />
+            
+            {/* Arms */}
+            <div 
+              className="absolute top-4 left-0 w-1.5 h-3 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              style={{ 
+                animation: 'walkBob 0.4s ease-in-out infinite',
+                transformOrigin: 'top center'
+              }}
+            />
+            <div 
+              className="absolute top-4 right-0 w-1.5 h-3 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              style={{ 
+                animation: 'walkBob 0.4s ease-in-out infinite',
+                animationDelay: '0.2s',
+                transformOrigin: 'top center'
+              }}
+            />
+            
+            {/* Legs */}
+            <div 
+              className="absolute bottom-0 left-1 w-1 h-4 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              style={{ 
+                animation: 'walkBob 0.6s ease-in-out infinite',
+                animationDelay: '0.3s'
+              }}
+            />
+            <div 
+              className="absolute bottom-0 right-1 w-1 h-4 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              style={{ 
+                animation: 'walkBob 0.6s ease-in-out infinite',
+                animationDelay: '0.1s'
+              }}
+            />
+            
+            {/* Shadow */}
+            <div 
+              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-black/20 rounded-full blur-sm"
+              style={{ animation: 'walkBob 0.8s ease-in-out infinite', animationDelay: '0.4s' }}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Hero Section */}
