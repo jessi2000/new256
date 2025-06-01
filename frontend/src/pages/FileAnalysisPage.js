@@ -655,9 +655,6 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="input-field pl-10"
           />
-          <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-            Search
-          </span>
         </div>
       </div>
 
