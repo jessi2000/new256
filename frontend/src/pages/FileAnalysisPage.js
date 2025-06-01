@@ -767,13 +767,12 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
     <div className="space-y-6">
       {/* Search Bar */}
       <div className="relative">
-        <CustomSearchIcon size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         <input
           type="text"
           placeholder="Search hex data..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="input-field pl-10"
+          className="input-field"
         />
         {isFiltering && (
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
