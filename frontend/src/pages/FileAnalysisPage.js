@@ -4,7 +4,6 @@ import {
   FileText, 
   Download, 
   Copy, 
-  Search, 
   Filter,
   Hash,
   Image,
@@ -17,6 +16,24 @@ import {
   HelpCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+// Custom search icon without the specified paths
+const CustomSearchIcon = ({ size = 20, className = "" }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+    <line x1="9" y1="9" x2="15" y2="15"/>
+  </svg>
+);
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
