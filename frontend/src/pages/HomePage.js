@@ -204,66 +204,115 @@ const HomePage = () => {
         ))}
       </div>
 
-      {/* 3D Walking Man Animation */}
-      <div className="fixed top-1/2 z-5 pointer-events-none">
+      {/* 3D Cyber Security Scanner Orb */}
+      <div className="fixed inset-0 pointer-events-none z-5">
         <div 
-          className="relative"
+          className="absolute"
           style={{
-            animation: 'walk3D 25s linear infinite',
-            animationDelay: '3s'
+            animation: 'cyberOrbitPath 30s ease-in-out infinite',
+            animationDelay: '2s'
           }}
         >
-          {/* 3D Figure */}
-          <div className="relative w-8 h-12 transform-gpu">
-            {/* Head */}
-            <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-slate-400 to-slate-500 rounded-full shadow-lg"
-              style={{ animation: 'walkBob 0.8s ease-in-out infinite' }}
-            />
+          {/* Main Orb Container */}
+          <div className="relative w-16 h-16 transform-gpu perspective-1000">
             
-            {/* Body */}
+            {/* Energy Core */}
             <div 
-              className="absolute top-3 left-1/2 transform -translate-x-1/2 w-2 h-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm shadow-lg"
-              style={{ animation: 'walkBob 0.8s ease-in-out infinite', animationDelay: '0.1s' }}
-            />
-            
-            {/* Arms */}
-            <div 
-              className="absolute top-4 left-0 w-1.5 h-3 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full shadow-lg"
               style={{ 
-                animation: 'walkBob 0.4s ease-in-out infinite',
-                transformOrigin: 'top center'
-              }}
-            />
-            <div 
-              className="absolute top-4 right-0 w-1.5 h-3 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
-              style={{ 
-                animation: 'walkBob 0.4s ease-in-out infinite',
-                animationDelay: '0.2s',
-                transformOrigin: 'top center'
+                animation: 'orb3DRotate 8s linear infinite',
+                boxShadow: '0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(147, 51, 234, 0.6)'
               }}
             />
             
-            {/* Legs */}
+            {/* Rotating Ring 1 */}
             <div 
-              className="absolute bottom-0 left-1 w-1 h-4 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 border-cyan-400/60 rounded-full"
               style={{ 
-                animation: 'walkBob 0.6s ease-in-out infinite',
-                animationDelay: '0.3s'
-              }}
-            />
-            <div 
-              className="absolute bottom-0 right-1 w-1 h-4 bg-gradient-to-br from-slate-500 to-slate-600 rounded-sm origin-top shadow-sm"
-              style={{ 
-                animation: 'walkBob 0.6s ease-in-out infinite',
-                animationDelay: '0.1s'
+                animation: 'ringRotate1 6s linear infinite',
+                borderStyle: 'dashed'
               }}
             />
             
-            {/* Shadow */}
+            {/* Rotating Ring 2 */}
             <div 
-              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-black/20 rounded-full blur-sm"
-              style={{ animation: 'walkBob 0.8s ease-in-out infinite', animationDelay: '0.4s' }}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 border border-blue-500/40 rounded-full"
+              style={{ 
+                animation: 'ringRotate2 4s linear infinite reverse'
+              }}
+            />
+            
+            {/* Rotating Ring 3 */}
+            <div 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 border border-purple-400/30 rounded-full"
+              style={{ 
+                animation: 'ringRotate3 10s linear infinite',
+                borderStyle: 'dotted'
+              }}
+            />
+            
+            {/* Scan Pulse Effect */}
+            <div 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 border-2 border-cyan-300/80 rounded-full"
+              style={{ 
+                animation: 'scanPulse 3s ease-in-out infinite',
+                animationDelay: '1s'
+              }}
+            />
+            
+            {/* Energy Particles Trail */}
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={`trail-${i}`}
+                className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: `rotate(${i * 45}deg) translateX(${8 + i * 2}px)`,
+                  animation: `energyTrail ${1 + i * 0.2}s ease-out infinite`,
+                  animationDelay: `${i * 0.1}s`
+                }}
+              />
+            ))}
+            
+            {/* Holographic Status Display */}
+            <div 
+              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-cyan-400 font-mono"
+              style={{ animation: 'hologramGlitch 5s ease-in-out infinite' }}
+            >
+              <div 
+                className="text-center opacity-80"
+                style={{ animation: 'statusText 4s ease-in-out infinite' }}
+              >
+                SCANNING...
+              </div>
+            </div>
+            
+            {/* Additional Glow Effects */}
+            <div 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-cyan-400/20 to-purple-600/20 rounded-full blur-sm"
+              style={{ animation: 'orb3DRotate 12s linear infinite reverse' }}
+            />
+            
+            {/* Security Grid Lines */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div 
+                className="w-16 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+                style={{ animation: 'ringRotate1 7s linear infinite' }}
+              />
+              <div 
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 bg-gradient-to-b from-transparent via-blue-500/40 to-transparent"
+                style={{ animation: 'ringRotate2 5s linear infinite reverse' }}
+              />
+            </div>
+            
+            {/* Outer Security Scan Ring */}
+            <div 
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border border-cyan-300/20 rounded-full"
+              style={{ 
+                animation: 'scanPulse 6s ease-in-out infinite',
+                animationDelay: '3s'
+              }}
             />
           </div>
         </div>
