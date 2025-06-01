@@ -267,12 +267,13 @@
 
 /* Tool card hover effects */
 .tool-card {
-  @apply bg-gray-800/50 border border-gray-700/50 rounded-xl p-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-slate-500/40 hover:shadow-lg hover:shadow-slate-500/20 cursor-pointer;
+  @apply bg-gray-800/50 border-2 border-blue-500/30 rounded-xl p-6 transition-all duration-300 hover:bg-gray-800/70 hover:border-blue-400/60 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer;
   backdrop-filter: blur(10px);
 }
 
 .tool-card:hover {
   transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3), 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
 /* File upload area */
