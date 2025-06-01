@@ -768,7 +768,7 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
     <div className="space-y-6">
       {/* Search Bar */}
       <div className="relative">
-        <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <CustomSearchIcon size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         <input
           type="text"
           placeholder="Search hex data..."
