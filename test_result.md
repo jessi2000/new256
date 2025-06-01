@@ -199,6 +199,7 @@ test_plan:
     - "Homepage Redesign"
     - "Color Scheme Update"
     - "Visual Consistency"
+    - "Animation and Visual Improvements"
   stuck_tasks: 
     - "Custom scripts availability"
     - "Color Scheme Update"
