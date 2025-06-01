@@ -22,6 +22,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The Tools page has been redesigned with tool cards displayed in a grid layout with the dark navy background. Each tool card has proper styling and hover effects."
+      - working: true
+        agent: "testing"
+        comment: "The enhanced tool cards now feature shimmer/sweep animation effects, gradient border animations on hover, improved shadow effects, and green pulse dot status indicators. The Shield icon has been successfully moved to the Tools page with pulsing glow and floating animations."
 
   - task: "Homepage Redesign"
     implemented: true
@@ -34,6 +37,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "The homepage has been successfully redesigned with the updated logo, stats cards, search functionality, and features grid. The search functionality works correctly and displays results."
+      - working: true
+        agent: "testing"
+        comment: "The homepage now features animated title with scale effect, staggered fade-in animations for text elements, floating search bar animation, and stats cards with pulse glow effects on hover. The sliding action buttons (left/right animations) and features grid with floating and gradient animations work as expected."
 
   - task: "Color Scheme Update"
     implemented: true
