@@ -298,6 +298,9 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Tool card enhanced animations */
+@keyframes cardHover {
   0% {
     transform: translateY(0) scale(1);
   }
