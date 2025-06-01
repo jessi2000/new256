@@ -780,31 +780,49 @@ const ToolsPage = () => {
           </div>
         </div>
 
-        {/* Tools Grid */}
+        {/* Enhanced Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredTools.map((tool) => {
+          {filteredTools.map((tool, index) => {
             return (
               <div
                 key={tool.id}
-                className="tool-card group"
+                className="tool-card group relative overflow-hidden"
                 onClick={() => openToolModal(tool)}
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-white transition-colors">
-                    {tool.name}
-                  </h3>
-                  <p className="text-gray-400 text-sm mb-3 group-hover:text-gray-300 transition-colors">
+                {/* Gradient Border Animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-600/20 via-slate-500/20 to-slate-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-lg font-semibold text-gray-100 group-hover:text-white transition-colors duration-300 flex-1">
+                      {tool.name}
+                    </h3>
+                    <div className="ml-2 p-1 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/50 transition-colors duration-300">
+                      <Play size={16} className="text-slate-400 group-hover:text-slate-200 group-hover:scale-110 transition-all duration-300" />
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-300 transition-colors duration-300 line-clamp-2">
                     {tool.description}
                   </p>
+                  
                   <div className="flex items-center justify-between">
-                    <span className="text-xs px-2 py-1 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded group-hover:bg-blue-600/30 transition-colors">
+                    <span className="text-xs px-3 py-1 bg-slate-700/60 text-slate-300 border border-slate-600/40 rounded-full group-hover:bg-slate-600/60 group-hover:border-slate-500/50 transition-all duration-300">
                       {tool.category}
                     </span>
-                    <button className="text-blue-400 hover:text-blue-300 transition-colors transform group-hover:scale-110">
-                      <Play size={16} />
-                    </button>
+                    
+                    {/* Status Indicator */}
+                    <div className="flex items-center space-x-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors duration-300">Ready</span>
+                    </div>
                   </div>
                 </div>
+                
+                {/* Hover Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-600/5 to-slate-700/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
             );
           })}
