@@ -280,39 +280,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Animated Features Grid */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent animate-fadeInUp">
-              Powerful Features
-            </h2>
-            <p className="text-slate-400 text-lg animate-fadeInUp" style={{ animationDelay: '0.2s' }}>Advanced tools designed for security professionals</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:bg-slate-900/60 hover:border-slate-600/70 transition-all duration-300 group animate-fadeInScale animate-floatSlow"
-                style={{ 
-                  animationDelay: `${0.4 + index * 0.1}s`,
-                  animationDuration: `${6 + index * 0.5}s`
-                }}
-              >
-                <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${feature.color} mb-4 group-hover:scale-110 transition-transform duration-300 animate-gradientShift`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-slate-200 mb-3 group-hover:text-white transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-400 group-hover:text-slate-300 transition-colors">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Announcements */}
         {announcements.length > 0 && (
           <div className="space-y-6">
