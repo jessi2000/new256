@@ -254,22 +254,24 @@ const HomePage = () => {
                 )}
               </form>
               
-              {/* Action Buttons */}
+              {/* Animated Action Buttons */}
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <Link 
                   to="/tools" 
-                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105"
+                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105 animate-slideInLeft"
+                  style={{ animationDelay: '1.2s' }}
                 >
-                  <Wrench size={20} />
+                  <Wrench size={20} className="group-hover:rotate-12 transition-transform duration-300" />
                   <span>Browse All Tools</span>
                   <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
                 <Link 
                   to="/analysis" 
-                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105"
+                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105 animate-slideInRight"
+                  style={{ animationDelay: '1.4s' }}
                 >
-                  <FileText size={20} />
+                  <FileText size={20} className="group-hover:scale-110 transition-transform duration-300" />
                   <span>File Analysis</span>
                   <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
