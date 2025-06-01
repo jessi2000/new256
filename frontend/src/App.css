@@ -276,8 +276,28 @@
   }
 }
 
-/* Tool card enhanced animations */
-@keyframes cardHover {
+/* Production-ready optimizations */
+.cyber-scanner-container {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.cyber-orb-element {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .cyber-scanner-container,
+  .cyber-orb-element {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
   0% {
     transform: translateY(0) scale(1);
   }
