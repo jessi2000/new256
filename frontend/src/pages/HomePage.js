@@ -207,56 +207,60 @@ const HomePage = () => {
       {/* 3D Cyber Security Scanner Orb */}
       <div className="fixed inset-0 pointer-events-none z-5">
         <div 
-          className="absolute"
+          className="absolute cyber-scanner-container"
           style={{
             animation: 'cyberOrbitPath 30s ease-in-out infinite',
             animationDelay: '2s'
           }}
         >
           {/* Main Orb Container */}
-          <div className="relative w-16 h-16 transform-gpu perspective-1000">
+          <div className="relative w-16 h-16 cyber-orb-element">
             
             {/* Energy Core */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full shadow-lg"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full shadow-lg cyber-orb-element"
               style={{ 
                 animation: 'orb3DRotate 8s linear infinite',
-                boxShadow: '0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(147, 51, 234, 0.6)'
+                boxShadow: '0 0 20px rgba(59, 130, 246, 0.8), 0 0 40px rgba(147, 51, 234, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.3)'
               }}
             />
             
             {/* Rotating Ring 1 */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 border-cyan-400/60 rounded-full"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 border-cyan-400/60 rounded-full cyber-orb-element"
               style={{ 
                 animation: 'ringRotate1 6s linear infinite',
-                borderStyle: 'dashed'
+                borderStyle: 'dashed',
+                filter: 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.6))'
               }}
             />
             
             {/* Rotating Ring 2 */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 border border-blue-500/40 rounded-full"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 border border-blue-500/40 rounded-full cyber-orb-element"
               style={{ 
-                animation: 'ringRotate2 4s linear infinite reverse'
+                animation: 'ringRotate2 4s linear infinite reverse',
+                filter: 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.5))'
               }}
             />
             
             {/* Rotating Ring 3 */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 border border-purple-400/30 rounded-full"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 border border-purple-400/30 rounded-full cyber-orb-element"
               style={{ 
                 animation: 'ringRotate3 10s linear infinite',
-                borderStyle: 'dotted'
+                borderStyle: 'dotted',
+                filter: 'drop-shadow(0 0 4px rgba(168, 85, 247, 0.4))'
               }}
             />
             
             {/* Scan Pulse Effect */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 border-2 border-cyan-300/80 rounded-full"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 border-2 border-cyan-300/80 rounded-full cyber-orb-element"
               style={{ 
                 animation: 'scanPulse 3s ease-in-out infinite',
-                animationDelay: '1s'
+                animationDelay: '1s',
+                filter: 'drop-shadow(0 0 12px rgba(34, 211, 238, 0.8))'
               }}
             />
             
@@ -264,21 +268,25 @@ const HomePage = () => {
             {[...Array(8)].map((_, i) => (
               <div
                 key={`trail-${i}`}
-                className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+                className="absolute w-1 h-1 bg-cyan-400 rounded-full cyber-orb-element"
                 style={{
                   left: '50%',
                   top: '50%',
                   transform: `rotate(${i * 45}deg) translateX(${8 + i * 2}px)`,
                   animation: `energyTrail ${1 + i * 0.2}s ease-out infinite`,
-                  animationDelay: `${i * 0.1}s`
+                  animationDelay: `${i * 0.1}s`,
+                  boxShadow: '0 0 4px rgba(34, 211, 238, 0.8)'
                 }}
               />
             ))}
             
             {/* Holographic Status Display */}
             <div 
-              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-cyan-400 font-mono"
-              style={{ animation: 'hologramGlitch 5s ease-in-out infinite' }}
+              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-cyan-400 font-mono cyber-orb-element"
+              style={{ 
+                animation: 'hologramGlitch 5s ease-in-out infinite',
+                textShadow: '0 0 8px rgba(34, 211, 238, 0.8)'
+              }}
             >
               <div 
                 className="text-center opacity-80"
@@ -290,30 +298,52 @@ const HomePage = () => {
             
             {/* Additional Glow Effects */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-cyan-400/20 to-purple-600/20 rounded-full blur-sm"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-cyan-400/20 to-purple-600/20 rounded-full blur-sm cyber-orb-element"
               style={{ animation: 'orb3DRotate 12s linear infinite reverse' }}
             />
             
             {/* Security Grid Lines */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cyber-orb-element">
               <div 
                 className="w-16 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
-                style={{ animation: 'ringRotate1 7s linear infinite' }}
+                style={{ 
+                  animation: 'ringRotate1 7s linear infinite',
+                  filter: 'drop-shadow(0 0 3px rgba(34, 211, 238, 0.6))'
+                }}
               />
               <div 
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-16 bg-gradient-to-b from-transparent via-blue-500/40 to-transparent"
-                style={{ animation: 'ringRotate2 5s linear infinite reverse' }}
+                style={{ 
+                  animation: 'ringRotate2 5s linear infinite reverse',
+                  filter: 'drop-shadow(0 0 3px rgba(59, 130, 246, 0.6))'
+                }}
               />
             </div>
             
             {/* Outer Security Scan Ring */}
             <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border border-cyan-300/20 rounded-full"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border border-cyan-300/20 rounded-full cyber-orb-element"
               style={{ 
                 animation: 'scanPulse 6s ease-in-out infinite',
-                animationDelay: '3s'
+                animationDelay: '3s',
+                filter: 'drop-shadow(0 0 6px rgba(34, 211, 238, 0.4))'
               }}
             />
+            
+            {/* Data Stream Indicators */}
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={`data-${i}`}
+                className="absolute w-0.5 h-6 bg-gradient-to-b from-cyan-400/80 to-transparent cyber-orb-element"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: `rotate(${i * 90}deg) translateY(-30px)`,
+                  animation: `statusText ${2 + i * 0.5}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.3}s`
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
