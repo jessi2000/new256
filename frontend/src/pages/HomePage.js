@@ -158,29 +158,9 @@ const HomePage = () => {
             </h1>
             
             <div className="mb-8">
-              <p className="text-xl md:text-2xl text-slate-300 mb-4 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-                Professional CTF & Security Analysis Platform
-              </p>
               <p className="text-lg text-slate-400 font-mono animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
                 // Advanced toolset for cybersecurity professionals
               </p>
-            </div>
-
-            {/* Animated Stats Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-              {stats.map((stat, index) => (
-                <div 
-                  key={index}
-                  className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-4 hover:bg-slate-900/60 transition-all duration-300 animate-fadeInScale hover:animate-pulseGlow group"
-                  style={{ animationDelay: `${0.6 + index * 0.1}s` }}
-                >
-                  <div className={`flex items-center justify-center mb-2 ${stat.color} group-hover:scale-110 transition-transform duration-300`}>
-                    {stat.icon}
-                  </div>
-                  <div className="text-2xl font-bold text-slate-200 mb-1">{stat.value}</div>
-                  <div className="text-xs text-slate-400 uppercase tracking-wide">{stat.label}</div>
-                </div>
-              ))}
             </div>
 
             {/* Animated Search Section */}
