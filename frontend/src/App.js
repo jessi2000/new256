@@ -111,7 +111,7 @@ const Navigation = () => {
 // Footer Component
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 to-slate-900 border-t border-gray-700 mt-auto">
+    <footer className="bg-gradient-to-r from-slate-900 to-blue-950 border-t border-blue-500/30 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           {/* Left: Brand & Links */}
