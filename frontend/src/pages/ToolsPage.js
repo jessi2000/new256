@@ -765,32 +765,26 @@ const ToolsPage = () => {
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredTools.map((tool) => {
-            const IconComponent = tool.icon;
             return (
               <div
                 key={tool.id}
-                className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:border-blue-500/50 cursor-pointer group"
+                className="tool-card group"
                 onClick={() => openToolModal(tool)}
               >
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 p-3 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-lg group-hover:from-blue-600/30 group-hover:to-purple-600/30 transition-all duration-300">
-                    <IconComponent size={24} className="text-blue-400 group-hover:text-blue-300 transition-colors" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-white transition-colors">
-                      {tool.name}
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-3 group-hover:text-gray-300 transition-colors">
-                      {tool.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs px-2 py-1 bg-gray-700 rounded text-gray-300 group-hover:bg-gray-600 transition-colors">
-                        {tool.category}
-                      </span>
-                      <button className="text-blue-400 hover:text-blue-300 transition-colors transform group-hover:scale-110">
-                        <Play size={16} />
-                      </button>
-                    </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-white transition-colors">
+                    {tool.name}
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-3 group-hover:text-gray-300 transition-colors">
+                    {tool.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs px-2 py-1 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded group-hover:bg-blue-600/30 transition-colors">
+                      {tool.category}
+                    </span>
+                    <button className="text-blue-400 hover:text-blue-300 transition-colors transform group-hover:scale-110">
+                      <Play size={16} />
+                    </button>
                   </div>
                 </div>
               </div>
