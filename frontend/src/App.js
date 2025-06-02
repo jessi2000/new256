@@ -130,12 +130,8 @@ const Footer = () => {
           {/* Left: Brand & Links */}
           <div className="text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start space-x-4 mb-3">
-              <h3 className="text-xl font-bold bg-gradient-to-r from-slate-400 to-gray-400 bg-clip-text text-transparent">SectoolBox</h3>
-              <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-gray-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">Z</span>
-              </div>
+              <p className="text-gray-400 text-sm">Professional CTF & Security Analysis Platform</p>
             </div>
-            <p className="text-gray-400 text-sm mb-4">Professional CTF & Security Analysis Platform</p>
             
             {/* Social Links */}
             <div className="flex justify-center md:justify-start space-x-3">
@@ -173,46 +169,36 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Right: Our Team */}
+          {/* Right: Professional Team Avatars */}
           <div className="text-center md:text-right">
-            <h3 className="text-lg font-bold text-slate-200 mb-4">Our Team</h3>
-            <div className="grid grid-cols-2 gap-4 mb-3">
-              {/* Team Member 1 */}
-              <div className="bg-gray-800/30 rounded-lg p-3 hover:bg-gray-700/40 transition-colors duration-300">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
-                  Z
+            <div className="flex items-center justify-center md:justify-end space-x-4 mb-3">
+              {/* Zebbern */}
+              <div className="flex items-center space-x-2 group">
+                <img
+                  src="https://avatars.githubusercontent.com/u/185730623?v=4"
+                  alt="Zebbern"
+                  className="w-10 h-10 rounded-full border-2 border-slate-600 group-hover:border-slate-500 transition-colors duration-300 shadow-lg"
+                />
+                <div className="text-left">
+                  <div className="text-slate-300 text-sm font-medium group-hover:text-slate-200 transition-colors duration-300">Zebbern</div>
+                  <div className="text-gray-500 text-xs">Lead Developer</div>
                 </div>
-                <div className="text-slate-300 text-sm font-medium">Zebbern</div>
-                <div className="text-gray-500 text-xs mb-2">Lead Developer</div>
-                <a
-                  href="https://github.com/zebbern"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-xs transition-colors duration-300"
-                >
-                  <Github size={12} />
-                  <span>GitHub</span>
-                </a>
               </div>
               
-              {/* Team Member 2 */}
-              <div className="bg-gray-800/30 rounded-lg p-3 hover:bg-gray-700/40 transition-colors duration-300">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
-                  S
+              {/* Opkimmi */}
+              <div className="flex items-center space-x-2 group">
+                <img
+                  src="https://avatars.githubusercontent.com/u/150441423?v=4"
+                  alt="Opkimmi"
+                  className="w-10 h-10 rounded-full border-2 border-slate-600 group-hover:border-slate-500 transition-colors duration-300 shadow-lg"
+                />
+                <div className="text-left">
+                  <div className="text-slate-300 text-sm font-medium group-hover:text-slate-200 transition-colors duration-300">Opkimmi</div>
+                  <div className="text-gray-500 text-xs">Security Expert</div>
                 </div>
-                <div className="text-slate-300 text-sm font-medium">SecTeam</div>
-                <div className="text-gray-500 text-xs mb-2">Security Expert</div>
-                <a
-                  href="https://github.com/sectoolbox"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-xs transition-colors duration-300"
-                >
-                  <Github size={12} />
-                  <span>GitHub</span>
-                </a>
               </div>
             </div>
+            
             <p className="text-gray-500 text-xs">
               © {new Date().getFullYear()} • Built for Security Professionals
             </p>
