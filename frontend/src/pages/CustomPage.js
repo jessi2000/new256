@@ -35,10 +35,14 @@ const CustomPage = () => {
   const [dragActive, setDragActive] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [hasFetched, setHasFetched] = useState(false); // Prevent duplicate fetches
 
   useEffect(() => {
-    fetchScripts();
-  }, []);
+    if (!hasFetched) {
+      fetchScripts();
+      setHasFetched(true);
+    }
+  }, [hasFetched]);
 
   const fetchScripts = async () => {
     console.log('Fetching scripts from:', `${API}/custom-scripts`);
