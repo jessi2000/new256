@@ -294,8 +294,10 @@ test_plan:
     - "New Custom Scripts"
     - "File Upload for Scripts"
     - "Encoding Detective Tool"
+    - "Security Hardening"
   stuck_tasks: 
     - "Tools Functionality"
+    - "Security Hardening"
   test_all: false
   test_priority: "high_first"
 
