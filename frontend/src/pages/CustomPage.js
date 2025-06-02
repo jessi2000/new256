@@ -78,10 +78,7 @@ const CustomPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="heading-xl mb-4">Custom Scripts</h1>
-        </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Scripts List */}
