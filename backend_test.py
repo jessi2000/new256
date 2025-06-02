@@ -347,6 +347,13 @@ if __name__ == "__main__":
     print(f"🔗 API URL: {API_URL}")
     print("-" * 80)
     
+    # Install Pillow if not already installed
+    try:
+        import PIL
+    except ImportError:
+        print("Installing Pillow library for image analysis tests...")
+        os.system("pip install Pillow")
+    
     result = run_tests()
     
     print("-" * 80)
