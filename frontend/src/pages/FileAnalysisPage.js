@@ -208,11 +208,115 @@ const FileAnalysisPage = () => {
   }, []);
 
   const copyToClipboard = useCallback((text) => {
-    navigator.clipboard.writeText(text).then(() => {
+    // Sanitize clipboard content
+    const safeText = sanitizeTextInput(text, 100000); // 100KB limit
+    navigator.clipboard.writeText(safeText).then(() => {
       toast.success('Copied to clipboard!');
     }).catch(() => {
       toast.error('Failed to copy to clipboard');
     });
+  }, []);
+
+  // Security analysis function
+  const performSecurityAnalysis = useCallback((data, metadata) => {
+    const analysis = {
+      riskLevel: 'LOW',
+      findings: [],
+      warnings: [],
+      recommendations: []
+    };
+
+    // File size analysis
+    if (metadata.size > 100 * 1024 * 1024) { // > 100MB
+      analysis.warnings.push('Large file size detected');
+      analysis.riskLevel = 'MEDIUM';
+    }
+
+    // Entropy analysis for encrypted/packed content
+    const entropy = calculateEntropy(data);
+    if (entropy.value > 7.8) {
+      analysis.findings.push('Very high entropy - possible encrypted or packed content');
+      analysis.riskLevel = 'MEDIUM';
+    } else if (entropy.value > 7.5) {
+      analysis.warnings.push('High entropy detected - compressed or encrypted data likely');
+    }
+
+    // Executable file detection
+    if (data.length > 2) {
+      const header = data.slice(0, 4);
+      const magicNumbers = [
+        { signature: [0x4D, 0x5A], type: 'PE Executable' },
+        { signature: [0x7F, 0x45, 0x4C, 0x46], type: 'ELF Executable' },
+        { signature: [0xCA, 0xFE, 0xBA, 0xBE], type: 'Mach-O Executable' },
+        { signature: [0x50, 0x4B], type: 'ZIP Archive' },
+        { signature: [0x52, 0x61, 0x72, 0x21], type: 'RAR Archive' }
+      ];
+
+      magicNumbers.forEach(({ signature, type }) => {
+        if (signature.every((byte, index) => header[index] === byte)) {
+          analysis.findings.push(`${type} detected`);
+          if (type.includes('Executable')) {
+            analysis.riskLevel = 'HIGH';
+            analysis.recommendations.push('Exercise caution with executable files');
+          }
+        }
+      });
+    }
+
+    // String analysis for suspicious patterns
+    const strings = extractStrings(data);
+    const suspiciousPatterns = [
+      /password/i, /admin/i, /root/i, /secret/i,
+      /http:\/\//, /https:\/\//, /ftp:\/\//,
+      /cmd\.exe/i, /powershell/i, /bash/i,
+      /eval\(/i, /exec\(/i, /system\(/i
+    ];
+
+    let suspiciousStringCount = 0;
+    strings.forEach(str => {
+      suspiciousPatterns.forEach(pattern => {
+        if (pattern.test(str.value)) {
+          suspiciousStringCount++;
+        }
+      });
+    });
+
+    if (suspiciousStringCount > 10) {
+      analysis.findings.push('Multiple suspicious strings detected');
+      analysis.riskLevel = 'MEDIUM';
+    } else if (suspiciousStringCount > 0) {
+      analysis.warnings.push(`${suspiciousStringCount} potentially suspicious strings found`);
+    }
+
+    // File extension vs content mismatch
+    const fileName = metadata.name || '';
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    const mimeType = metadata.type || '';
+
+    const extensionMimeMap = {
+      'jpg': 'image/jpeg', 'jpeg': 'image/jpeg',
+      'png': 'image/png', 'gif': 'image/gif',
+      'pdf': 'application/pdf', 'txt': 'text/plain',
+      'zip': 'application/zip', 'exe': 'application/x-dosexec'
+    };
+
+    if (extension && extensionMimeMap[extension] && 
+        mimeType !== extensionMimeMap[extension] && 
+        mimeType !== 'application/octet-stream') {
+      analysis.warnings.push('File extension does not match content type');
+    }
+
+    // Final risk assessment
+    if (analysis.findings.length > 3) {
+      analysis.riskLevel = 'HIGH';
+    } else if (analysis.findings.length > 1 || analysis.warnings.length > 2) {
+      analysis.riskLevel = 'MEDIUM';
+    }
+
+    analysis.recommendations.push('File analyzed locally - no data transmitted');
+    analysis.recommendations.push('Review findings before executing or opening');
+
+    return analysis;
   }, []);
 
   // Update search loading state
