@@ -7,6 +7,8 @@ import base64
 import unittest
 import sys
 from datetime import datetime
+from PIL import Image
+import io
 
 # Get the backend URL from the frontend .env file
 BACKEND_URL = "https://a9525a25-929c-4f05-ab84-22f1955320de.preview.emergentagent.com"
@@ -159,6 +161,55 @@ class BackendAPITest(unittest.TestCase):
             if os.path.exists("test_file.txt"):
                 os.remove("test_file.txt")
     
+    def test_04b_enhanced_image_analysis(self):
+        """Test enhanced image analysis features"""
+        print("\n🔍 Testing enhanced image analysis features...")
+        
+        # Create a simple test image
+        img = Image.new('RGB', (100, 100), color = (73, 109, 137))
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='PNG')
+        img_byte_arr = img_byte_arr.getvalue()
+        
+        # Save the image to a file
+        with open("test_image.png", "wb") as f:
+            f.write(img_byte_arr)
+        
+        try:
+            # Upload image for analysis
+            with open("test_image.png", "rb") as f:
+                files = {"file": ("test_image.png", f, "image/png")}
+                response = requests.post(f"{API_URL}/analyze-file", files=files)
+            
+            self.assertEqual(response.status_code, 200)
+            result = response.json()
+            
+            # Verify image-specific analysis fields
+            self.assertEqual(result["filename"], "test_image.png")
+            self.assertIn("file_size", result)
+            self.assertIn("mime_type", result)
+            self.assertEqual(result["mime_type"], "image/png")
+            
+            # Check for enhanced image analysis features
+            self.assertIn("image_analysis", result)
+            if "image_analysis" in result:
+                img_analysis = result["image_analysis"]
+                self.assertIn("dimensions", img_analysis)
+                self.assertIn("format", img_analysis)
+                self.assertIn("mode", img_analysis)
+                
+                # Verify dimensions
+                dimensions = img_analysis["dimensions"]
+                self.assertEqual(dimensions["width"], 100)
+                self.assertEqual(dimensions["height"], 100)
+            
+            print("✅ Enhanced image analysis features are working correctly")
+            
+        finally:
+            # Clean up the test file
+            if os.path.exists("test_image.png"):
+                os.remove("test_image.png")
+    
     def test_05_tool_usage_logging(self):
         """Test tool usage logging"""
         print("\n🔍 Testing tool usage logging...")
@@ -192,10 +243,19 @@ class BackendAPITest(unittest.TestCase):
         scripts = scripts_response.json()
         self.assertIsInstance(scripts, list)
         
-        # If there are scripts, test execution of the first one
-        if scripts:
-            script_name = scripts[0]["name"]
-            print(f"Found script: {script_name}, testing execution...")
+        # Verify we have scripts and they're properly loaded
+        self.assertTrue(len(scripts) > 0, "No custom scripts found")
+        
+        # Check for expected script properties
+        for script in scripts:
+            self.assertIn("name", script)
+            self.assertIn("description", script)
+            self.assertIn("command", script)
+        
+        # Test execution of each script
+        for script in scripts:
+            script_name = script["name"]
+            print(f"Testing script: {script_name}...")
             
             exec_response = requests.post(
                 f"{API_URL}/execute-script",
@@ -207,11 +267,70 @@ class BackendAPITest(unittest.TestCase):
             self.assertIn("output", exec_result)
             self.assertIn("execution_time", exec_result)
             
+            # Verify script execution doesn't return an error
+            self.assertNotIn("Error", exec_result["output"])
+            
             print(f"✅ Script execution successful: {script_name}")
-        else:
-            print("ℹ️ No custom scripts found to test execution")
         
-        print("✅ Custom scripts functionality is working correctly")
+        print(f"✅ All {len(scripts)} custom scripts loaded and executed successfully")
+    
+    def test_07_all_tools_implemented(self):
+        """Test that all 42 tools are implemented and working"""
+        print("\n🔍 Testing all tools implementation...")
+        
+        # Get list of all tools
+        tools_response = requests.get(f"{API_URL}/tools")
+        self.assertEqual(tools_response.status_code, 200)
+        tools = tools_response.json()
+        self.assertIsInstance(tools, list)
+        
+        # Verify we have 42 tools
+        self.assertEqual(len(tools), 42, f"Expected 42 tools, found {len(tools)}")
+        
+        # Check each tool for proper implementation
+        not_implemented_tools = []
+        
+        for tool in tools:
+            self.assertIn("name", tool)
+            self.assertIn("category", tool)
+            self.assertIn("description", tool)
+            
+            # Test tool execution with sample data
+            tool_name = tool["name"]
+            print(f"Testing tool: {tool_name}...")
+            
+            # Prepare sample data based on tool category
+            sample_data = "test"
+            if "encode" in tool_name.lower() or "hash" in tool_name.lower():
+                sample_data = "test_string"
+            elif "ip" in tool_name.lower():
+                sample_data = "8.8.8.8"
+            elif "url" in tool_name.lower():
+                sample_data = "https://example.com"
+            elif "base64" in tool_name.lower():
+                sample_data = "SGVsbG8gV29ybGQ=" if "decode" in tool_name.lower() else "Hello World"
+            
+            # Execute tool
+            exec_response = requests.post(
+                f"{API_URL}/execute-tool",
+                json={"tool_name": tool_name, "input_data": sample_data}
+            )
+            
+            self.assertEqual(exec_response.status_code, 200)
+            exec_result = exec_response.json()
+            
+            # Check if tool is implemented
+            if "Tool not implemented yet" in str(exec_result):
+                not_implemented_tools.append(tool_name)
+                print(f"❌ Tool not implemented: {tool_name}")
+            else:
+                print(f"✅ Tool implemented: {tool_name}")
+        
+        # Assert all tools are implemented
+        self.assertEqual(len(not_implemented_tools), 0, 
+                         f"Found {len(not_implemented_tools)} unimplemented tools: {', '.join(not_implemented_tools)}")
+        
+        print(f"✅ All {len(tools)} tools are implemented and working correctly")
 
 def run_tests():
     """Run all tests and return results"""
