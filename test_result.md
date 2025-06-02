@@ -119,15 +119,18 @@ backend:
 frontend:
   - task: "Encoding Detective Tool Display Format"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/Toolscripts/encoding-detective/EncodingDetectiveTool.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "The Encoding Detective tool was not found on the Tools page. The page doesn't contain any text with 'Encoding Detective' according to our JavaScript evaluation. This suggests that either the tool is not available, there might be an issue with its implementation/loading, or it might be accessed through a different path."
+      - working: true
+        agent: "testing"
+        comment: "The Encoding Detective tool functionality is implemented as 'Multi-layer Base64 Decoder' in the SectoolBox application. The tool is accessible from the Tools page and has the requested display format with '📋 LAYER X:' and '🔓 DECRYPTING WITH: [ENCODING TYPE]' for each layer. The tool successfully decodes multi-layer encoded text as requested."
   - task: "Tools Page Blue Border Animation"
     implemented: true
     working: true
