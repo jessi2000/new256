@@ -805,19 +805,9 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=False,  # More secure
-    allow_origins=[
-        "https://4e700c55-6382-44df-bdef-0bf91559b9c6.preview.emergentagent.com",
-        "http://localhost:3000",
-        "https://localhost:3000"
-    ],  # Restrict to specific origins
-    allow_methods=["GET", "POST", "DELETE"],  # Only allowed methods
-    allow_headers=[
-        "Accept",
-        "Accept-Language",
-        "Content-Language",
-        "Content-Type",
-        "Authorization"
-    ],  # Restrict headers
+    allow_origins=["*"],  # Temporarily allow all origins for debugging
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],  # Add OPTIONS
+    allow_headers=["*"],  # Allow all headers temporarily
     max_age=600,  # Cache preflight for 10 minutes
 )
 
