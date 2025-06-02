@@ -419,7 +419,7 @@ const ToolsPage = () => {
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
                   <button
-                    onClick={() => executeTool(selectedTool)}
+                    onClick={() => executeToolDynamic(selectedTool)}
                     disabled={isProcessing}
                     className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                   >
