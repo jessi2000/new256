@@ -42,7 +42,6 @@ const CustomPage = () => {
   }, [hasFetched]);
 
   const fetchScripts = async () => {
-    console.log('Fetching scripts from:', `${API}/custom-scripts`);
     setLoading(true);
     
     // Add retry logic for better reliability
@@ -51,8 +50,6 @@ const CustomPage = () => {
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(`Attempt ${attempt} to fetch scripts...`);
-        
         // Add timeout and explicit headers
         const response = await axios.get(`${API}/custom-scripts`, {
           timeout: 10000, // 10 second timeout
@@ -62,7 +59,6 @@ const CustomPage = () => {
           }
         });
         
-        console.log('Scripts loaded successfully:', response.data.length, 'scripts');
         setScripts(response.data);
         
         if (response.data.length === 0) {
@@ -76,28 +72,15 @@ const CustomPage = () => {
         
       } catch (error) {
         lastError = error;
-        console.error(`Attempt ${attempt} failed:`, error);
-        
-        if (error.response) {
-          console.error('Error response status:', error.response.status);
-          console.error('Error response data:', error.response.data);
-          console.error('Error response headers:', error.response.headers);
-        } else if (error.request) {
-          console.error('No response received:', error.request);
-        } else {
-          console.error('Request setup error:', error.message);
-        }
         
         // If it's the last attempt, don't wait
         if (attempt < maxRetries) {
-          console.log(`Waiting 2 seconds before retry ${attempt + 1}...`);
           await new Promise(resolve => setTimeout(resolve, 2000));
         }
       }
     }
     
     // All retries failed
-    console.error('All attempts failed. Last error:', lastError);
     const errorMessage = lastError?.response?.data?.detail || 
                         lastError?.message || 
                         'Unknown error occurred';
