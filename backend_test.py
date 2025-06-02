@@ -11,7 +11,7 @@ from PIL import Image
 import io
 
 # Get the backend URL from the frontend .env file
-BACKEND_URL = "https://a9525a25-929c-4f05-ab84-22f1955320de.preview.emergentagent.com"
+BACKEND_URL = "https://dba0eb53-99df-4275-b1aa-9851ea215e40.preview.emergentagent.com"
 API_URL = f"{BACKEND_URL}/api"
 
 class BackendAPITest(unittest.TestCase):
