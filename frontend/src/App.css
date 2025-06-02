@@ -300,24 +300,10 @@
 }
 
 /* Tool card enhanced animations */
-@keyframes cardHover {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    transform: translateY(-8px) scale(1.02);
-  }
-}
-
-@keyframes borderGlow {
-  0%, 100% {
-    border-color: rgba(71, 85, 105, 0.3);
-    box-shadow: 0 0 20px rgba(71, 85, 105, 0.1);
-  }
-  50% {
-    border-color: rgba(71, 85, 105, 0.6);
-    box-shadow: 0 0 30px rgba(71, 85, 105, 0.3), 0 0 40px rgba(71, 85, 105, 0.1);
-  }
+.tool-card {
+  @apply bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 transition-all duration-300 relative overflow-hidden;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
 }
 
 .animate-fadeInUp {
