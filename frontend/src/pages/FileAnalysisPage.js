@@ -748,6 +748,9 @@ const FileAnalysisPage = () => {
               <nav className="flex space-x-8">
                 {[
                   { id: 'overview', name: 'Overview', icon: BarChart3 },
+                  { id: 'security', name: 'Security', icon: Shield, 
+                    status: securityAnalysis?.riskLevel === 'HIGH' ? 'error' : 
+                           securityAnalysis?.riskLevel === 'MEDIUM' ? 'warning' : 'success' },
                   { id: 'strings', name: 'Strings', icon: FileText, count: extractedStrings.length },
                   { id: 'hex', name: 'Hex Dump', icon: Eye },
                   { id: 'hashes', name: 'Hashes', icon: Hash },
@@ -770,6 +773,12 @@ const FileAnalysisPage = () => {
                         <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">
                           {tab.count}
                         </span>
+                      )}
+                      {tab.status && (
+                        <div className={`w-2 h-2 rounded-full ${
+                          tab.status === 'error' ? 'bg-red-500' :
+                          tab.status === 'warning' ? 'bg-yellow-500' : 'bg-green-500'
+                        }`} />
                       )}
                     </button>
                   );
