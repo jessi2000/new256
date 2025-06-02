@@ -17,7 +17,7 @@ import {
   Shield
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import CryptoJS from 'crypto-js';
+import { loadTools, executeTool } from '../Toolscripts/toolLoader';
 
 const ToolsPage = () => {
   const location = useLocation();
@@ -30,6 +30,13 @@ const ToolsPage = () => {
   const [selectedAction, setSelectedAction] = useState('encode');
   const [base64Result, setBase64Result] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [tools, setTools] = useState([]);
+
+  // Load tools on component mount
+  useEffect(() => {
+    const loadedTools = loadTools();
+    setTools(loadedTools);
+  }, []);
 
   // Handle navigation from HomePage search
   useEffect(() => {
