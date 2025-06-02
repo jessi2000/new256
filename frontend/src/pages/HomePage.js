@@ -184,15 +184,18 @@ const HomePage = () => {
             <div className="max-w-2xl mx-auto mb-12 animate-floatSlow flex justify-center">
               <form onSubmit={handleToolSearch} className="relative w-full max-w-lg">
                 <div className="relative group">
-                  <Search size={24} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 z-10 group-hover:scale-110 transition-transform duration-300" />
+                  <Search size={24} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 z-10 group-hover:scale-125 group-hover:text-blue-400 transition-all duration-300" />
                   <input
                     type="text"
                     placeholder="Search 40+ CTF tools..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-slate-900/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 focus:border-slate-400 rounded-xl pl-14 pr-6 py-5 text-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500/20 transition-all duration-300 shadow-xl hover:shadow-2xl focus:shadow-2xl animate-shimmer"
+                    className="w-full bg-slate-900/80 backdrop-blur-sm border border-slate-600/50 hover:border-blue-400/50 focus:border-blue-400 rounded-xl pl-14 pr-6 py-5 text-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 shadow-xl hover:shadow-2xl focus:shadow-2xl focus:shadow-blue-500/20 animate-shimmer transform hover:scale-[1.02] focus:scale-[1.02]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-600/5 to-transparent opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none animate-pulse"></div>
+                  
+                  {/* Animated border */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 -z-10 blur-sm"></div>
                 </div>
                 
                 {/* Search Results */}
