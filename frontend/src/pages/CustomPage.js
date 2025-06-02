@@ -388,6 +388,53 @@ const CustomPage = () => {
             )}
           </div>
         </div>
+
+        {/* Result Modal */}
+        {showResultModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-200 flex items-center space-x-2">
+                  <Terminal size={24} className="text-green-400" />
+                  <span>Script Execution Result</span>
+                </h2>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => copyToClipboard(executionResult)}
+                    className="p-2 text-gray-400 hover:text-gray-200 transition-colors bg-slate-800 rounded-lg border border-slate-700 hover:border-slate-600"
+                    title="Copy Result"
+                  >
+                    <Copy size={16} />
+                  </button>
+                  <button
+                    onClick={() => setShowResultModal(false)}
+                    className="p-2 text-gray-400 hover:text-red-400 transition-colors bg-slate-800 rounded-lg border border-slate-700 hover:border-red-600"
+                    title="Close"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex-1 overflow-hidden">
+                <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 h-full overflow-y-auto">
+                  <pre className="whitespace-pre-wrap text-gray-100 text-sm font-mono leading-relaxed">
+                    {executionResult}
+                  </pre>
+                </div>
+              </div>
+              
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => setShowResultModal(false)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
