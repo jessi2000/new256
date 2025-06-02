@@ -154,7 +154,88 @@ const CustomPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <Terminal size={40} className="text-blue-400 mr-3" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
+            Custom Scripts
+          </h1>
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            Upload files and run custom analysis scripts for advanced forensic examination
+          </p>
+        </div>
 
+        {/* File Upload Section */}
+        <div className="mb-8 space-y-4">
+          <h3 className="text-lg font-semibold text-gray-200">File Upload</h3>
+          
+          {!uploadedFile ? (
+            <div
+              className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
+                dragActive 
+                  ? 'border-blue-400 bg-blue-400/10' 
+                  : 'border-gray-600 hover:border-gray-500 bg-gray-800/30'
+              }`}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
+              {isUploading ? (
+                <div className="space-y-4">
+                  <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  <p className="text-gray-400">Uploading file...</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <Upload size={48} className="mx-auto text-gray-500" />
+                  <div>
+                    <p className="text-lg font-medium text-gray-300 mb-2">
+                      Drop a file here or click to browse
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Files will be used as input for the selected script
+                    </p>
+                  </div>
+                  <label className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors cursor-pointer">
+                    <Upload size={16} />
+                    <span>Choose File</span>
+                    <input
+                      type="file"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      accept="*/*"
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-green-600/20 rounded-lg">
+                    <File size={24} className="text-green-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-200">{uploadedFile.name}</h4>
+                    <p className="text-gray-400 text-sm">
+                      {formatFileSize(uploadedFile.size)} • Uploaded {uploadedFile.uploadedAt.toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={removeUploadedFile}
+                  className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                  title="Remove file"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Scripts List */}
