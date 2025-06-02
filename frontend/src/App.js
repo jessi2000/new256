@@ -30,21 +30,21 @@ const NavLink = ({ to, children, icon: Icon }) => {
   return (
     <Link
       to={to}
-      className={`flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 relative group ${
+      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 relative group ${
         isActive 
-          ? 'bg-gradient-to-r from-slate-800/60 to-slate-700/60 text-white shadow-lg shadow-blue-500/20 border border-slate-600/40' 
+          ? 'bg-gradient-to-r from-slate-800/60 to-slate-700/60 text-white shadow-md shadow-blue-500/20 border border-slate-600/40' 
           : 'text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-slate-800/40 hover:to-slate-700/40 hover:shadow-md hover:shadow-slate-500/10 border border-transparent hover:border-slate-600/30'
       }`}
     >
       {isActive && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-300 to-blue-400 rounded-full"></div>
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600/20 to-slate-700/20 rounded-xl opacity-50 blur-sm"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-blue-300 to-blue-400 rounded-full"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600/20 to-slate-700/20 rounded-lg opacity-50 blur-sm"></div>
         </>
       )}
-      <div className="relative z-10 flex items-center space-x-3">
-        <Icon size={20} className={`transition-all duration-300 ${isActive ? 'text-blue-300' : 'group-hover:scale-110 group-hover:text-blue-400'}`} />
-        <span className="font-medium">{children}</span>
+      <div className="relative z-10 flex items-center space-x-2">
+        <Icon size={16} className={`transition-all duration-300 ${isActive ? 'text-blue-300' : 'group-hover:scale-110 group-hover:text-blue-400'}`} />
+        <span className="font-medium text-sm">{children}</span>
       </div>
     </Link>
   );
