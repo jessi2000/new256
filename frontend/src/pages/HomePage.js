@@ -182,6 +182,31 @@ const HomePage = () => {
               </p>
             </div>
 
+            {/* Most Popular Tool Promotion */}
+            <div className="max-w-md mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+              <div 
+                className="bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 backdrop-blur-sm border border-blue-500/20 rounded-lg p-4 group hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:border-blue-500/40"
+                onClick={() => navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } })}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <div className="text-sm font-medium text-blue-300 group-hover:text-blue-200 transition-colors">
+                        🔍 Try Encoding Detective
+                      </div>
+                      <div className="px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full font-medium">
+                        MOST POPULAR
+                      </div>
+                    </div>
+                    <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
+                      Decode multi-layer encodings automatically
+                    </div>
+                  </div>
+                  <ArrowRight size={14} className="text-blue-400 group-hover:translate-x-1 transition-transform ml-3" />
+                </div>
+              </div>
+            </div>
+
             {/* Centered Search Section */}
             <div className="max-w-2xl mx-auto mb-12 animate-floatSlow flex justify-center">
               <form onSubmit={handleToolSearch} className="relative w-full max-w-lg">
