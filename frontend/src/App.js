@@ -30,17 +30,22 @@ const NavLink = ({ to, children, icon: Icon }) => {
   return (
     <Link
       to={to}
-      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 relative group ${
+      className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 relative group ${
         isActive 
-          ? 'bg-slate-700/30 text-slate-200 shadow-lg shadow-slate-500/10' 
-          : 'text-gray-300 hover:text-white hover:bg-slate-700/20'
+          ? 'bg-gradient-to-r from-slate-700/50 to-slate-600/50 text-slate-100 shadow-xl shadow-slate-500/20 border border-slate-600/30' 
+          : 'text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-slate-700/30 hover:to-slate-600/30 hover:shadow-lg hover:shadow-slate-500/10'
       }`}
     >
       {isActive && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-slate-500 to-slate-400 rounded-full"></div>
+        <>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-slate-400 via-slate-300 to-slate-400 rounded-full"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-slate-600 to-slate-700 rounded-xl opacity-20 blur-sm"></div>
+        </>
       )}
-      <Icon size={20} />
-      <span className="font-medium">{children}</span>
+      <div className="relative z-10 flex items-center space-x-2">
+        <Icon size={20} className={`transition-all duration-300 ${isActive ? 'text-slate-200' : 'group-hover:scale-110'}`} />
+        <span className="font-medium">{children}</span>
+      </div>
     </Link>
   );
 };
@@ -57,27 +62,27 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/30 sticky top-0 z-50 relative">
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-800/20 via-transparent to-slate-800/20 pointer-events-none"></div>
+    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/40 sticky top-0 z-50 relative">
+      {/* Enhanced gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-800/30 via-slate-700/20 to-slate-800/30 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-18">
           {/* Enhanced Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="p-2 bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <Shield size={24} className="text-slate-200 group-hover:text-white transition-colors duration-300" />
+            <div className="p-3 bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 rounded-xl shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-slate-600/30">
+              <Shield size={26} className="text-slate-200 group-hover:text-white transition-colors duration-300" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-300 to-slate-400 bg-clip-text text-transparent group-hover:from-slate-200 group-hover:to-slate-300 transition-all duration-300">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 bg-clip-text text-transparent group-hover:from-slate-100 group-hover:to-slate-200 transition-all duration-300">
                 SectoolBox
               </h1>
-              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors duration-300">CTF Toolkit</p>
+              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors duration-300 font-medium">CTF Toolkit</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} icon={item.icon}>
                 {item.label}
@@ -189,10 +194,10 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 flex flex-col">
-        {/* Consistent Background Particles */}
+        {/* Enhanced Consistent Background Particles */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
           <div className="absolute inset-0">
-            {/* Primary particles */}
+            {/* Staggered Primary particles with random entry/exit */}
             {[...Array(15)].map((_, i) => (
               <div
                 key={`particle-${i}`}
@@ -200,13 +205,13 @@ function App() {
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  animation: `smoothRandomFloat ${20 + Math.random() * 15}s ease-in-out infinite`,
-                  animationDelay: `${Math.random() * 20}s`,
+                  animation: `staggeredParticleFlow ${20 + Math.random() * 15}s ease-in-out infinite`,
+                  animationDelay: `${i * 2 + Math.random() * 10}s`,
                 }}
               />
             ))}
             
-            {/* Secondary particles */}
+            {/* Staggered Secondary particles */}
             {[...Array(12)].map((_, i) => (
               <div
                 key={`particle2-${i}`}
@@ -214,13 +219,13 @@ function App() {
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  animation: `smoothRandomFloat2 ${25 + Math.random() * 10}s ease-in-out infinite`,
-                  animationDelay: `${Math.random() * 25}s`,
+                  animation: `staggeredParticleFlow2 ${25 + Math.random() * 10}s ease-in-out infinite`,
+                  animationDelay: `${i * 2.5 + Math.random() * 15}s`,
                 }}
               />
             ))}
             
-            {/* Tertiary particles */}
+            {/* Staggered Tertiary particles */}
             {[...Array(10)].map((_, i) => (
               <div
                 key={`particle3-${i}`}
@@ -228,8 +233,22 @@ function App() {
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  animation: `smoothRandomFloat3 ${18 + Math.random() * 12}s ease-in-out infinite`,
-                  animationDelay: `${Math.random() * 18}s`,
+                  animation: `staggeredParticleFlow3 ${18 + Math.random() * 12}s ease-in-out infinite`,
+                  animationDelay: `${i * 3 + Math.random() * 8}s`,
+                }}
+              />
+            ))}
+
+            {/* Twinkling stars with staggered timing */}
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={`star-${i}`}
+                className="absolute w-1 h-1 bg-slate-300 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `staggeredTwinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.5 + Math.random() * 5}s`,
                 }}
               />
             ))}
