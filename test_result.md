@@ -284,7 +284,6 @@ test_plan:
     - "Encoding Detective Tool"
   stuck_tasks: 
     - "Tools Functionality"
-    - "Encoding Detective Tool"
   test_all: false
   test_priority: "high_first"
 
