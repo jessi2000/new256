@@ -119,8 +119,8 @@ const ToolsPage = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Tool execution functions remain the same as before...
-  const executeTool = async (tool) => {
+  // Tool execution using dynamic loader
+  const executeToolDynamic = async (tool) => {
     if (!toolInput.trim() && !tool.hasTwoInputs) {
       toast.error('Please enter some text to process');
       return;
@@ -131,243 +131,30 @@ const ToolsPage = () => {
     setBase64Result(null);
 
     try {
-      let result = '';
+      const params = {};
       
-      // Handle different tool types
-      switch (tool.id) {
-        // Base64 tools
-        case 'base64':
-          if (selectedAction === 'encode') {
-            result = btoa(unescape(encodeURIComponent(toolInput)));
-          } else {
-            if (tool.supportsMultiLayer) {
-              const multiResult = multiLayerBase64Decode(toolInput);
-              setBase64Result(multiResult);
-              result = multiResult.finalResult;
-            } else {
-              try {
-                result = decodeURIComponent(escape(atob(toolInput)));
-              } catch (e) {
-                result = 'Invalid Base64 input';
-              }
-            }
-          }
-          break;
-
-        // URL tools
-        case 'url':
-          if (selectedAction === 'encode') {
-            result = encodeURIComponent(toolInput);
-          } else {
-            try {
-              result = decodeURIComponent(toolInput);
-            } catch (e) {
-              result = 'Invalid URL encoding';
-            }
-          }
-          break;
-
-        // HTML tools
-        case 'html':
-          if (selectedAction === 'encode') {
-            result = toolInput
-              .replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')
-              .replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;')
-              .replace(/'/g, '&#39;');
-          } else {
-            result = toolInput
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .replace(/&#39;/g, "'")
-              .replace(/&amp;/g, '&');
-          }
-          break;
-
-        // Hex tools
-        case 'hex':
-          if (selectedAction === 'encode') {
-            result = Array.from(toolInput)
-              .map(char => char.charCodeAt(0).toString(16).padStart(2, '0'))
-              .join(' ');
-          } else {
-            try {
-              result = toolInput
-                .replace(/[^0-9a-fA-F]/g, '')
-                .match(/.{1,2}/g)
-                ?.map(hex => String.fromCharCode(parseInt(hex, 16)))
-                .join('') || 'Invalid hex input';
-            } catch (e) {
-              result = 'Invalid hex input';
-            }
-          }
-          break;
-
-        // Binary tools
-        case 'binary':
-          if (selectedAction === 'encode') {
-            result = Array.from(toolInput)
-              .map(char => char.charCodeAt(0).toString(2).padStart(8, '0'))
-              .join(' ');
-          } else {
-            try {
-              result = toolInput
-                .replace(/[^01]/g, '')
-                .match(/.{1,8}/g)
-                ?.map(bin => String.fromCharCode(parseInt(bin, 2)))
-                .join('') || 'Invalid binary input';
-            } catch (e) {
-              result = 'Invalid binary input';
-            }
-          }
-          break;
-
-        // ASCII tools
-        case 'ascii':
-          if (selectedAction === 'encode') {
-            result = Array.from(toolInput)
-              .map(char => char.charCodeAt(0))
-              .join(' ');
-          } else {
-            try {
-              result = toolInput
-                .split(/\s+/)
-                .map(code => String.fromCharCode(parseInt(code)))
-                .join('');
-            } catch (e) {
-              result = 'Invalid ASCII codes';
-            }
-          }
-          break;
-
-        // Crypto tools
-        case 'caesar-cipher':
-          const shift = parseInt(document.getElementById('shift-input')?.value || '3');
-          result = toolInput.replace(/[a-zA-Z]/g, char => {
-            const start = char <= 'Z' ? 65 : 97;
-            return String.fromCharCode(((char.charCodeAt(0) - start + shift) % 26) + start);
-          });
-          break;
-
-        case 'rot13':
-          result = toolInput.replace(/[a-zA-Z]/g, char => {
-            const start = char <= 'Z' ? 65 : 97;
-            return String.fromCharCode(((char.charCodeAt(0) - start + 13) % 26) + start);
-          });
-          break;
-
-        case 'rot47':
-          result = toolInput.replace(/[!-~]/g, char => {
-            return String.fromCharCode(33 + ((char.charCodeAt(0) - 33 + 47) % 94));
-          });
-          break;
-
-        case 'reverse-text':
-          result = toolInput.split('').reverse().join('');
-          break;
-
-        case 'atbash-cipher':
-          result = toolInput.replace(/[a-zA-Z]/g, char => {
-            if (char >= 'a' && char <= 'z') {
-              return String.fromCharCode('z'.charCodeAt(0) - (char.charCodeAt(0) - 'a'.charCodeAt(0)));
-            } else if (char >= 'A' && char <= 'Z') {
-              return String.fromCharCode('Z'.charCodeAt(0) - (char.charCodeAt(0) - 'A'.charCodeAt(0)));
-            }
-            return char;
-          });
-          break;
-
-        // Hash tools
-        case 'md5-hash':
-          result = CryptoJS.MD5(toolInput).toString();
-          break;
-
-        case 'sha1-hash':
-          result = CryptoJS.SHA1(toolInput).toString();
-          break;
-
-        case 'sha256-hash':
-          result = CryptoJS.SHA256(toolInput).toString();
-          break;
-
-        case 'sha512-hash':
-          result = CryptoJS.SHA512(toolInput).toString();
-          break;
-
-        case 'md4-hash':
-          result = CryptoJS.MD4 ? CryptoJS.MD4(toolInput).toString() : 'MD4 not available';
-          break;
-
-        case 'hash-identifier':
-          const hashLength = toolInput.trim().length;
-          const hashPattern = /^[a-fA-F0-9]+$/;
-          if (!hashPattern.test(toolInput.trim())) {
-            result = 'Not a valid hash (contains non-hex characters)';
-          } else {
-            const identifications = [];
-            switch (hashLength) {
-              case 32: identifications.push('MD5', 'MD4', 'MD2'); break;
-              case 40: identifications.push('SHA-1'); break;
-              case 64: identifications.push('SHA-256'); break;
-              case 128: identifications.push('SHA-512'); break;
-              case 8: identifications.push('CRC32'); break;
-              case 16: identifications.push('MD5 (truncated)', 'CRC64'); break;
-              default: identifications.push('Unknown hash type');
-            }
-            result = `Possible hash types: ${identifications.join(', ')}`;
-          }
-          break;
-
-        // Text tools
-        case 'case-converter':
-          const caseType = document.getElementById('case-type')?.value || 'upper';
-          switch (caseType) {
-            case 'upper': result = toolInput.toUpperCase(); break;
-            case 'lower': result = toolInput.toLowerCase(); break;
-            case 'title': result = toolInput.replace(/\w\S*/g, txt => 
-              txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()); break;
-            case 'sentence': result = toolInput.charAt(0).toUpperCase() + toolInput.slice(1).toLowerCase(); break;
-            default: result = toolInput;
-          }
-          break;
-
-        case 'text-length':
-          const chars = toolInput.length;
-          const words = toolInput.trim() ? toolInput.trim().split(/\s+/).length : 0;
-          const lines = toolInput.split('\n').length;
-          const bytes = new Blob([toolInput]).size;
-          result = `Characters: ${chars}\nWords: ${words}\nLines: ${lines}\nBytes: ${bytes}`;
-          break;
-
-        case 'remove-whitespace':
-          result = toolInput.replace(/\s+/g, ' ').trim();
-          break;
-
-        case 'sort-lines':
-          result = toolInput.split('\n').sort().join('\n');
-          break;
-
-        case 'unique-lines':
-          result = [...new Set(toolInput.split('\n'))].join('\n');
-          break;
-
-        case 'word-frequency':
-          const words2 = toolInput.toLowerCase().match(/\b\w+\b/g) || [];
-          const frequency = {};
-          words2.forEach(word => frequency[word] = (frequency[word] || 0) + 1);
-          result = Object.entries(frequency)
-            .sort(([,a], [,b]) => b - a)
-            .map(([word, count]) => `${word}: ${count}`)
-            .join('\n');
-          break;
-
-        default:
-          result = 'Tool functionality not implemented yet';
+      // Get additional parameters for specific tools
+      if (tool.hasShift) {
+        params.shift = parseInt(document.getElementById('shift-input')?.value || '3');
+      }
+      if (tool.hasKey) {
+        params.key = document.getElementById('key-input')?.value || '';
       }
 
-      setToolOutput(result);
+      const result = await executeTool(
+        tool.id, 
+        toolInput, 
+        tool.action === 'dual' ? selectedAction : tool.action,
+        params
+      );
+
+      // Handle special result types
+      if (typeof result === 'object' && result.layers) {
+        setBase64Result(result);
+        setToolOutput(result.finalResult);
+      } else {
+        setToolOutput(result);
+      }
     } catch (error) {
       setToolOutput(`Error: ${error.message}`);
       toast.error('An error occurred while processing');
