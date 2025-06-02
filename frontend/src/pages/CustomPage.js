@@ -239,11 +239,11 @@ const CustomPage = () => {
 
         <div>
           {/* Scripts List */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-200 mb-4">Script Library</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-200 mb-6">Script Library</h3>
             
             {loading ? (
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[1, 2, 3].map((n) => (
                   <div key={n} className="bg-gray-800 border border-gray-700 rounded-xl p-6 animate-pulse">
                     <div className="flex items-start space-x-4">
@@ -273,40 +273,42 @@ const CustomPage = () => {
                 </div>
               </div>
             ) : (
-              scripts.map((script) => (
-                <div
-                  key={script.name}
-                  className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-slate-500/50 hover:shadow-lg hover:shadow-slate-500/10 rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02]"
-                  onClick={() => executeScript(script.name)}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className="p-2 bg-slate-600/20 rounded-lg">
-                          <Code size={20} className="text-slate-400" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {scripts.map((script) => (
+                  <div
+                    key={script.name}
+                    className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-slate-500/50 hover:shadow-lg hover:shadow-slate-500/10 rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02]"
+                    onClick={() => executeScript(script.name)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <div className="p-2 bg-slate-600/20 rounded-lg">
+                            <Code size={20} className="text-slate-400" />
+                          </div>
+                          <h4 className="text-lg font-semibold text-gray-100">{script.name}</h4>
                         </div>
-                        <h4 className="text-lg font-semibold text-gray-100">{script.name}</h4>
+                        <p className="text-gray-400 text-sm mb-3">{script.description || 'No description available'}</p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span className="flex items-center space-x-1">
+                            <Terminal size={14} />
+                            <span>{script.command}</span>
+                          </span>
+                          <span className="flex items-center space-x-1">
+                            <Clock size={14} />
+                            <span>{new Date(script.created_at).toLocaleDateString()}</span>
+                          </span>
+                        </div>
                       </div>
-                      <p className="text-gray-400 text-sm mb-3">{script.description || 'No description available'}</p>
-                      <div className="flex items-center space-x-4 text-xs text-gray-500">
-                        <span className="flex items-center space-x-1">
-                          <Terminal size={14} />
-                          <span>{script.command}</span>
-                        </span>
-                        <span className="flex items-center space-x-1">
-                          <Clock size={14} />
-                          <span>{new Date(script.created_at).toLocaleDateString()}</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="p-2 bg-green-600/20 text-green-400 rounded-lg">
-                        <Play size={16} />
+                      <div className="flex items-center space-x-2">
+                        <div className="p-2 bg-green-600/20 text-green-400 rounded-lg">
+                          <Play size={16} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         </div>
