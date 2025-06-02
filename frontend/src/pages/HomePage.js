@@ -200,7 +200,7 @@ const HomePage = () => {
                 
                 {/* Search Results */}
                 {searchTerm && filteredTools.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/95 backdrop-blur-sm border border-slate-600/50 rounded-xl shadow-2xl max-h-96 overflow-y-auto z-20">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-slate-900/95 backdrop-blur-sm border border-slate-600/50 rounded-xl shadow-2xl max-h-96 overflow-y-auto z-20 animate-slideInDown">
                     <div className="p-2">
                       {filteredTools.slice(0, 8).map((tool, index) => (
                         <div
@@ -214,7 +214,8 @@ const HomePage = () => {
                               } 
                             });
                           }}
-                          className="p-4 hover:bg-slate-800/50 rounded-lg cursor-pointer transition-all duration-200 group"
+                          className="p-4 hover:bg-slate-800/50 rounded-lg cursor-pointer transition-all duration-200 group animate-fadeInUp"
+                          style={{ animationDelay: `${index * 50}ms` }}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
