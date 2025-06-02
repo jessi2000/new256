@@ -265,6 +265,8 @@ test_plan:
     - "Custom Scripts Management"
     - "MongoDB Integration"
     - "Tools Functionality"
+    - "New Custom Scripts"
+    - "File Upload for Scripts"
   stuck_tasks: 
     - "Tools Functionality"
   test_all: false
