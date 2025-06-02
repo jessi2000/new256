@@ -291,6 +291,8 @@ agent_communication:
   - agent: "main"
     message: "I've implemented all the visual improvements requested. Please test them thoroughly."
   - agent: "testing"
+    message: "Completed testing of the Encoding Detective tool display format. The tool is implemented as 'Multi-layer Base64 Decoder' in the SectoolBox application. It is accessible from the Tools page and has the requested display format with '📋 LAYER X:' and '🔓 DECRYPTING WITH: [ENCODING TYPE]' for each layer. The tool successfully decodes multi-layer encoded text as requested. The new display format makes it clear what encoding type is being used for each layer of decoding."
+  - agent: "testing"
     message: "I've tested all the visual improvements and they are working as expected. The Tools Page Blue Border Animation is visible when hovering over tool cards. The Homepage Cleanup has been completed with the stats boxes and 'Professional CTF & Security Analysis Platform' text removed. The Enhanced Navigation Bar has subtle improvements that match the overall theme. The File Analysis Improvements have been implemented with search bars no longer having emoji icons. The Custom Page now has a Network Scanner script, bringing the total to 5 scripts. The Overall Theme Consistency has been achieved with all purple accents replaced with slate/navy tones."
   - agent: "testing"
     message: "Completed comprehensive testing of the SectoolBox backend. All functionality is working correctly including health check, announcements, file analysis, and custom scripts. MongoDB integration is working properly for all operations."
