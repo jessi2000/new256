@@ -519,13 +519,11 @@ async def upload_file_for_script(request: Request, file: UploadFile = File(...))
         safe_filename = SecurityValidator.sanitize_filename(file.filename)
         
         # Read file content with size limit
-        file_content = b""
-        total_size = 0
-        async for chunk in file.stream():
-            total_size += len(chunk)
-            if total_size > SecurityConfig.MAX_FILE_SIZE:
-                raise HTTPException(status_code=413, detail="File too large")
-            file_content += chunk
+        file_content = await file.read()
+        
+        # Check file size after reading
+        if len(file_content) > SecurityConfig.MAX_FILE_SIZE:
+            raise HTTPException(status_code=413, detail="File too large")
         
         # Get MIME type
         mime_type = magic.from_buffer(file_content, mime=True)
