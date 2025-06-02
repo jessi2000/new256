@@ -4,20 +4,20 @@ import {
   Lock, 
   Hash, 
   FileText, 
-  RotateCcw 
+  RotateCcw,
+  Search
 } from 'lucide-react';
 
 // Import all tool configurations
 import base64Config from './base64/config.json';
 import urlConfig from './url/config.json';
-import htmlConfig from './html/config.json';
+import base32Config from './base32/config.json';
 import hexConfig from './hex/config.json';
 import binaryConfig from './binary/config.json';
 import asciiConfig from './ascii/config.json';
 import caesarConfig from './caesar-cipher/config.json';
 import rot13Config from './rot13/config.json';
-import md5Config from './md5-hash/config.json';
-import sha256Config from './sha256-hash/config.json';
+import encodingDetectiveConfig from './encoding-detective/config.json';
 
 // Icon mapping
 const iconMap = {
@@ -25,21 +25,21 @@ const iconMap = {
   'Lock': Lock,
   'Hash': Hash,
   'FileText': FileText,
-  'RotateCcw': RotateCcw
+  'RotateCcw': RotateCcw,
+  'Search': Search
 };
 
 // Load all tool configurations
 const toolConfigs = [
   base64Config,
   urlConfig,
-  htmlConfig,
+  base32Config,
   hexConfig,
   binaryConfig,
   asciiConfig,
   caesarConfig,
   rot13Config,
-  md5Config,
-  sha256Config
+  encodingDetectiveConfig
 ];
 
 // Process tools and add icon components
@@ -61,9 +61,9 @@ export const executeTool = async (toolId, input, action, params = {}) => {
       const { executeURLTool } = await import('./url/URLTool.js');
       return executeURLTool(input, action);
     }
-    case 'html': {
-      const { executeHTMLTool } = await import('./html/HTMLTool.js');
-      return executeHTMLTool(input, action);
+    case 'base32': {
+      const { executeBase32Tool } = await import('./base32/Base32Tool.js');
+      return executeBase32Tool(input, action);
     }
     case 'hex': {
       const { executeHexTool } = await import('./hex/HexTool.js');
@@ -85,13 +85,9 @@ export const executeTool = async (toolId, input, action, params = {}) => {
       const { executeROT13Tool } = await import('./rot13/ROT13Tool.js');
       return executeROT13Tool(input);
     }
-    case 'md5-hash': {
-      const { executeMD5Tool } = await import('./md5-hash/MD5Tool.js');
-      return executeMD5Tool(input);
-    }
-    case 'sha256-hash': {
-      const { executeSHA256Tool } = await import('./sha256-hash/SHA256Tool.js');
-      return executeSHA256Tool(input);
+    case 'encoding-detective': {
+      const { executeEncodingDetective } = await import('./encoding-detective/EncodingDetectiveTool.js');
+      return executeEncodingDetective(input);
     }
     default:
       return 'Tool not implemented yet';
