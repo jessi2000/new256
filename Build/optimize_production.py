@@ -224,12 +224,12 @@ def create_production_checklist():
 - [ ] Documentation accessible
 
 ---
-Generated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
+Generated: TIMESTAMP_PLACEHOLDER
 """
     
     import datetime
     timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
-    checklist_content = checklist.replace('{datetime.datetime.utcnow().strftime(\'%Y-%m-%d %H:%M:%S UTC\')}', timestamp)
+    checklist_content = checklist.replace('TIMESTAMP_PLACEHOLDER', timestamp)
     
     checklist_file = Path("/app/Build/PRODUCTION_CHECKLIST.md")
     with open(checklist_file, 'w') as f:
