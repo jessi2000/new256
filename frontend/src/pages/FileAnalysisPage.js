@@ -498,113 +498,184 @@ const FileAnalysisPage = () => {
   );
 };
 
-// Overview Tab Component
-const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) => (
-  <div className="analysis-grid">
-    {/* File Information */}
-    <div className="tool-card">
-      <h3 className="heading-md mb-4 flex items-center">
-        <FileText size={20} className="mr-2 text-blue-400" />
-        File Information
-      </h3>
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-400">Name:</span>
-          <span className="text-gray-200">{metadata?.name}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">Size:</span>
-          <span className="text-gray-200">{(metadata?.size / 1024).toFixed(2)} KB</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">Type:</span>
-          <span className="text-gray-200">{metadata?.type || 'Unknown'}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">Modified:</span>
-          <span className="text-gray-200">{new Date(metadata?.lastModified).toLocaleString()}</span>
-        </div>
-      </div>
-    </div>
+// Overview Tab Component - Enhanced with real analysis
+const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) => {
+  // File type analysis
+  const getFileTypeAnalysis = (type, size) => {
+    const typeCategories = {
+      'image/': 'Image File',
+      'video/': 'Video File', 
+      'audio/': 'Audio File',
+      'text/': 'Text File',
+      'application/pdf': 'PDF Document',
+      'application/zip': 'Archive',
+      'application/x-executable': 'Executable',
+      'application/octet-stream': 'Binary File'
+    };
+    
+    for (const [key, category] of Object.entries(typeCategories)) {
+      if (type && type.startsWith(key)) {
+        return category;
+      }
+    }
+    return 'Unknown File Type';
+  };
 
-    {/* Entropy Analysis */}
-    {entropy && (
+  // Security assessment based on actual file properties
+  const getSecurityAssessment = () => {
+    const findings = [];
+    
+    if (entropy?.value > 7.5) {
+      findings.push({ type: 'warning', text: 'High entropy - may be encrypted/compressed' });
+    } else if (entropy?.value < 1) {
+      findings.push({ type: 'info', text: 'Low entropy - structured data detected' });
+    } else {
+      findings.push({ type: 'success', text: 'Normal entropy levels' });
+    }
+    
+    if (metadata?.size > 100 * 1024 * 1024) { // 100MB
+      findings.push({ type: 'warning', text: 'Large file size - review carefully' });
+    }
+    
+    if (stringCount > 1000) {
+      findings.push({ type: 'info', text: 'High string count - rich text content' });
+    } else if (stringCount === 0) {
+      findings.push({ type: 'warning', text: 'No readable strings found' });
+    }
+    
+    findings.push({ type: 'success', text: 'Analysis completed locally' });
+    findings.push({ type: 'success', text: 'No data transmitted externally' });
+    
+    return findings;
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const securityFindings = getSecurityAssessment();
+
+  return (
+    <div className="analysis-grid">
+      {/* Enhanced File Information */}
       <div className="tool-card">
         <h3 className="heading-md mb-4 flex items-center">
-          <BarChart3 size={20} className="mr-2 text-green-400" />
-          Entropy Analysis
+          <FileText size={20} className="mr-2 text-blue-400" />
+          File Properties
         </h3>
-        <div className="space-y-3">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">Entropy Value:</span>
-              <span className="text-gray-200">{entropy.value.toFixed(4)}</span>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-400">Name:</span>
+            <span className="text-gray-200 break-all max-w-48">{metadata?.name}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Size:</span>
+            <span className="text-gray-200">{formatFileSize(metadata?.size || 0)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Type:</span>
+            <span className="text-gray-200">{getFileTypeAnalysis(metadata?.type, metadata?.size)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">MIME:</span>
+            <span className="text-gray-200 font-mono text-xs">{metadata?.type || 'Unknown'}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Modified:</span>
+            <span className="text-gray-200 text-xs">{new Date(metadata?.lastModified).toLocaleString()}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Enhanced Entropy Analysis */}
+      {entropy && (
+        <div className="tool-card">
+          <h3 className="heading-md mb-4 flex items-center">
+            <BarChart3 size={20} className="mr-2 text-green-400" />
+            Entropy Analysis
+          </h3>
+          <div className="space-y-3">
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-gray-400">Shannon Entropy:</span>
+                <span className="text-gray-200 font-mono">{entropy.value.toFixed(4)} bits</span>
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-3 relative">
+                <div 
+                  className={`h-3 rounded-full transition-all duration-500 ${
+                    entropy.value < 3 ? 'bg-green-500' :
+                    entropy.value < 6 ? 'bg-yellow-500' :
+                    entropy.value < 7.5 ? 'bg-orange-500' : 'bg-red-500'
+                  }`}
+                  style={{ width: `${(entropy.normalized * 100)}%` }}
+                ></div>
+                <div className="absolute top-0 left-0 w-full h-full flex justify-between items-center px-2 text-xs">
+                  <span className="text-gray-300">0</span>
+                  <span className="text-gray-300">8</span>
+                </div>
+              </div>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
-              <div 
-                className="bg-gradient-to-r from-green-500 to-red-500 h-2 rounded-full"
-                style={{ width: `${(entropy.normalized * 100)}%` }}
-              ></div>
+            <div className="bg-gray-800/50 p-3 rounded-lg">
+              <p className="text-sm text-gray-300">
+                <span className="text-gray-400">Assessment:</span> {entropy.assessment}
+              </p>
             </div>
           </div>
-          <p className="text-sm text-gray-300">
-            <span className="text-gray-400">Assessment:</span> {entropy.assessment}
-          </p>
+        </div>
+      )}
+
+      {/* Content Analysis */}
+      <div className="tool-card">
+        <h3 className="heading-md mb-4 flex items-center">
+          <Hash size={20} className="mr-2 text-purple-400" />
+          Content Analysis
+        </h3>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-400">Printable Strings:</span>
+            <span className="text-gray-200">{stringCount.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">String Density:</span>
+            <span className="text-gray-200">
+              {metadata?.size ? ((stringCount / metadata.size) * 1000).toFixed(2) : '0'} per KB
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Hash Algorithms:</span>
+            <span className="text-gray-200">{hashResults ? Object.keys(hashResults).length : 0} computed</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-400">Analysis Method:</span>
+            <span className="text-green-400">Client-side processing</span>
+          </div>
         </div>
       </div>
-    )}
 
-    {/* Quick Stats */}
-    <div className="tool-card">
-      <h3 className="heading-md mb-4 flex items-center">
-        <Hash size={20} className="mr-2 text-purple-400" />
-        Quick Stats
-      </h3>
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-400">Extracted Strings:</span>
-          <span className="text-gray-200">{stringCount}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">MD5 Hash:</span>
-          <span className="text-gray-200 font-mono text-xs">{hashResults?.md5 || 'Calculating...'}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">SHA256 Hash:</span>
-          <span className="text-gray-200 font-mono text-xs">{hashResults?.sha256?.substring(0, 16) || 'Calculating...'}...</span>
+      {/* Security Assessment */}
+      <div className="tool-card">
+        <h3 className="heading-md mb-4 flex items-center">
+          <AlertCircle size={20} className="mr-2 text-amber-400" />
+          Security Assessment
+        </h3>
+        <div className="space-y-2">
+          {securityFindings.map((finding, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              {finding.type === 'success' && <CheckCircle size={16} className="text-green-400" />}
+              {finding.type === 'warning' && <AlertCircle size={16} className="text-amber-400" />}
+              {finding.type === 'info' && <CheckCircle size={16} className="text-blue-400" />}
+              <span className="text-sm text-gray-300">{finding.text}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-
-    {/* Security Assessment */}
-    <div className="tool-card">
-      <h3 className="heading-md mb-4 flex items-center">
-        <AlertCircle size={20} className="mr-2 text-amber-400" />
-        Security Assessment
-      </h3>
-      <div className="space-y-2">
-        <div className="flex items-center space-x-2">
-          <CheckCircle size={16} className="text-green-400" />
-          <span className="text-sm text-gray-300">Local processing only</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <CheckCircle size={16} className="text-green-400" />
-          <span className="text-sm text-gray-300">No data transmitted</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          {entropy?.value > 7.5 ? (
-            <AlertCircle size={16} className="text-amber-400" />
-          ) : (
-            <CheckCircle size={16} className="text-green-400" />
-          )}
-          <span className="text-sm text-gray-300">
-            {entropy?.value > 7.5 ? 'High entropy detected' : 'Normal entropy levels'}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 // Enhanced Strings Tab Component with Length Filter
 const StringsTab = ({ strings, searchTerm, setSearchTerm, lengthFilter, setLengthFilter, isSearching, onCopy }) => {
