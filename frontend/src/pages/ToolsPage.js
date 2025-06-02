@@ -854,27 +854,27 @@ const ToolsPage = () => {
                 {/* Content */}
                 <div className="relative z-10 flex flex-col h-full p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-lg font-semibold text-gray-100 group-hover:text-white transition-colors duration-300 flex-1 min-h-[3.5rem] line-clamp-2">
+                    <h3 className="text-lg font-semibold text-gray-100 group-hover:text-slate-200 transition-colors duration-300 flex-1 min-h-[3.5rem] line-clamp-2">
                       {tool.name}
                     </h3>
-                    <div className="ml-2 p-1 bg-slate-800/50 rounded-lg group-hover:bg-slate-600/70 transition-colors duration-300">
-                      <Play size={16} className="text-slate-400 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                    <div className="ml-2 p-1 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/80 transition-colors duration-300">
+                      <Play size={16} className="text-slate-400 group-hover:text-slate-200 group-hover:scale-110 transition-all duration-300" />
                     </div>
                   </div>
                   
-                  <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-200 transition-colors duration-300 line-clamp-3 flex-grow">
+                  <p className="text-gray-400 text-sm mb-4 group-hover:text-gray-300 transition-colors duration-300 line-clamp-3 flex-grow">
                     {tool.description}
                   </p>
                   
                   <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs px-3 py-1 bg-slate-700/60 text-slate-300 border border-slate-600/40 rounded-full group-hover:bg-slate-500/80 group-hover:border-slate-400/60 group-hover:text-white transition-all duration-300">
+                    <span className="text-xs px-3 py-1 bg-slate-700/60 text-slate-300 border border-slate-600/40 rounded-full group-hover:bg-slate-600/90 group-hover:border-slate-400/70 group-hover:text-slate-200 transition-all duration-300">
                       {tool.category}
                     </span>
                     
                     {/* Status Indicator */}
                     <div className="flex items-center space-x-1">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse group-hover:bg-green-400"></div>
-                      <span className="text-xs text-slate-500 group-hover:text-slate-300 transition-colors duration-300">Ready</span>
+                      <span className="text-xs text-slate-500 group-hover:text-slate-400 transition-colors duration-300">Ready</span>
                     </div>
                   </div>
                 </div>
