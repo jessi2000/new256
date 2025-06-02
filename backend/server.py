@@ -32,6 +32,8 @@ from slowapi.middleware import SlowAPIMiddleware
 from secure import Secure
 
 # Import our security module
+import sys
+sys.path.append('/app/backend')
 from security import (
     SecurityConfig, SecurityValidator, SecurityLogger, security_logger,
     create_secure_error_response
