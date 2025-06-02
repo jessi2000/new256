@@ -1,5 +1,0 @@
-{
-  "name": "Demo Text Analyzer",
-  "command": "python script.py",
-  "description": "Analyzes text patterns, character frequencies, and potential encoding patterns for CTF challenges"
-}
