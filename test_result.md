@@ -267,8 +267,10 @@ test_plan:
     - "Tools Functionality"
     - "New Custom Scripts"
     - "File Upload for Scripts"
+    - "Encoding Detective Tool"
   stuck_tasks: 
     - "Tools Functionality"
+    - "Encoding Detective Tool"
   test_all: false
   test_priority: "high_first"
 
