@@ -34,7 +34,7 @@ const CustomPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Use useRef to prevent duplicate calls
-  const hasInitialized = React.useRef(false);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
     if (!hasInitialized.current) {
