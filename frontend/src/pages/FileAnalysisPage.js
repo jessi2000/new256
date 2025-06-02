@@ -790,14 +790,6 @@ const FileAnalysisPage = () => {
                 />
               )}
 
-              {activeTab === 'security' && (
-                <SecurityTab 
-                  securityAnalysis={securityAnalysis}
-                  metadata={fileMetadata}
-                  entropy={entropy}
-                />
-              )}
-
               {activeTab === 'strings' && (
                 <StringsTab 
                   strings={filteredStrings}
