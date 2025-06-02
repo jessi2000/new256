@@ -58,6 +58,21 @@ backend:
       - working: true
         agent: "testing"
         comment: "All 6 custom scripts (Demo Text Analyzer, Network Scanner, Sample Hash Tool, Port Scanner, Example Tool) are loading and executing successfully."
+      - working: true
+        agent: "testing"
+        comment: "Verified that the three new custom scripts (ExifTool Analyzer, File Inspector, String Extractor) are loading and executing correctly. All scripts successfully process uploaded files and return appropriate results."
+
+  - task: "New Custom Scripts"
+    implemented: true
+    working: true
+    file: "/app/backend/custom-scripts/"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The three new custom scripts (ExifTool Analyzer, File Inspector, String Extractor) have been successfully implemented and are working correctly. Each script correctly processes uploaded files and provides detailed analysis results."
 
   - task: "MongoDB Integration"
     implemented: true
