@@ -240,7 +240,7 @@ const CustomPage = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
           {/* Scripts List */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-200 mb-4">Script Library</h3>
@@ -279,12 +279,8 @@ const CustomPage = () => {
               scripts.map((script) => (
                 <div
                   key={script.name}
-                  className={`bg-gradient-to-r from-gray-800 to-gray-900 border rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
-                    selectedScript?.name === script.name
-                      ? 'border-slate-500 shadow-lg shadow-slate-500/25'
-                      : 'border-gray-700 hover:border-slate-500/50 hover:shadow-lg hover:shadow-slate-500/10'
-                  }`}
-                  onClick={() => setSelectedScript(script)}
+                  className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-slate-500/50 hover:shadow-lg hover:shadow-slate-500/10 rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02]"
+                  onClick={() => executeScript(script.name)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -307,64 +303,13 @@ const CustomPage = () => {
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          executeScript(script.name);
-                        }}
-                        disabled={isExecuting}
-                        className="p-2 bg-green-600/20 hover:bg-green-600/30 text-green-400 rounded-lg transition-colors disabled:opacity-50"
-                        title="Execute Script"
-                      >
+                      <div className="p-2 bg-green-600/20 text-green-400 rounded-lg">
                         <Play size={16} />
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))
-            )}
-          </div>
-
-          {/* Execution Results */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-200 mb-4">Execution Results</h3>
-            
-            {selectedScript ? (
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Terminal size={20} className="text-slate-400" />
-                    <h4 className="text-lg font-semibold text-gray-200">{selectedScript.name}</h4>
-                  </div>
-                  <button
-                    onClick={() => executeScript(selectedScript.name)}
-                    disabled={isExecuting}
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isExecuting ? (
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                      <Play size={16} />
-                    )}
-                    <span>{isExecuting ? 'Executing...' : 'Execute'}</span>
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Command:</label>
-                    <div className="bg-gray-900 border border-gray-600 rounded-lg p-3 font-mono text-sm text-gray-100">
-                      {selectedScript.command}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 text-center">
-                <Terminal size={48} className="mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">Select a script</h3>
-                <p className="text-gray-500">Choose a script from the left panel to view details and execute it</p>
-              </div>
             )}
           </div>
         </div>
