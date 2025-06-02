@@ -218,18 +218,8 @@ def run_tests():
     test_suite = unittest.TestSuite()
     test_suite.addTest(unittest.makeSuite(BackendAPITest))
     
-    # Redirect stdout to capture output
-    old_stdout = sys.stdout
-    sys.stdout = mystdout = StringCapture()
-    
     # Run tests
     result = unittest.TextTestRunner(verbosity=2).run(test_suite)
-    
-    # Restore stdout
-    sys.stdout = old_stdout
-    
-    # Print captured output
-    print(mystdout.getvalue())
     
     return result
 
