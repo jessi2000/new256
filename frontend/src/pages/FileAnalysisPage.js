@@ -104,16 +104,41 @@ const FileAnalysisPage = () => {
   const handleFileUpload = useCallback(async (uploadedFile) => {
     if (!uploadedFile) return;
 
+    // Security validation
+    const fileValidation = validateFile(uploadedFile);
+    if (!fileValidation.isValid) {
+      toast.error(`File validation failed: ${fileValidation.errors.join(', ')}`);
+      logSecurityEvent('FILE_UPLOAD_REJECTED', { 
+        filename: uploadedFile.name, 
+        errors: fileValidation.errors 
+      });
+      return;
+    }
+
+    // Rate limiting check
+    if (!checkRateLimit('file_upload', 5, 60000)) { // 5 uploads per minute
+      toast.error('Rate limit exceeded. Please wait before uploading another file.');
+      logSecurityEvent('RATE_LIMIT_EXCEEDED', { operation: 'file_upload' });
+      return;
+    }
+
+    // Show warnings if any
+    if (fileValidation.warnings.length > 0) {
+      fileValidation.warnings.forEach(warning => {
+        toast.warn(warning, { duration: 5000 });
+      });
+    }
+
     setFile(uploadedFile);
     setIsUploading(true);
     setIsAnalyzing(true);
 
     try {
-      // Extract file metadata
+      // Extract file metadata with security validation
       const metadata = {
-        name: uploadedFile.name,
+        name: sanitizeTextInput(uploadedFile.name, 255),
         size: uploadedFile.size,
-        type: uploadedFile.type,
+        type: uploadedFile.type || 'application/octet-stream',
         lastModified: uploadedFile.lastModified
       };
       setFileMetadata(metadata);
@@ -121,35 +146,48 @@ const FileAnalysisPage = () => {
       const fileContent = await uploadedFile.arrayBuffer();
       const uint8Array = new Uint8Array(fileContent);
 
+      // Perform security analysis
+      const securityCheck = performSecurityAnalysis(uint8Array, metadata);
+      setSecurityAnalysis(securityCheck);
+
       // Calculate entropy
       const entropyResult = calculateEntropy(uint8Array);
       setEntropy(entropyResult);
 
-      // Extract strings
+      // Extract strings with security filtering
       const strings = extractStrings(uint8Array);
       setExtractedStrings(strings);
 
-      // Generate hex dump
-      const hex = generateHexDump(uint8Array);
+      // Generate hex dump (limited for security)
+      const hex = generateHexDump(uint8Array.slice(0, 65536)); // Limit to 64KB
       setHexData(hex);
 
       // Calculate hashes
       const hashes = await calculateHashes(uint8Array);
       setHashResults(hashes);
 
-      // Extract EXIF data for images
+      // Extract EXIF data for images with security validation
       if (uploadedFile.type.startsWith('image/')) {
         try {
           const exif = await extractExifData(uploadedFile);
           setExifData(exif);
         } catch (error) {
           console.warn('EXIF extraction failed:', error);
+          logSecurityEvent('EXIF_EXTRACTION_FAILED', { error: error.message });
         }
       }
+
+      // Log successful analysis
+      logSecurityEvent('FILE_ANALYSIS_COMPLETED', { 
+        filename: metadata.name, 
+        size: metadata.size,
+        security: securityCheck.riskLevel
+      });
 
       toast.success('File analysis completed successfully!');
     } catch (error) {
       console.error('Analysis error:', error);
+      logSecurityEvent('FILE_ANALYSIS_ERROR', { error: error.message });
       toast.error('Failed to analyze file. Please try again.');
     } finally {
       setIsUploading(false);
