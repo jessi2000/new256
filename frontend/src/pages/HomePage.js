@@ -287,31 +287,6 @@ const HomePage = () => {
                 )}
               </form>
             </div>
-
-            {/* Compact Encoding Detective Promotion */}
-            <div className="max-w-md mx-auto mb-12 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
-              <div 
-                className="bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 backdrop-blur-sm border border-blue-500/20 rounded-lg p-4 group hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:border-blue-500/40"
-                onClick={() => navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } })}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-600/20 rounded-lg group-hover:bg-blue-600/30 transition-colors">
-                      <Search size={16} className="text-blue-400" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-blue-300 group-hover:text-blue-200 transition-colors">
-                        🔍 Try Encoding Detective
-                      </div>
-                      <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
-                        Decode multi-layer encodings automatically
-                      </div>
-                    </div>
-                  </div>
-                  <ArrowRight size={14} className="text-blue-400 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
