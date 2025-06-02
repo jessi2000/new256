@@ -1,0 +1,9 @@
+{
+  "id": "encoding-detective",
+  "name": "Encoding Detective",
+  "description": "Intelligent multi-layer encoding detection and decoding",
+  "category": "crypto",
+  "icon": "Search",
+  "iconColor": "text-cyan-400",
+  "action": "execute"
+}
