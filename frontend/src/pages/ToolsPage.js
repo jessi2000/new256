@@ -141,7 +141,7 @@ const ToolsPage = () => {
         params.key = document.getElementById('key-input')?.value || '';
       }
 
-      const result = await executeTool(
+      const result = await executeToolFromLoader(
         tool.id, 
         toolInput, 
         tool.action === 'dual' ? selectedAction : tool.action,
