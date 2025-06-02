@@ -29,7 +29,9 @@ import {
   ChevronRight,
   Activity,
   Cpu,
-  Database
+  Database,
+  History,
+  Plus
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -44,7 +46,7 @@ const HomePage = () => {
 
   // Mock tools data for search functionality
   const tools = [
-    { name: 'Base64 Encoder/Decoder', description: 'Encode/decode Base64 with multi-layer support', category: 'encoding', icon: <Code size={16} /> },
+    { name: 'Base64 Encoder/Decoder', description: 'Encode/decode Base64', category: 'encoding', icon: <Code size={16} /> },
     { name: 'URL Encoder/Decoder', description: 'Encode/decode URL text', category: 'encoding', icon: <Code size={16} /> },
     { name: 'HTML Entity Encoder/Decoder', description: 'Encode/decode HTML entities', category: 'encoding', icon: <Code size={16} /> },
     { name: 'Hex Encoder/Decoder', description: 'Convert text to/from hexadecimal', category: 'encoding', icon: <Hash size={16} /> },
@@ -78,6 +80,34 @@ const HomePage = () => {
     { label: 'Categories', value: '8', icon: <Shield size={24} />, color: 'text-slate-400' },
     { label: 'Uptime', value: '99.9%', icon: <Activity size={24} />, color: 'text-green-400' },
     { label: 'Active Users', value: '1K+', icon: <Users size={24} />, color: 'text-slate-400' }
+  ];
+
+  // Mock changelog data for demonstration
+  const changelogEntries = [
+    {
+      id: 1,
+      title: '🚀 New Multi-layer Base64 Decoder',
+      content: 'Enhanced Base64 decoder now supports automatic detection and decoding of multiple encoding layers. Perfect for CTF challenges!',
+      date: '2025-01-15',
+      type: 'feature',
+      important: false
+    },
+    {
+      id: 2,
+      title: '⚡ Performance Improvements',
+      content: 'Optimized file analysis engine for 40% faster processing of large binaries and enhanced memory usage.',
+      date: '2025-01-12',
+      type: 'improvement',
+      important: false
+    },
+    {
+      id: 3,
+      title: '🔧 Enhanced Cryptographic Tools',
+      content: 'Added new cipher tools including Bacon cipher, MD4 hashing, and improved XOR cipher functionality.',
+      date: '2025-01-10',
+      type: 'feature',
+      important: true
+    }
   ];
 
   const features = [
@@ -144,6 +174,15 @@ const HomePage = () => {
     return colors[category] || 'bg-slate-700/20 text-slate-300 border-slate-600/30';
   };
 
+  const getChangelogIcon = (type) => {
+    switch (type) {
+      case 'feature': return <Plus size={20} className="text-green-400" />;
+      case 'improvement': return <Zap size={20} className="text-blue-400" />;
+      case 'fix': return <CheckCircle size={20} className="text-orange-400" />;
+      default: return <Star size={20} className="text-purple-400" />;
+    }
+  };
+
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
 
@@ -160,28 +199,8 @@ const HomePage = () => {
             
             <div className="mb-8">
               <p className="text-lg text-slate-400 font-mono animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
-                // Advanced toolset for cybersecurity professionals
+                ~ Everything you need to decode, hash, and inspect binaries, all in one place ~
               </p>
-            </div>
-
-            {/* Announcement Box */}
-            <div className="max-w-2xl mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
-              <div className="bg-gradient-to-r from-slate-800/95 to-slate-900/95 border border-slate-600/60 rounded-xl backdrop-blur-sm shadow-lg p-6 group hover:from-slate-700/95 hover:to-slate-800/95 hover:border-slate-500/80 transition-all duration-300">
-                <div className="flex items-start space-x-4">
-                  <div className="p-2 bg-blue-600/20 text-blue-400 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                    <Star size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-200 mb-2 group-hover:text-white transition-colors">
-                      🎉 New Features Available!
-                    </h3>
-                    <p className="text-slate-400 group-hover:text-slate-300 transition-colors text-sm">
-                      Enhanced file analysis with advanced image scanning, improved tool performance, and new cryptographic utilities. 
-                      <span className="text-blue-400 hover:text-blue-300 ml-1 cursor-pointer">Learn more →</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Centered Search Section */}
@@ -263,7 +282,51 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Announcements */}
+        {/* Changelog Section */}
+        <div className="space-y-6 mb-16">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-200 flex items-center space-x-3">
+              <History size={28} className="text-slate-400" />
+              <span>Changelog</span>
+            </h2>
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
+
+          <div className="grid gap-4">
+            {changelogEntries.map((entry) => (
+              <div
+                key={entry.id}
+                className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:bg-slate-900/60 hover:border-slate-600/70 transition-all duration-300 group"
+              >
+                <div className="flex items-start space-x-4">
+                  <div className={`p-2 rounded-lg ${entry.important ? 'bg-red-600/20' : 'bg-slate-600/20'} group-hover:scale-110 transition-transform duration-300`}>
+                    {entry.important ? <AlertCircle size={20} className="text-red-400" /> : getChangelogIcon(entry.type)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-slate-200 group-hover:text-white transition-colors">
+                        {entry.title}
+                      </h3>
+                      <div className="text-sm text-slate-500 flex items-center space-x-2">
+                        <Clock size={14} />
+                        <span>{new Date(entry.date).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'short', 
+                          day: 'numeric' 
+                        })}</span>
+                      </div>
+                    </div>
+                    <p className="text-slate-400 group-hover:text-slate-300 transition-colors">
+                      {entry.content}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Legacy Announcements (if any exist from backend) */}
         {announcements.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
