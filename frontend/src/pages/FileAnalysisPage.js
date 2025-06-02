@@ -319,14 +319,6 @@ const FileAnalysisPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="heading-xl mb-4">File Analysis Platform</h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Comprehensive file analysis including string extraction, hex dumping, hash calculation, and metadata analysis
-          </p>
-        </div>
-
         {/* File Upload Area */}
         {!file ? (
           <div
@@ -339,7 +331,10 @@ const FileAnalysisPage = () => {
               <h3 className="text-xl font-semibold text-gray-200 mb-2">
                 Drop your file here or click to browse
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-gray-400 mb-4">
+                Comprehensive file analysis including string extraction, hex dumping, hash calculation, and metadata analysis
+              </p>
+              <p className="text-gray-500 mb-6">
                 Supports all file types • Max size: 100MB
               </p>
               <input
