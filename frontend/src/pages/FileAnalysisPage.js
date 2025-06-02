@@ -754,43 +754,6 @@ const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) 
         </div>
       </div>
 
-      {/* Enhanced Entropy Analysis */}
-      {entropy && (
-        <div className="tool-card">
-          <h3 className="heading-md mb-4 flex items-center">
-            <BarChart3 size={20} className="mr-2 text-green-400" />
-            Entropy Analysis
-          </h3>
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-400">Shannon Entropy:</span>
-                <span className="text-gray-200 font-mono">{entropy.value.toFixed(4)} bits</span>
-              </div>
-              <div className="w-full bg-gray-700 rounded-full h-3 relative">
-                <div 
-                  className={`h-3 rounded-full transition-all duration-500 ${
-                    entropy.value < 3 ? 'bg-green-500' :
-                    entropy.value < 6 ? 'bg-yellow-500' :
-                    entropy.value < 7.5 ? 'bg-orange-500' : 'bg-red-500'
-                  }`}
-                  style={{ width: `${(entropy.normalized * 100)}%` }}
-                ></div>
-                <div className="absolute top-0 left-0 w-full h-full flex justify-between items-center px-2 text-xs">
-                  <span className="text-gray-300">0</span>
-                  <span className="text-gray-300">8</span>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-800/50 p-3 rounded-lg">
-              <p className="text-sm text-gray-300">
-                <span className="text-gray-400">Assessment:</span> {entropy.assessment}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Content Analysis */}
       <div className="tool-card">
         <h3 className="heading-md mb-4 flex items-center">
