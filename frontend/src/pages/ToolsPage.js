@@ -40,7 +40,7 @@ const ToolsPage = () => {
 
   // Handle navigation from HomePage search
   useEffect(() => {
-    if (location.state?.openTool) {
+    if (location.state?.openTool && tools.length > 0) {
       const toolToOpen = tools.find(tool => 
         tool.name.toLowerCase() === location.state.openTool.toLowerCase()
       );
@@ -53,7 +53,7 @@ const ToolsPage = () => {
       // Clear the state to prevent reopening on subsequent visits
       window.history.replaceState({}, document.title);
     }
-  }, [location.state]);
+  }, [location.state, tools]);
 
   // Multi-layer Base64 decoding function
   const multiLayerBase64Decode = (input) => {
