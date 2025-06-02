@@ -219,6 +219,15 @@ const CustomPage = () => {
     (script.description && script.description.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // Debug logging
+  console.log('CustomPage State Debug:');
+  console.log('- scripts array:', scripts);
+  console.log('- scripts length:', scripts.length);
+  console.log('- loading state:', loading);
+  console.log('- searchTerm:', searchTerm);
+  console.log('- filteredScripts:', filteredScripts);
+  console.log('- filteredScripts length:', filteredScripts.length);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
