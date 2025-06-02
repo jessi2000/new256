@@ -658,8 +658,20 @@ const FileAnalysisPage = () => {
               <p className="text-gray-400 mb-4">
                 Comprehensive file analysis including string extraction, hex dumping, hash calculation, and metadata analysis
               </p>
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mb-4">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Shield size={16} className="text-blue-400" />
+                  <span className="text-sm font-medium text-blue-300">Security Features</span>
+                </div>
+                <ul className="text-xs text-blue-200 space-y-1">
+                  <li>• Client-side processing only - no data transmitted</li>
+                  <li>• File type and size validation</li>
+                  <li>• Content security analysis</li>
+                  <li>• Maximum file size: {Math.round(SECURITY_CONFIG.MAX_FILE_SIZE / 1024 / 1024)}MB</li>
+                </ul>
+              </div>
               <p className="text-gray-500 mb-6">
-                Supports all file types • Max size: 100MB
+                Supports all common file types • Secure local analysis
               </p>
               <input
                 type="file"
