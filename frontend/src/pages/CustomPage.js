@@ -73,6 +73,7 @@ const CustomPage = () => {
           toast.success(`Loaded ${response.data.length} scripts successfully`);
         }
         
+        setLoading(false); // Set loading to false on success
         return; // Success, exit retry loop
         
       } catch (error) {
