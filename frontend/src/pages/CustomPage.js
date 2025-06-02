@@ -194,8 +194,8 @@ const CustomPage = () => {
                     <p className="text-lg font-medium text-gray-300 mb-2">
                       Drop a file here or click to browse
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Files will be used as input for the selected script
+                    <p className="text-sm text-gray-500 mb-3">
+                      Upload files and run custom analysis scripts for advanced forensic examination
                     </p>
                   </div>
                   <label className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors cursor-pointer">
