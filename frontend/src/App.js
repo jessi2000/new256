@@ -62,32 +62,37 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b-4 border-blue-500 sticky top-0 z-50 relative">
+    <nav className="bg-slate-900/95 backdrop-blur-sm border-b-2 border-blue-500 sticky top-0 z-50 relative">
       {/* Enhanced gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 via-slate-800/30 to-slate-900/40 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex justify-between items-center h-20">
-          {/* Enhanced Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
-            <div className="p-3 bg-gradient-to-br from-blue-600 via-slate-700 to-slate-800 rounded-xl shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-blue-500/30">
-              <Shield size={28} className="text-blue-200 group-hover:text-white transition-colors duration-300" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-200 via-slate-100 to-blue-300 bg-clip-text text-transparent group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                SectoolBox
-              </h1>
-              <p className="text-xs text-blue-300/80 group-hover:text-blue-200 transition-colors duration-300 font-medium">CTF Toolkit</p>
-            </div>
-          </Link>
+        <div className="flex justify-between items-center h-16">
+          {/* Empty space on left */}
+          <div className="flex-1"></div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* Desktop Navigation - Center */}
+          <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} icon={item.icon}>
                 {item.label}
               </NavLink>
             ))}
+          </div>
+
+          {/* Enhanced Logo - Right */}
+          <div className="flex-1 flex justify-end">
+            <Link to="/" className="flex items-center space-x-2 group">
+              <div className="p-2 bg-gradient-to-br from-blue-600 via-slate-700 to-slate-800 rounded-lg shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-blue-500/30">
+                <Shield size={20} className="text-blue-200 group-hover:text-white transition-colors duration-300" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold bg-gradient-to-r from-blue-200 via-slate-100 to-blue-300 bg-clip-text text-transparent group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                  SectoolBox
+                </h1>
+                <p className="text-xs text-blue-300/80 group-hover:text-blue-200 transition-colors duration-300 font-medium">CTF Toolkit</p>
+              </div>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
