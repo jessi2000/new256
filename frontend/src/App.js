@@ -173,21 +173,46 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Right: Quick Stats & Info */}
+          {/* Right: Our Team */}
           <div className="text-center md:text-right">
-            <div className="grid grid-cols-2 gap-4 mb-3">
-              <div className="bg-gray-800/30 rounded-lg p-3">
-                <div className="text-slate-400 text-lg font-bold">40+</div>
-                <div className="text-gray-500 text-xs">CTF Tools</div>
+            <h3 className="text-lg font-bold text-slate-200 mb-4">Our Team</h3>
+            <div className="grid grid-cols-2 gap-4">
+              {/* Team Member 1 */}
+              <div className="bg-gray-800/30 rounded-lg p-3 hover:bg-gray-700/40 transition-colors duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
+                  Z
+                </div>
+                <div className="text-slate-300 text-sm font-medium">Zebbern</div>
+                <div className="text-gray-500 text-xs mb-2">Lead Developer</div>
+                <a
+                  href="https://github.com/zebbern"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-xs transition-colors duration-300"
+                >
+                  <Github size={12} />
+                  <span>GitHub</span>
+                </a>
               </div>
-              <div className="bg-gray-800/30 rounded-lg p-3">
-                <div className="text-slate-400 text-lg font-bold">24/7</div>
-                <div className="text-gray-500 text-xs">Available</div>
+              
+              {/* Team Member 2 */}
+              <div className="bg-gray-800/30 rounded-lg p-3 hover:bg-gray-700/40 transition-colors duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
+                  S
+                </div>
+                <div className="text-slate-300 text-sm font-medium">SecTeam</div>
+                <div className="text-gray-500 text-xs mb-2">Security Expert</div>
+                <a
+                  href="https://github.com/sectoolbox"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-xs transition-colors duration-300"
+                >
+                  <Github size={12} />
+                  <span>GitHub</span>
+                </a>
               </div>
             </div>
-            <p className="text-gray-500 text-xs">
-              © {new Date().getFullYear()} • Built for Security Professionals
-            </p>
           </div>
         </div>
       </div>
