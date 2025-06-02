@@ -140,7 +140,7 @@ const AboutPage = () => {
         
         {/* Contact Section */}
         <section>
-          <h2 className="text-2xl font-semibold mb-6 text-slate-300">**Get In Touch**</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-slate-300">Get In Touch</h2>
           <div className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 shadow-lg">
             <p className="text-slate-300 mb-6">
               Have questions, suggestions, or want to contribute to the project? We'd love to hear from you!
