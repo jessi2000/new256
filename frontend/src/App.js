@@ -68,8 +68,18 @@ const Navigation = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-16">
-          {/* Empty space on left */}
-          <div className="flex-1"></div>
+          {/* Enhanced Logo - Left */}
+          <Link to="/" className="flex items-center space-x-2 group">
+            <div className="p-2 bg-gradient-to-br from-blue-600 via-slate-700 to-slate-800 rounded-lg shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-blue-500/30">
+              <Shield size={20} className="text-blue-200 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold bg-gradient-to-r from-blue-200 via-slate-100 to-blue-300 bg-clip-text text-transparent group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
+                SectoolBox
+              </h1>
+              <p className="text-xs text-blue-300/80 group-hover:text-blue-200 transition-colors duration-300 font-medium">CTF Toolkit</p>
+            </div>
+          </Link>
 
           {/* Desktop Navigation - Center */}
           <div className="hidden md:flex items-center space-x-2">
@@ -78,21 +88,6 @@ const Navigation = () => {
                 {item.label}
               </NavLink>
             ))}
-          </div>
-
-          {/* Enhanced Logo - Right */}
-          <div className="flex-1 flex justify-end">
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="p-2 bg-gradient-to-br from-blue-600 via-slate-700 to-slate-800 rounded-lg shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-blue-500/30">
-                <Shield size={20} className="text-blue-200 group-hover:text-white transition-colors duration-300" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold bg-gradient-to-r from-blue-200 via-slate-100 to-blue-300 bg-clip-text text-transparent group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
-                  SectoolBox
-                </h1>
-                <p className="text-xs text-blue-300/80 group-hover:text-blue-200 transition-colors duration-300 font-medium">CTF Toolkit</p>
-              </div>
-            </Link>
           </div>
 
           {/* Mobile menu button */}
