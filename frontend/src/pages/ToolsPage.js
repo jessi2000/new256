@@ -17,7 +17,7 @@ import {
   Shield
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { loadTools, executeTool } from '../Toolscripts/toolLoader';
+import { loadTools, executeTool as executeToolFromLoader } from '../Toolscripts/toolLoader';
 
 const ToolsPage = () => {
   const location = useLocation();
