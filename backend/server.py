@@ -389,13 +389,11 @@ async def analyze_file(request: Request, file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="Filename is required")
         
         # Read file content with size limit
-        file_content = b""
-        total_size = 0
-        async for chunk in file.stream():
-            total_size += len(chunk)
-            if total_size > SecurityConfig.MAX_FILE_SIZE:
-                raise HTTPException(status_code=413, detail="File too large")
-            file_content += chunk
+        file_content = await file.read()
+        
+        # Check file size after reading
+        if len(file_content) > SecurityConfig.MAX_FILE_SIZE:
+            raise HTTPException(status_code=413, detail="File too large")
         
         # Sanitize filename
         safe_filename = SecurityValidator.sanitize_filename(file.filename)
