@@ -1,0 +1,9 @@
+{
+  "id": "binary",
+  "name": "Binary",
+  "description": "Convert text to/from binary",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-cyan-400",
+  "action": "dual"
+}

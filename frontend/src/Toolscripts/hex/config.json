@@ -1,0 +1,9 @@
+{
+  "id": "hex",
+  "name": "Hex",
+  "description": "Convert text to/from hexadecimal",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-orange-400",
+  "action": "dual"
+}

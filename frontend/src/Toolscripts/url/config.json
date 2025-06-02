@@ -1,0 +1,9 @@
+{
+  "id": "url",
+  "name": "URL",
+  "description": "Encode/decode URL text",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-green-400",
+  "action": "dual"
+}

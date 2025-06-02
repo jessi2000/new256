@@ -1,0 +1,9 @@
+{
+  "id": "ascii",
+  "name": "ASCII",
+  "description": "Convert text to/from ASCII codes",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-pink-400",
+  "action": "dual"
+}

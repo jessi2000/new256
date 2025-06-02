@@ -1,0 +1,9 @@
+{
+  "id": "html",
+  "name": "HTML Entity",
+  "description": "Encode/decode HTML entities",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-purple-400",
+  "action": "dual"
+}

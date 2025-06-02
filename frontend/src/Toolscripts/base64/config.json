@@ -1,0 +1,10 @@
+{
+  "id": "base64",
+  "name": "Base64",
+  "description": "Encode/decode Base64",
+  "category": "encode/decode",
+  "icon": "Code",
+  "iconColor": "text-blue-400",
+  "action": "dual",
+  "supportsMultiLayer": true
+}
