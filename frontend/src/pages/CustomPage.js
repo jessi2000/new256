@@ -43,20 +43,68 @@ const CustomPage = () => {
   const fetchScripts = async () => {
     console.log('Fetching scripts from:', `${API}/custom-scripts`);
     setLoading(true);
-    try {
-      const response = await axios.get(`${API}/custom-scripts`);
-      console.log('Scripts response:', response.data);
-      setScripts(response.data);
-      if (response.data.length === 0) {
-        toast.info('No custom scripts found');
+    
+    // Add retry logic for better reliability
+    const maxRetries = 3;
+    let lastError = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Attempt ${attempt} to fetch scripts...`);
+        
+        // Add timeout and explicit headers
+        const response = await axios.get(`${API}/custom-scripts`, {
+          timeout: 10000, // 10 second timeout
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log('Scripts response:', response.data);
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        setScripts(response.data);
+        
+        if (response.data.length === 0) {
+          toast.info('No custom scripts found');
+        } else {
+          toast.success(`Loaded ${response.data.length} scripts successfully`);
+        }
+        
+        return; // Success, exit retry loop
+        
+      } catch (error) {
+        lastError = error;
+        console.error(`Attempt ${attempt} failed:`, error);
+        
+        if (error.response) {
+          console.error('Error response status:', error.response.status);
+          console.error('Error response data:', error.response.data);
+          console.error('Error response headers:', error.response.headers);
+        } else if (error.request) {
+          console.error('No response received:', error.request);
+        } else {
+          console.error('Request setup error:', error.message);
+        }
+        
+        // If it's the last attempt, don't wait
+        if (attempt < maxRetries) {
+          console.log(`Waiting 2 seconds before retry ${attempt + 1}...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
-    } catch (error) {
-      console.error('Error fetching scripts:', error);
-      console.error('Error details:', error.response?.data);
-      toast.error(`Failed to load custom scripts: ${error.message}`);
-    } finally {
-      setLoading(false);
     }
+    
+    // All retries failed
+    console.error('All attempts failed. Last error:', lastError);
+    const errorMessage = lastError?.response?.data?.detail || 
+                        lastError?.message || 
+                        'Unknown error occurred';
+    toast.error(`Failed to load custom scripts: ${errorMessage}`);
+    
+    setLoading(false);
   };
 
   const executeScript = async (scriptName) => {
