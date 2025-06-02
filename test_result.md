@@ -117,6 +117,17 @@ backend:
         comment: "The tool-usage logging endpoint is working correctly. Verified that the endpoint successfully logs tool usage with the provided tool name and input data."
 
 frontend:
+  - task: "Encoding Detective Tool Display Format"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/Toolscripts/encoding-detective/EncodingDetectiveTool.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "The Encoding Detective tool was not found on the Tools page. The page doesn't contain any text with 'Encoding Detective' according to our JavaScript evaluation. This suggests that either the tool is not available, there might be an issue with its implementation/loading, or it might be accessed through a different path."
   - task: "Tools Page Blue Border Animation"
     implemented: true
     working: true
