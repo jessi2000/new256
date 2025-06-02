@@ -63,7 +63,7 @@ const HomePage = () => {
   const changelogEntries = [
     {
       id: 1,
-      title: '🚀 New Multi-layer Base64 Decoder',
+      title: 'New Multi-layer Base64 Decoder',
       content: 'Enhanced Base64 decoder now supports automatic detection and decoding of multiple encoding layers. Perfect for CTF challenges!',
       date: '2025-01-15',
       type: 'feature',
@@ -71,7 +71,7 @@ const HomePage = () => {
     },
     {
       id: 2,
-      title: '⚡ Performance Improvements',
+      title: 'Performance Improvements',
       content: 'Optimized file analysis engine for 40% faster processing of large binaries and enhanced memory usage.',
       date: '2025-01-12',
       type: 'improvement',
@@ -79,7 +79,7 @@ const HomePage = () => {
     },
     {
       id: 3,
-      title: '🔧 Enhanced Cryptographic Tools',
+      title: 'Enhanced Cryptographic Tools',
       content: 'Added new cipher tools including Bacon cipher, MD4 hashing, and improved XOR cipher functionality.',
       date: '2025-01-10',
       type: 'feature',
