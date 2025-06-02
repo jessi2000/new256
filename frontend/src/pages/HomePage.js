@@ -121,6 +121,9 @@ const HomePage = () => {
   );
 
   useEffect(() => {
+    // Fetch announcements on page load
+    fetchAnnouncements();
+    
     // Show Encoding Detective popup notification after page loads
     const timer = setTimeout(() => {
       toast((t) => (
