@@ -216,7 +216,7 @@ const HomePage = () => {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-3">
                               <div className="p-2 bg-slate-800/50 rounded-lg group-hover:bg-slate-700/50 transition-colors">
-                                {tool.icon}
+                                <tool.icon size={16} className={tool.iconColor || 'text-slate-400'} />
                               </div>
                               <div>
                                 <h4 className="text-slate-200 font-medium group-hover:text-white transition-colors">
