@@ -23,6 +23,7 @@ import {
   TrendingUp,
   Clock,
   Award,
+  X,
   Target,
   Sparkles,
   Play,
