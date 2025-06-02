@@ -13,9 +13,19 @@ import {
   Eye,
   BarChart3,
   X,
-  HelpCircle
+  HelpCircle,
+  Shield,
+  AlertTriangle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { 
+  validateFile, 
+  sanitizeTextInput, 
+  escapeHtml, 
+  checkRateLimit,
+  logSecurityEvent,
+  SECURITY_CONFIG 
+} from '../utils/security';
 
 // Custom search icon without the specified paths
 const CustomSearchIcon = ({ size = 20, className = "" }) => (
