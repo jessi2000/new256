@@ -188,7 +188,12 @@ const HomePage = () => {
                           key={index}
                           onClick={() => {
                             setSearchTerm('');
-                            navigate('/tools');
+                            navigate('/tools', { 
+                              state: { 
+                                openTool: tool.name,
+                                searchTerm: tool.name 
+                              } 
+                            });
                           }}
                           className="p-4 hover:bg-slate-800/50 rounded-lg cursor-pointer transition-all duration-200 group"
                         >
