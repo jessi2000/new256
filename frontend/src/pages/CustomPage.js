@@ -57,10 +57,12 @@ const CustomPage = () => {
       });
       
       setExecutionResult(response.data.output);
+      setShowResultModal(true);
       toast.success('Script executed successfully!');
     } catch (error) {
       const errorMsg = error.response?.data?.detail || 'Script execution failed';
       setExecutionResult(`Error: ${errorMsg}`);
+      setShowResultModal(true);
       toast.error('Script execution failed');
     } finally {
       setIsExecuting(false);
