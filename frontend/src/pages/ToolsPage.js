@@ -102,50 +102,50 @@ const ToolsPage = () => {
     // Encoding/Decoding Tools (6 combined tools)
     {
       id: 'base64',
-      name: 'Base64 Encoder/Decoder',
+      name: 'Base64',
       description: 'Encode/decode Base64 with multi-layer support',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual',
       supportsMultiLayer: true
     },
     {
       id: 'url',
-      name: 'URL Encoder/Decoder',
+      name: 'URL',
       description: 'Encode/decode URL text',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual'
     },
     {
       id: 'html',
-      name: 'HTML Entity Encoder/Decoder',
+      name: 'HTML Entity',
       description: 'Encode/decode HTML entities',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual'
     },
     {
       id: 'hex',
-      name: 'Hex Encoder/Decoder',
+      name: 'Hex',
       description: 'Convert text to/from hexadecimal',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual'
     },
     {
       id: 'binary',
-      name: 'Binary Encoder/Decoder',
+      name: 'Binary',
       description: 'Convert text to/from binary',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual'
     },
     {
       id: 'ascii',
-      name: 'ASCII Encoder/Decoder',
+      name: 'ASCII',
       description: 'Convert text to/from ASCII codes',
-      category: 'encoding',
+      category: 'encode/decode',
       icon: Code,
       action: 'dual'
     },
