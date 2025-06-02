@@ -795,6 +795,15 @@ const FileAnalysisPage = () => {
                   stringCount={extractedStrings.length}
                   hashResults={hashResults}
                   exifData={exifData}
+                  securityAnalysis={securityAnalysis}
+                />
+              )}
+
+              {activeTab === 'security' && (
+                <SecurityTab 
+                  securityAnalysis={securityAnalysis}
+                  metadata={fileMetadata}
+                  entropy={entropy}
                 />
               )}
 
