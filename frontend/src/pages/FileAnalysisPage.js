@@ -358,10 +358,11 @@ const FileAnalysisPage = () => {
   const extractStrings = (data) => {
     const strings = [];
     const minLength = 4;
+    const maxStrings = 10000; // Security limit
     let currentString = '';
     let startOffset = 0;
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length && strings.length < maxStrings; i++) {
       const byte = data[i];
       
       // Check if byte is printable ASCII
@@ -372,23 +373,30 @@ const FileAnalysisPage = () => {
         currentString += String.fromCharCode(byte);
       } else {
         if (currentString.length >= minLength) {
-          strings.push({
-            value: currentString,
-            offset: startOffset,
-            length: currentString.length
-          });
+          // Sanitize the string before adding
+          const safeString = sanitizeTextInput(currentString, 1000);
+          if (safeString.length >= minLength) {
+            strings.push({
+              value: safeString,
+              offset: startOffset,
+              length: safeString.length
+            });
+          }
         }
         currentString = '';
       }
     }
 
     // Don't forget the last string if file ends with printable characters
-    if (currentString.length >= minLength) {
-      strings.push({
-        value: currentString,
-        offset: startOffset,
-        length: currentString.length
-      });
+    if (currentString.length >= minLength && strings.length < maxStrings) {
+      const safeString = sanitizeTextInput(currentString, 1000);
+      if (safeString.length >= minLength) {
+        strings.push({
+          value: safeString,
+          offset: startOffset,
+          length: safeString.length
+        });
+      }
     }
 
     return strings;
