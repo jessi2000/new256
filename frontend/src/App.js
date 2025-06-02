@@ -30,20 +30,20 @@ const NavLink = ({ to, children, icon: Icon }) => {
   return (
     <Link
       to={to}
-      className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-300 relative group ${
+      className={`flex items-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 relative group ${
         isActive 
-          ? 'bg-gradient-to-r from-slate-700/50 to-slate-600/50 text-slate-100 shadow-xl shadow-slate-500/20 border border-slate-600/30' 
-          : 'text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-slate-700/30 hover:to-slate-600/30 hover:shadow-lg hover:shadow-slate-500/10'
+          ? 'bg-gradient-to-r from-slate-800/60 to-slate-700/60 text-white shadow-lg shadow-blue-500/20 border border-slate-600/40' 
+          : 'text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-slate-800/40 hover:to-slate-700/40 hover:shadow-md hover:shadow-slate-500/10 border border-transparent hover:border-slate-600/30'
       }`}
     >
       {isActive && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-slate-400 via-slate-300 to-slate-400 rounded-full"></div>
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-slate-600 to-slate-700 rounded-xl opacity-20 blur-sm"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-300 to-blue-400 rounded-full"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600/20 to-slate-700/20 rounded-xl opacity-50 blur-sm"></div>
         </>
       )}
-      <div className="relative z-10 flex items-center space-x-2">
-        <Icon size={20} className={`transition-all duration-300 ${isActive ? 'text-slate-200' : 'group-hover:scale-110'}`} />
+      <div className="relative z-10 flex items-center space-x-3">
+        <Icon size={20} className={`transition-all duration-300 ${isActive ? 'text-blue-300' : 'group-hover:scale-110 group-hover:text-blue-400'}`} />
         <span className="font-medium">{children}</span>
       </div>
     </Link>
@@ -62,27 +62,27 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/40 sticky top-0 z-50 relative">
+    <nav className="bg-slate-900/95 backdrop-blur-sm border-b-4 border-blue-500 sticky top-0 z-50 relative">
       {/* Enhanced gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-800/30 via-slate-700/20 to-slate-800/30 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-900/40 via-slate-800/30 to-slate-900/40 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex justify-between items-center h-18">
+        <div className="flex justify-between items-center h-20">
           {/* Enhanced Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="p-3 bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 rounded-xl shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-slate-600/30">
-              <Shield size={26} className="text-slate-200 group-hover:text-white transition-colors duration-300" />
+            <div className="p-3 bg-gradient-to-br from-blue-600 via-slate-700 to-slate-800 rounded-xl shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-blue-500/30">
+              <Shield size={28} className="text-blue-200 group-hover:text-white transition-colors duration-300" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 bg-clip-text text-transparent group-hover:from-slate-100 group-hover:to-slate-200 transition-all duration-300">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-200 via-slate-100 to-blue-300 bg-clip-text text-transparent group-hover:from-blue-100 group-hover:to-blue-200 transition-all duration-300">
                 SectoolBox
               </h1>
-              <p className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors duration-300 font-medium">CTF Toolkit</p>
+              <p className="text-xs text-blue-300/80 group-hover:text-blue-200 transition-colors duration-300 font-medium">CTF Toolkit</p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-3">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} icon={item.icon}>
                 {item.label}
@@ -93,7 +93,7 @@ const Navigation = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors"
+            className="md:hidden p-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 transition-colors border border-slate-600/30 hover:border-blue-400/50"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -102,7 +102,7 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-700/30">
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-2">
               {navItems.map((item) => (
                 <NavLink key={item.to} to={item.to} icon={item.icon}>
                   {item.label}
@@ -256,7 +256,7 @@ function App() {
         </div>
 
         <Navigation />
-        <main className="flex-1 relative z-10">
+        <main className="flex-1 relative z-5">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/tools" element={<ToolsPage />} />
