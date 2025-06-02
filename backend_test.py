@@ -223,20 +223,6 @@ def run_tests():
     
     return result
 
-class StringCapture:
-    """Helper class to capture stdout"""
-    def __init__(self):
-        self.data = []
-    
-    def write(self, s):
-        self.data.append(s)
-    
-    def getvalue(self):
-        return ''.join(self.data)
-    
-    def flush(self):
-        pass
-
 if __name__ == "__main__":
     print(f"🚀 Starting SectoolBox Backend API Tests")
     print(f"🔗 API URL: {API_URL}")
