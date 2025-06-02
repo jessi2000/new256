@@ -121,8 +121,50 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    fetchAnnouncements();
-  }, []);
+    // Show Encoding Detective popup notification after page loads
+    const timer = setTimeout(() => {
+      toast((t) => (
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-blue-600/20 rounded-lg">
+            <Search size={20} className="text-blue-400" />
+          </div>
+          <div className="flex-1">
+            <div className="font-semibold text-gray-800">🔍 Try Encoding Detective</div>
+            <div className="text-sm text-gray-600">Decode multi-layer encodings automatically</div>
+          </div>
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+              navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } });
+            }}
+            className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+          >
+            Try Now
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      ), {
+        duration: 5000, // Auto dismiss after 5 seconds
+        style: {
+          background: 'white',
+          color: '#1f2937',
+          borderRadius: '12px',
+          border: '1px solid #e5e7eb',
+          padding: '16px',
+          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+          maxWidth: '400px',
+        },
+        position: 'top-right',
+      });
+    }, 2000); // Show after 2 seconds
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   const fetchAnnouncements = async () => {
     try {
