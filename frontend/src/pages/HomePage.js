@@ -226,32 +226,6 @@ const HomePage = () => {
               </p>
             </div>
 
-            {/* Encoding Detective Promotion */}
-            <div className="max-w-4xl mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-              <div className="bg-gradient-to-r from-blue-900/30 via-purple-900/30 to-blue-900/30 backdrop-blur-sm border border-blue-500/30 rounded-xl p-6 group hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer"
-                   onClick={() => navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } })}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-blue-600/20 rounded-lg group-hover:bg-blue-600/30 transition-colors">
-                      <Search size={24} className="text-blue-400 group-hover:scale-110 transition-transform" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-blue-300 group-hover:text-blue-200 transition-colors">
-                        🔍 Try Encoding Detective
-                      </h3>
-                      <p className="text-slate-400 group-hover:text-slate-300 transition-colors">
-                        Automatically detect and decode multi-layer encodings • Perfect for CTF challenges
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2 text-blue-400 group-hover:text-blue-300 transition-colors">
-                    <span className="text-sm font-medium">Try Now</span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Centered Search Section */}
             <div className="max-w-2xl mx-auto mb-12 animate-floatSlow flex justify-center">
               <form onSubmit={handleToolSearch} className="relative w-full max-w-lg">
