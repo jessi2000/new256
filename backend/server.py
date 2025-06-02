@@ -254,7 +254,35 @@ async def log_tool_usage(tool_name: str, input_data: str = ""):
     await db.tool_usage.insert_one(usage_log)
     return {"message": "Usage logged"}
 
+# File upload directory for custom scripts
+UPLOADS_DIR = Path("/tmp/sectoolbox_uploads")
+UPLOADS_DIR.mkdir(exist_ok=True)
+
 # Custom Scripts API Endpoints
+
+@api_router.post("/upload-file-for-script")
+async def upload_file_for_script(file: UploadFile = File(...)):
+    """Upload a file to be used with custom scripts"""
+    try:
+        # Clear previous uploads
+        for old_file in UPLOADS_DIR.glob("*"):
+            old_file.unlink()
+        
+        # Save the uploaded file
+        file_path = UPLOADS_DIR / file.filename
+        with open(file_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+        
+        return {
+            "message": "File uploaded successfully",
+            "filename": file.filename,
+            "size": len(content),
+            "path": str(file_path)
+        }
+    except Exception as e:
+        logger.error(f"Error uploading file: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
 
 @api_router.get("/custom-scripts", response_model=List[CustomScript])
 async def get_custom_scripts():
