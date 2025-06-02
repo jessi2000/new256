@@ -710,44 +710,48 @@ const ToolsPage = () => {
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-8 relative">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <Shield size={40} className="text-blue-400 mr-3" />
-          </div>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Professional cybersecurity tools for encoding, decoding, cryptography, and text analysis
-          </p>
-        </div>
+        {!selectedTool && (
+          <>
+            {/* Header */}
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center mb-6">
+                <Shield size={40} className="text-blue-400 mr-3" />
+              </div>
+              <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+                Professional cybersecurity tools for encoding, decoding, cryptography, and text analysis
+              </p>
+            </div>
 
-        {/* Search and Filter */}
-        <div className="mb-8 space-y-4">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1">
-              <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search tools..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-slate-900/80 border border-slate-600/50 rounded-lg pl-10 pr-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
-              />
+            {/* Search and Filter */}
+            <div className="mb-8 space-y-4">
+              <div className="flex flex-col md:flex-row gap-4 items-center">
+                <div className="relative flex-1">
+                  <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Search tools..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-slate-900/80 border border-slate-600/50 rounded-lg pl-10 pr-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                  />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="bg-slate-900/80 border border-slate-600/50 rounded-lg px-4 py-3 text-slate-100 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                  >
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name} ({category.count})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-slate-900/80 border border-slate-600/50 rounded-lg px-4 py-3 text-slate-100 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name} ({category.count})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
+          </>
+        )}
 
         {!selectedTool ? (
           <>
