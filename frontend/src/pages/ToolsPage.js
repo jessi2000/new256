@@ -512,9 +512,14 @@ const ToolsPage = () => {
                       {base64Result.layers.map((layer, index) => (
                         <div key={index} className="bg-slate-900/50 rounded-lg p-3">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-slate-300">
-                              Layer {layer.layer}
-                            </span>
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium text-slate-300">
+                                Layer {layer.layer}
+                              </span>
+                              <span className="text-xs text-cyan-400 font-medium">
+                                🔓 Decrypting with: {layer.encoding ? layer.encoding.toUpperCase() : 'BASE64'}
+                              </span>
+                            </div>
                             <button
                               onClick={() => copyToClipboard(layer.output)}
                               className="text-slate-400 hover:text-slate-300 transition-colors"
