@@ -240,27 +240,132 @@ const HomePage = () => {
                 )}
               </form>
               
-              {/* Animated Action Buttons */}
-              <div className="flex flex-wrap justify-center gap-4 mt-8">
-                <Link 
-                  to="/tools" 
-                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105 animate-slideInLeft"
-                  style={{ animationDelay: '1.2s' }}
-                >
-                  <Wrench size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Browse All Tools</span>
-                  <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+              {/* Impressive Card Carousel */}
+              <div className="mt-12 mb-8">
+                <h3 className="text-2xl font-bold text-center text-slate-200 mb-8">
+                  Explore SectoolBox
+                </h3>
                 
-                <Link 
-                  to="/analysis" 
-                  className="group bg-slate-800/60 hover:bg-slate-700/60 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 text-slate-300 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 hover:shadow-lg transform hover:scale-105 animate-slideInRight"
-                  style={{ animationDelay: '1.4s' }}
-                >
-                  <FileText size={20} className="group-hover:scale-110 transition-transform duration-300" />
-                  <span>File Analysis</span>
-                  <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <div className="relative overflow-hidden">
+                  {/* Card Container */}
+                  <div className="flex items-center justify-center space-x-8 py-8">
+                    {[
+                      {
+                        to: '/tools',
+                        title: 'Security Tools',
+                        description: 'Comprehensive toolkit with 42+ CTF tools for encoding, cryptography, and analysis',
+                        icon: '🛠️',
+                        gradient: 'from-blue-600 to-purple-600',
+                        delay: '0s'
+                      },
+                      {
+                        to: '/analysis',
+                        title: 'File Analysis',
+                        description: 'Advanced file analysis with hex dumps, string extraction, and metadata scanning',
+                        icon: '📄',
+                        gradient: 'from-green-600 to-blue-600',
+                        delay: '0.2s'
+                      },
+                      {
+                        to: '/custom',
+                        title: 'Custom Scripts',
+                        description: 'Execute custom security scripts and tools for specialized analysis tasks',
+                        icon: '⚡',
+                        gradient: 'from-purple-600 to-pink-600',
+                        delay: '0.4s'
+                      },
+                      {
+                        to: '/about',
+                        title: 'About Us',
+                        description: 'Learn about our mission, team, and the technology behind SectoolBox',
+                        icon: '👥',
+                        gradient: 'from-orange-600 to-red-600',
+                        delay: '0.6s'
+                      },
+                      {
+                        to: '/',
+                        title: 'Home',
+                        description: 'Return to the main dashboard with latest updates and quick access',
+                        icon: '🏠',
+                        gradient: 'from-slate-600 to-gray-600',
+                        delay: '0.8s'
+                      }
+                    ].map((page, index) => (
+                      <Link
+                        key={page.to}
+                        to={page.to}
+                        className="group relative block transform transition-all duration-500 hover:scale-110 animate-fadeInScale"
+                        style={{ animationDelay: page.delay }}
+                      >
+                        {/* Card */}
+                        <div className="relative w-64 h-80 rounded-2xl overflow-hidden">
+                          {/* Background with gradient */}
+                          <div className={`absolute inset-0 bg-gradient-to-br ${page.gradient} opacity-90 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                          
+                          {/* Animated border */}
+                          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute inset-0 rounded-2xl border-2 border-white/30 animate-pulse"></div>
+                          </div>
+                          
+                          {/* Floating particles effect */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            {[...Array(6)].map((_, i) => (
+                              <div
+                                key={i}
+                                className="absolute w-1 h-1 bg-white/60 rounded-full animate-bounce"
+                                style={{
+                                  left: `${20 + (i * 12)}%`,
+                                  top: `${15 + (i * 8)}%`,
+                                  animationDelay: `${i * 0.2}s`,
+                                  animationDuration: '2s'
+                                }}
+                              />
+                            ))}
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="relative z-10 p-8 h-full flex flex-col justify-between text-white">
+                            {/* Icon */}
+                            <div className="text-center">
+                              <div className="text-6xl mb-4 transform transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12">
+                                {page.icon}
+                              </div>
+                              <h4 className="text-xl font-bold mb-3 group-hover:text-yellow-200 transition-colors duration-300">
+                                {page.title}
+                              </h4>
+                            </div>
+                            
+                            {/* Description */}
+                            <p className="text-sm text-white/90 text-center leading-relaxed group-hover:text-white transition-colors duration-300">
+                              {page.description}
+                            </p>
+                            
+                            {/* Arrow indicator */}
+                            <div className="text-center mt-4">
+                              <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 group-hover:bg-white/30 transition-all duration-300">
+                                <span className="text-sm font-medium">Explore</span>
+                                <ChevronRight size={16} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Shine effect */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-shimmer"></div>
+                          </div>
+                        </div>
+                        
+                        {/* Shadow */}
+                        <div className="absolute inset-0 bg-black/20 rounded-2xl blur-xl transform translate-y-4 opacity-0 group-hover:opacity-60 transition-all duration-300 -z-10"></div>
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  {/* Background decoration */}
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
