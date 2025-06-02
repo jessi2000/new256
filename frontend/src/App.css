@@ -686,54 +686,11 @@
   animation: float infinite ease-in-out;
 }
 
-/* Tool card hover effects */
+/* Tool card styles - no hover effects */
 .tool-card {
-  @apply bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 transition-all duration-300 cursor-pointer relative overflow-hidden;
+  @apply bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 transition-all duration-300 relative overflow-hidden;
   backdrop-filter: blur(10px);
   background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
-}
-
-.tool-card:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 10px 20px rgba(0, 0, 0, 0.3),
-    0 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.tool-card::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    #3b82f6, #1d4ed8, #3b82f6, #1d4ed8, 
-    #3b82f6, #1d4ed8, #3b82f6, #1d4ed8);
-  background-size: 400% 400%;
-  border-radius: 14px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  animation: borderRotate 3s linear infinite;
-}
-
-.tool-card:hover::before {
-  opacity: 1;
-}
-
-@keyframes borderRotate {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 /* File upload area */
