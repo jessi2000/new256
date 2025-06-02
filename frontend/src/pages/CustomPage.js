@@ -18,8 +18,11 @@ import {
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://4e700c55-6382-44df-bdef-0bf91559b9c6.preview.emergentagent.com';
 const API = `${BACKEND_URL}/api`;
+
+console.log('CustomPage - BACKEND_URL:', BACKEND_URL);
+console.log('CustomPage - API URL:', API);
 
 const CustomPage = () => {
   const [scripts, setScripts] = useState([]);
@@ -38,12 +41,19 @@ const CustomPage = () => {
   }, []);
 
   const fetchScripts = async () => {
+    console.log('Fetching scripts from:', `${API}/custom-scripts`);
+    setLoading(true);
     try {
       const response = await axios.get(`${API}/custom-scripts`);
+      console.log('Scripts response:', response.data);
       setScripts(response.data);
+      if (response.data.length === 0) {
+        toast.info('No custom scripts found');
+      }
     } catch (error) {
       console.error('Error fetching scripts:', error);
-      toast.error('Failed to load custom scripts');
+      console.error('Error details:', error.response?.data);
+      toast.error(`Failed to load custom scripts: ${error.message}`);
     } finally {
       setLoading(false);
     }
