@@ -30,20 +30,6 @@ const ToolsPage = () => {
   const [selectedAction, setSelectedAction] = useState('encode');
   const [base64Result, setBase64Result] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  const [availableTools, setAvailableTools] = useState([]);
-
-  // Load tools on component mount
-  useEffect(() => {
-    const loadedTools = loadTools();
-    setAvailableTools(loadedTools);
-  }, []);
-  const [availableTools, setAvailableTools] = useState([]);
-
-  // Load tools on component mount
-  useEffect(() => {
-    const loadedTools = loadTools();
-    setAvailableTools(loadedTools);
-  }, []);
   const [tools, setTools] = useState([]);
 
   // Load tools on component mount
