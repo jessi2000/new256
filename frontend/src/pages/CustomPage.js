@@ -306,6 +306,19 @@ const CustomPage = () => {
         <div>
           {/* Scripts List */}
           <div>
+            {/* Section Header with Refresh Button */}
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-200">Available Scripts</h3>
+              <button
+                onClick={fetchScripts}
+                disabled={loading}
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded-lg transition-colors"
+              >
+                <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
+                <span>{loading ? "Loading..." : "Refresh"}</span>
+              </button>
+            </div>
+            
             {/* Search Bar */}
             <div className="mb-6">
               <div className="relative">
