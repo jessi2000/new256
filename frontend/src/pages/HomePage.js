@@ -128,44 +128,60 @@ const HomePage = () => {
     // Show Encoding Detective popup notification after page loads
     const timer = setTimeout(() => {
       toast((t) => (
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-blue-600/20 rounded-lg">
-            <Search size={20} className="text-blue-400" />
+        <div className={`flex items-center space-x-3 transform transition-all duration-500 ${
+          t.visible ? 'animate-slideInFromRight opacity-100' : 'animate-slideOutToRight opacity-0'
+        }`}>
+          <div className="relative">
+            <div className="p-3 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-xl backdrop-blur-sm border border-blue-500/30 animate-pulse-glow">
+              <Search size={20} className="text-blue-400 animate-bounce" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
           </div>
           <div className="flex-1">
-            <div className="font-semibold text-gray-800">🔍 Try Encoding Detective</div>
-            <div className="text-sm text-gray-600">Decode multi-layer encodings automatically</div>
+            <div className="font-semibold text-slate-100 flex items-center space-x-2 animate-fadeInUp">
+              <span>🔍 Try Encoding Detective</span>
+              <div className="px-2 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs rounded-full animate-pulse">
+                NEW
+              </div>
+            </div>
+            <div className="text-sm text-slate-300 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+              Decode multi-layer encodings automatically
+            </div>
           </div>
           <button
             onClick={() => {
               toast.dismiss(t.id);
               navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } });
             }}
-            className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-sm rounded-lg font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 animate-fadeInUp"
+            style={{ animationDelay: '0.2s' }}
           >
             Try Now
           </button>
           <button
             onClick={() => toast.dismiss(t.id)}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 p-1 rounded-lg transition-all duration-200 animate-fadeInUp"
+            style={{ animationDelay: '0.3s' }}
           >
             <X size={16} />
           </button>
         </div>
       ), {
-        duration: 5000, // Auto dismiss after 5 seconds
+        duration: 6000, // Auto dismiss after 6 seconds (increased for better UX)
         style: {
-          background: 'white',
-          color: '#1f2937',
-          borderRadius: '12px',
-          border: '1px solid #e5e7eb',
-          padding: '16px',
-          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          maxWidth: '400px',
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+          borderRadius: '16px',
+          padding: '20px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.1), 0 0 20px rgba(59, 130, 246, 0.2)',
+          maxWidth: '420px',
+          color: '#f1f5f9',
         },
         position: 'top-right',
+        className: 'animate-slideInFromRight',
       });
-    }, 2000); // Show after 2 seconds
+    }, 2500); // Show after 2.5 seconds
 
     return () => clearTimeout(timer);
   }, [navigate]);
