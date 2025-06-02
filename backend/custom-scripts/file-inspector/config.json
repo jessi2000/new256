@@ -1,0 +1,5 @@
+{
+  "name": "File Inspector",
+  "description": "Deep inspection of uploaded files with entropy and structure analysis",
+  "command": "python file_inspector.py"
+}

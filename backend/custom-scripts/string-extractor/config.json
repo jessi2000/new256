@@ -1,0 +1,5 @@
+{
+  "name": "String Extractor",
+  "description": "Extract and analyze printable strings from uploaded files",
+  "command": "python string_extractor.py"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "ExifTool Analyzer",
+  "description": "Analyze uploaded files with exiftool for metadata extraction",
+  "command": "python exiftool_analyzer.py"
+}
