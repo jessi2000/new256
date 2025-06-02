@@ -781,24 +781,6 @@ const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) 
           </div>
         </div>
       </div>
-
-      {/* Security Assessment */}
-      <div className="tool-card">
-        <h3 className="heading-md mb-4 flex items-center">
-          <AlertCircle size={20} className="mr-2 text-amber-400" />
-          Security Assessment
-        </h3>
-        <div className="space-y-2">
-          {securityFindings.map((finding, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              {finding.type === 'success' && <CheckCircle size={16} className="text-green-400" />}
-              {finding.type === 'warning' && <AlertCircle size={16} className="text-amber-400" />}
-              {finding.type === 'info' && <CheckCircle size={16} className="text-blue-400" />}
-              <span className="text-sm text-gray-300">{finding.text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
