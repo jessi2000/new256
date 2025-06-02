@@ -81,14 +81,19 @@ const Navigation = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation - Center */}
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item) => (
-              <NavLink key={item.to} to={item.to} icon={item.icon}>
-                {item.label}
-              </NavLink>
-            ))}
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-2">
+              {navItems.map((item) => (
+                <NavLink key={item.to} to={item.to} icon={item.icon}>
+                  {item.label}
+                </NavLink>
+              ))}
+            </div>
           </div>
+
+          {/* Right spacer to balance the layout */}
+          <div className="w-32"></div>
 
           {/* Mobile menu button */}
           <button
