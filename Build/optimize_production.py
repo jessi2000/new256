@@ -228,7 +228,8 @@ Generated: {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
 """
     
     import datetime
-    checklist_content = checklist.format(datetime=datetime)
+    timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+    checklist_content = checklist.replace('{datetime.datetime.utcnow().strftime(\'%Y-%m-%d %H:%M:%S UTC\')}', timestamp)
     
     checklist_file = Path("/app/Build/PRODUCTION_CHECKLIST.md")
     with open(checklist_file, 'w') as f:
