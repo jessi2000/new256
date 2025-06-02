@@ -389,10 +389,10 @@ const ToolsPage = () => {
 
   const categories = [
     { id: 'all', name: 'All Tools', count: tools.length },
-    { id: 'encoding', name: 'Encoding/Decoding', count: tools.filter(t => t.category === 'encoding').length },
-    { id: 'crypto', name: 'Cryptographic', count: tools.filter(t => t.category === 'crypto').length },
-    { id: 'hash', name: 'Hash/Checksum', count: tools.filter(t => t.category === 'hash').length },
-    { id: 'text', name: 'Text Processing', count: tools.filter(t => t.category === 'text').length }
+    { id: 'encode/decode', name: 'Encode/Decode', count: tools.filter(tool => tool.category === 'encode/decode').length },
+    { id: 'crypto', name: 'Crypto', count: tools.filter(tool => tool.category === 'crypto').length },
+    { id: 'hash', name: 'Hash', count: tools.filter(tool => tool.category === 'hash').length },
+    { id: 'text', name: 'Text', count: tools.filter(tool => tool.category === 'text').length }
   ];
 
   const filteredTools = tools.filter(tool => {
