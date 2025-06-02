@@ -1,0 +1,8 @@
+{
+  "name": "Port Scanner",
+  "description": "Simple TCP port scanner for security assessment",
+  "command": "python port_scanner.py",
+  "category": "network",
+  "author": "SectoolBox",
+  "version": "1.0.0"
+}
