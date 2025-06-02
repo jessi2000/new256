@@ -247,7 +247,19 @@ const CustomPage = () => {
         <div>
           {/* Scripts List */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-200 mb-6">Script Library</h3>
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative">
+                <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search custom scripts..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-slate-900/80 border border-slate-600/50 rounded-lg pl-10 pr-4 py-3 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                />
+              </div>
+            </div>
             
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -279,9 +291,15 @@ const CustomPage = () => {
                   </pre>
                 </div>
               </div>
+            ) : filteredScripts.length === 0 ? (
+              <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
+                <Search size={48} className="mx-auto mb-4 text-gray-600" />
+                <h3 className="text-xl font-semibold text-gray-400 mb-2">No scripts found</h3>
+                <p className="text-gray-500">Try adjusting your search term</p>
+              </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {scripts.map((script) => (
+                {filteredScripts.map((script) => (
                   <div
                     key={script.name}
                     className="bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-slate-500/50 hover:shadow-lg hover:shadow-slate-500/10 rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-[1.02]"
