@@ -844,7 +844,7 @@ const ToolsPage = () => {
             return viewMode === 'grid' ? (
               <div
                 key={tool.id}
-                className="tool-card group relative overflow-hidden h-48 flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20"
+                className="tool-card group relative overflow-hidden h-48 flex flex-col cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)] hover:-translate-y-2"
                 onClick={() => openToolModal(tool)}
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
