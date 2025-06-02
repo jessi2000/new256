@@ -185,24 +185,24 @@ const HomePage = () => {
             {/* Most Popular Tool Promotion */}
             <div className="max-w-md mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
               <div 
-                className="bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 backdrop-blur-sm border border-blue-500/20 rounded-lg p-4 group hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:border-blue-500/40"
+                className="bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 backdrop-blur-sm border border-blue-500/20 rounded-lg p-4 group hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:border-blue-500/40 relative"
                 onClick={() => navigate('/tools', { state: { openTool: 'Encoding Detective', searchTerm: 'Encoding Detective' } })}
               >
-                <div className="flex items-center justify-between">
+                {/* Most Popular Badge - Top Right Corner */}
+                <div className="absolute -top-1 -right-1 px-2 py-1 bg-gradient-to-r from-orange-600/80 to-red-600/80 text-white text-xs rounded-full font-medium shadow-sm">
+                  MOST POPULAR
+                </div>
+                
+                <div className="flex items-center justify-center text-center">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <div className="text-sm font-medium text-blue-300 group-hover:text-blue-200 transition-colors">
-                        🔍 Try Encoding Detective
-                      </div>
-                      <div className="px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full font-medium">
-                        MOST POPULAR
-                      </div>
+                    <div className="text-sm font-medium text-blue-300 group-hover:text-blue-200 transition-colors mb-1">
+                      🔍 Try Encoding Detective
                     </div>
                     <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
                       Decode multi-layer encodings automatically
                     </div>
                   </div>
-                  <ArrowRight size={14} className="text-blue-400 group-hover:translate-x-1 transition-transform ml-3" />
+                  <ArrowRight size={14} className="text-blue-400 group-hover:translate-x-1 transition-transform ml-3 flex-shrink-0" />
                 </div>
               </div>
             </div>
