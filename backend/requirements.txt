@@ -25,5 +25,4 @@ jq>=1.6.0
 typer>=0.9.0
 pillow>=10.0.0
 python-magic>=0.4.27
-subprocess-run>=0.1.0
 exifread>=3.0.0
