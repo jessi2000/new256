@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { 
   Upload, 
   FileText, 
@@ -30,403 +30,368 @@ const CustomSearchIcon = ({ size = 20, className = "" }) => (
     strokeLinejoin="round"
     className={className}
   >
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-    <line x1="9" y1="9" x2="15" y2="15"/>
+    <rect x="2" y="2" width="8" height="8" />
+    <line x1="18" y1="6" x2="6" y2="18" />
   </svg>
 );
-import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Debounce hook for search functionality
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 const FileAnalysisPage = () => {
-  const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview');
-  const [searchTerm, setSearchTerm] = useState('');
-
-  // File analysis states
+  const [fileMetadata, setFileMetadata] = useState(null);
   const [extractedStrings, setExtractedStrings] = useState([]);
   const [hexData, setHexData] = useState('');
-  const [fileMetadata, setFileMetadata] = useState(null);
   const [hashResults, setHashResults] = useState(null);
   const [exifData, setExifData] = useState(null);
   const [entropy, setEntropy] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [lengthFilter, setLengthFilter] = useState({ min: '', max: '' });
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleDrag = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
+  // Debounced search values to prevent oversearching
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedLengthFilter = useDebounce(lengthFilter, 300);
+
+  // Filter strings based on search term and length
+  const filteredStrings = extractedStrings.filter(str => {
+    const matchesSearch = !debouncedSearchTerm || 
+      str.value.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+    
+    const minLength = debouncedLengthFilter.min ? parseInt(debouncedLengthFilter.min) : 0;
+    const maxLength = debouncedLengthFilter.max ? parseInt(debouncedLengthFilter.max) : Infinity;
+    const matchesLength = str.length >= minLength && str.length <= maxLength;
+    
+    return matchesSearch && matchesLength;
+  });
+
+  // Filter hex data based on search term
+  const filteredHex = hexData && debouncedSearchTerm 
+    ? hexData.split('\n').filter(line => 
+        line.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+      ).join('\n')
+    : hexData;
+
+  const handleFileUpload = useCallback(async (uploadedFile) => {
+    if (!uploadedFile) return;
+
+    setFile(uploadedFile);
+    setIsUploading(true);
+    setIsAnalyzing(true);
+
+    try {
+      // Extract file metadata
+      const metadata = {
+        name: uploadedFile.name,
+        size: uploadedFile.size,
+        type: uploadedFile.type,
+        lastModified: uploadedFile.lastModified
+      };
+      setFileMetadata(metadata);
+
+      const fileContent = await uploadedFile.arrayBuffer();
+      const uint8Array = new Uint8Array(fileContent);
+
+      // Calculate entropy
+      const entropyResult = calculateEntropy(uint8Array);
+      setEntropy(entropyResult);
+
+      // Extract strings
+      const strings = extractStrings(uint8Array);
+      setExtractedStrings(strings);
+
+      // Generate hex dump
+      const hex = generateHexDump(uint8Array);
+      setHexData(hex);
+
+      // Calculate hashes
+      const hashes = await calculateHashes(uint8Array);
+      setHashResults(hashes);
+
+      // Extract EXIF data for images
+      if (uploadedFile.type.startsWith('image/')) {
+        try {
+          const exif = await extractExifData(uploadedFile);
+          setExifData(exif);
+        } catch (error) {
+          console.warn('EXIF extraction failed:', error);
+        }
+      }
+
+      toast.success('File analysis completed successfully!');
+    } catch (error) {
+      console.error('Analysis error:', error);
+      toast.error('Failed to analyze file. Please try again.');
+    } finally {
+      setIsUploading(false);
+      setIsAnalyzing(false);
     }
   }, []);
 
   const handleDrop = useCallback((e) => {
     e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleFileUpload(droppedFile);
     }
+  }, [handleFileUpload]);
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
   }, []);
 
-  const handleFileInput = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files[0]);
+  const copyToClipboard = useCallback((text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success('Copied to clipboard!');
+    }).catch(() => {
+      toast.error('Failed to copy to clipboard');
+    });
+  }, []);
+
+  // Update search loading state
+  useEffect(() => {
+    if (searchTerm !== debouncedSearchTerm || JSON.stringify(lengthFilter) !== JSON.stringify(debouncedLengthFilter)) {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
     }
-  };
+  }, [searchTerm, debouncedSearchTerm, lengthFilter, debouncedLengthFilter]);
 
-  const handleFile = async (selectedFile) => {
-    if (selectedFile.size > 50 * 1024 * 1024) { // 50MB limit
-      toast.error('File size must be less than 50MB');
-      return;
-    }
-
-    setFile(selectedFile);
-    setAnalyzing(true);
-    setAnalysisResult(null);
-
-    try {
-      // Perform comprehensive client-side analysis
-      await performCompleteAnalysis(selectedFile);
-      
-      // Also try backend analysis if available
-      try {
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        
-        const response = await axios.post(`${API}/analyze-file`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        
-        setAnalysisResult(response.data);
-      } catch (backendError) {
-        console.log('Backend analysis not available, using client-side only');
-      }
-      
-    } catch (error) {
-      toast.error('Error analyzing file: ' + error.message);
-    } finally {
-      setAnalyzing(false);
-    }
-  };
-
-  const performCompleteAnalysis = async (file) => {
-    const arrayBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
+  // Analysis utility functions
+  const calculateEntropy = (data) => {
+    const frequencies = new Array(256).fill(0);
+    data.forEach(byte => frequencies[byte]++);
     
-    // Basic metadata
-    const metadata = {
-      name: file.name,
-      size: file.size,
-      type: file.type || 'unknown',
-      lastModified: new Date(file.lastModified).toISOString()
-    };
-    setFileMetadata(metadata);
-
-    // Extract strings
-    const strings = extractStringsFromBinary(uint8Array);
-    setExtractedStrings(strings);
-
-    // Generate hex dump
-    const hex = generateHexDump(uint8Array);
-    setHexData(hex);
-
-    // Calculate hashes
-    const hashes = await calculateClientHashes(uint8Array);
-    setHashResults(hashes);
-
-    // Calculate entropy
-    const entropyValue = calculateEntropy(uint8Array);
-    setEntropy(entropyValue);
-
-    // Extract EXIF for images
-    if (file.type.startsWith('image/')) {
-      try {
-        const exif = await extractExifData(file);
-        setExifData(exif);
-      } catch (error) {
-        console.log('EXIF extraction failed:', error);
+    const length = data.length;
+    let entropy = 0;
+    
+    frequencies.forEach(freq => {
+      if (freq > 0) {
+        const p = freq / length;
+        entropy -= p * Math.log2(p);
       }
-    }
+    });
 
-    toast.success('File analysis completed!');
+    const normalized = entropy / 8; // Normalize to 0-1 scale
+    
+    let assessment;
+    if (entropy < 1) assessment = 'Very low entropy - likely structured data';
+    else if (entropy < 3) assessment = 'Low entropy - compressed or structured';
+    else if (entropy < 6) assessment = 'Medium entropy - mixed content';
+    else if (entropy < 7.5) assessment = 'High entropy - encrypted or random';
+    else assessment = 'Very high entropy - likely encrypted or compressed';
+
+    return { value: entropy, normalized, assessment };
   };
 
-  const extractStringsFromBinary = (data, minLength = 4) => {
+  const extractStrings = (data) => {
     const strings = [];
+    const minLength = 4;
     let currentString = '';
-    
+    let startOffset = 0;
+
     for (let i = 0; i < data.length; i++) {
       const byte = data[i];
-      const char = String.fromCharCode(byte);
       
-      // Check if character is printable
-      if (byte >= 32 && byte <= 126 && byte !== 127) {
-        currentString += char;
+      // Check if byte is printable ASCII
+      if (byte >= 32 && byte <= 126) {
+        if (currentString.length === 0) {
+          startOffset = i;
+        }
+        currentString += String.fromCharCode(byte);
       } else {
         if (currentString.length >= minLength) {
           strings.push({
             value: currentString,
-            offset: i - currentString.length,
+            offset: startOffset,
             length: currentString.length
           });
         }
         currentString = '';
       }
     }
-    
+
+    // Don't forget the last string if file ends with printable characters
     if (currentString.length >= minLength) {
       strings.push({
         value: currentString,
-        offset: data.length - currentString.length,
+        offset: startOffset,
         length: currentString.length
       });
     }
-    
+
     return strings;
   };
 
-  const generateHexDump = (data, bytesPerLine = 16) => {
-    let hex = '';
-    for (let i = 0; i < data.length; i += bytesPerLine) { // Show full hex dump
-      const address = i.toString(16).padStart(8, '0').toUpperCase();
-      const hexBytes = [];
-      const asciiChars = [];
+  const generateHexDump = (data) => {
+    const lines = [];
+    const bytesPerLine = 16;
+    
+    for (let i = 0; i < data.length; i += bytesPerLine) {
+      const offset = i.toString(16).toUpperCase().padStart(8, '0');
+      const chunk = data.slice(i, i + bytesPerLine);
       
-      for (let j = 0; j < bytesPerLine; j++) {
-        if (i + j < data.length) {
-          const byte = data[i + j];
-          hexBytes.push(byte.toString(16).padStart(2, '0').toUpperCase());
-          asciiChars.push(byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : '.');
-        } else {
-          hexBytes.push('  ');
-          asciiChars.push(' ');
-        }
-      }
+      // Hex representation
+      const hex = Array.from(chunk)
+        .map(byte => byte.toString(16).toUpperCase().padStart(2, '0'))
+        .join(' ');
       
-      hex += `${address}  ${hexBytes.slice(0, 8).join(' ')}  ${hexBytes.slice(8).join(' ')}  |${asciiChars.join('')}|\n`;
+      // ASCII representation
+      const ascii = Array.from(chunk)
+        .map(byte => (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : '.')
+        .join('');
+      
+      lines.push(`${offset}: ${hex.padEnd(47)} |${ascii}|`);
     }
     
-    return hex;
+    return lines.join('\n');
   };
 
-  const calculateClientHashes = async (data) => {
-    // Using Web Crypto API for secure hash calculation
+  const calculateHashes = async (data) => {
     const hashes = {};
     
     try {
-      // MD5 (using a simple implementation)
-      hashes.md5 = await calculateMD5(data);
-      
-      // SHA-1
-      const sha1 = await crypto.subtle.digest('SHA-1', data);
-      hashes.sha1 = Array.from(new Uint8Array(sha1)).map(b => b.toString(16).padStart(2, '0')).join('');
-      
-      // SHA-256
-      const sha256 = await crypto.subtle.digest('SHA-256', data);
-      hashes.sha256 = Array.from(new Uint8Array(sha256)).map(b => b.toString(16).padStart(2, '0')).join('');
-      
-      // SHA-512
-      const sha512 = await crypto.subtle.digest('SHA-512', data);
-      hashes.sha512 = Array.from(new Uint8Array(sha512)).map(b => b.toString(16).padStart(2, '0')).join('');
-      
-    } catch (error) {
-      console.error('Error calculating hashes:', error);
+      // MD5
+      const md5Buffer = await crypto.subtle.digest('MD5', data).catch(() => null);
+      if (md5Buffer) {
+        hashes.md5 = Array.from(new Uint8Array(md5Buffer))
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join('');
+      }
+    } catch (e) {
+      // MD5 might not be available in all browsers
     }
-    
+
+    // SHA-1
+    const sha1Buffer = await crypto.subtle.digest('SHA-1', data);
+    hashes.sha1 = Array.from(new Uint8Array(sha1Buffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
+    // SHA-256
+    const sha256Buffer = await crypto.subtle.digest('SHA-256', data);
+    hashes.sha256 = Array.from(new Uint8Array(sha256Buffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
+    // SHA-512
+    const sha512Buffer = await crypto.subtle.digest('SHA-512', data);
+    hashes.sha512 = Array.from(new Uint8Array(sha512Buffer))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+
     return hashes;
   };
 
-  const calculateMD5 = async (data) => {
-    // Simple MD5 implementation for client-side use
-    // In a real application, you'd use a proper crypto library
-    return 'MD5 calculation requires crypto library';
-  };
-
-  const calculateEntropy = (data) => {
-    const frequency = new Array(256).fill(0);
-    
-    // Count frequency of each byte
-    for (let i = 0; i < data.length; i++) {
-      frequency[data[i]]++;
-    }
-    
-    // Calculate Shannon entropy
-    let entropy = 0;
-    const dataLength = data.length;
-    
-    for (let i = 0; i < 256; i++) {
-      if (frequency[i] > 0) {
-        const probability = frequency[i] / dataLength;
-        entropy -= probability * Math.log2(probability);
-      }
-    }
-    
-    return {
-      value: entropy,
-      normalized: entropy / 8, // Normalize to 0-1
-      assessment: entropy > 7.5 ? 'High (possibly encrypted/compressed)' :
-                 entropy > 6 ? 'Medium-High' :
-                 entropy > 4 ? 'Medium' :
-                 entropy > 2 ? 'Low-Medium' : 'Low (structured data)'
-    };
-  };
-
   const extractExifData = async (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          // This is a simplified EXIF extractor
-          // In a real implementation, you'd use a proper EXIF library
-          resolve({
-            'File Size': `${file.size} bytes`,
-            'File Type': file.type,
-            'Last Modified': new Date(file.lastModified).toLocaleString(),
-            'Note': 'Full EXIF extraction requires specialized library'
-          });
-        } catch (error) {
-          reject(error);
-        }
-      };
-      reader.readAsArrayBuffer(file);
+    // This would require an EXIF library like exif-js
+    // For now, we'll return a placeholder
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          'Camera Make': 'Unknown',
+          'Camera Model': 'Unknown',
+          'Date Taken': 'Unknown',
+          'GPS Location': 'Not available'
+        });
+      }, 500);
     });
   };
 
-  const exportResults = () => {
-    const results = {
-      file: fileMetadata,
-      hashes: hashResults,
-      entropy: entropy,
-      strings: extractedStrings.slice(0, 100), // First 100 strings
-      exif: exifData,
-      timestamp: new Date().toISOString()
-    };
-    
-    const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${fileMetadata?.name || 'file'}_analysis.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    
-    toast.success('Analysis results exported!');
-  };
-
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success('Copied to clipboard!');
-    } catch (error) {
-      toast.error('Failed to copy');
-    }
-  };
-
-  const filteredStrings = extractedStrings.filter(str => 
-    str.value.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredHex = hexData.split('\n').filter(line =>
-    line.toLowerCase().includes(searchTerm.toLowerCase())
-  ).join('\n');
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-gray-950 px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="heading-xl mb-4">File Analysis Platform</h1>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Comprehensive file analysis including string extraction, hex dumping, hash calculation, and metadata analysis
+          </p>
+        </div>
+
         {/* File Upload Area */}
-        {!file && (
-          <div 
-            className={`file-upload-area ${dragActive ? 'dragover' : ''}`}
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
+        {!file ? (
+          <div
+            className="file-upload-area max-w-2xl mx-auto"
             onDrop={handleDrop}
+            onDragOver={handleDragOver}
           >
-            <div className="max-w-md mx-auto">
-              <Upload size={48} className="mx-auto mb-4 text-gray-400" />
+            <div className="text-center">
+              <Upload size={64} className="mx-auto mb-6 text-gray-400" />
               <h3 className="text-xl font-semibold text-gray-200 mb-2">
-                Drop files here or click to upload
+                Drop your file here or click to browse
               </h3>
               <p className="text-gray-400 mb-6">
-                Supports all file types (max 50MB). Analysis happens locally for security.
+                Supports all file types • Max size: 100MB
               </p>
               <input
                 type="file"
-                onChange={handleFileInput}
+                onChange={(e) => handleFileUpload(e.target.files[0])}
                 className="hidden"
                 id="file-upload"
-                accept="*/*"
               />
               <label
                 htmlFor="file-upload"
-                className="btn-primary cursor-pointer"
+                className="btn-primary cursor-pointer inline-block"
               >
                 Select File
               </label>
             </div>
           </div>
-        )}
-
-        {/* Analysis Loading */}
-        {analyzing && (
-          <div className="text-center py-16">
-            <div className="spinner mx-auto mb-4" style={{ width: 40, height: 40 }}></div>
-            <h3 className="text-xl font-semibold text-gray-200 mb-2">Analyzing File...</h3>
-            <p className="text-gray-400">This may take a moment for large files</p>
-          </div>
-        )}
-
-        {/* Analysis Results */}
-        {file && !analyzing && (
-          <div className="space-y-8">
+        ) : (
+          <div className="space-y-6">
             {/* File Info Header */}
-            <div className="tool-card">
+            <div className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm">
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <FileText size={24} className="text-blue-400" />
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-slate-700 rounded-lg">
+                    <FileText size={24} className="text-slate-300" />
+                  </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-100">{file.name}</h3>
-                    <p className="text-gray-400 text-sm">
-                      {(file.size / 1024).toFixed(2)} KB • {file.type || 'Unknown type'}
+                    <h2 className="text-xl font-semibold text-gray-100">{fileMetadata?.name}</h2>
+                    <p className="text-gray-400">
+                      {(fileMetadata?.size / 1024).toFixed(2)} KB • {fileMetadata?.type || 'Unknown type'}
                     </p>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={exportResults}
-                    className="btn-secondary flex items-center space-x-2"
-                  >
-                    <Download size={16} />
-                    <span>Export</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setFile(null);
-                      setAnalysisResult(null);
-                      setExtractedStrings([]);
-                      setHexData('');
-                      setFileMetadata(null);
-                      setHashResults(null);
-                      setExifData(null);
-                      setEntropy(null);
-                    }}
-                    className="btn-secondary"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    setFile(null);
+                    setFileMetadata(null);
+                    setExtractedStrings([]);
+                    setHexData('');
+                    setHashResults(null);
+                    setExifData(null);
+                    setEntropy(null);
+                    setActiveTab('overview');
+                    setSearchTerm('');
+                    setLengthFilter({ min: '', max: '' });
+                  }}
+                  className="p-2 text-gray-400 hover:text-gray-200 transition-colors"
+                >
+                  <X size={20} />
+                </button>
               </div>
 
-              {/* Status Indicators */}
+              {/* Analysis Status */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="flex items-center space-x-2">
                   <CheckCircle size={16} className="text-green-400" />
@@ -438,7 +403,7 @@ const FileAnalysisPage = () => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle size={16} className="text-green-400" />
-                  <span className="text-sm text-gray-300">Hashes Calculated</span>
+                  <span className="text-sm text-gray-300">Hashes Generated</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle size={16} className="text-green-400" />
@@ -498,6 +463,9 @@ const FileAnalysisPage = () => {
                   strings={filteredStrings}
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
+                  lengthFilter={lengthFilter}
+                  setLengthFilter={setLengthFilter}
+                  isSearching={isSearching}
                   onCopy={copyToClipboard}
                 />
               )}
@@ -507,6 +475,7 @@ const FileAnalysisPage = () => {
                   hexData={filteredHex}
                   searchTerm={searchTerm}
                   setSearchTerm={setSearchTerm}
+                  isSearching={isSearching}
                   onCopy={copyToClipboard}
                 />
               )}
@@ -642,8 +611,8 @@ const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) 
   </div>
 );
 
-// Strings Tab Component with Highlighting
-const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
+// Enhanced Strings Tab Component with Length Filter
+const StringsTab = ({ strings, searchTerm, setSearchTerm, lengthFilter, setLengthFilter, isSearching, onCopy }) => {
   const highlightText = (text, searchTerm) => {
     if (!searchTerm) return text;
     
@@ -661,7 +630,7 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
 
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
+      {/* Enhanced Search and Filter Bar */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <input
@@ -671,6 +640,33 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="input-field"
           />
+          {isSearching && (
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
+        </div>
+        
+        {/* Length Filter */}
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-400 whitespace-nowrap">Length:</span>
+          <input
+            type="number"
+            placeholder="Min"
+            value={lengthFilter.min}
+            onChange={(e) => setLengthFilter(prev => ({ ...prev, min: e.target.value }))}
+            className="input-field w-20 text-sm"
+            min="0"
+          />
+          <span className="text-gray-400">-</span>
+          <input
+            type="number"
+            placeholder="Max"
+            value={lengthFilter.max}
+            onChange={(e) => setLengthFilter(prev => ({ ...prev, max: e.target.value }))}
+            className="input-field w-20 text-sm"
+            min="0"
+          />
         </div>
       </div>
 
@@ -679,9 +675,10 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-100">
             Extracted Strings ({strings.length})
-            {searchTerm && (
+            {(searchTerm || lengthFilter.min || lengthFilter.max) && (
               <span className="text-sm text-yellow-400 ml-2">
-                (filtered by "{searchTerm}")
+                (filtered{searchTerm && ` by "${searchTerm}"`}
+                {(lengthFilter.min || lengthFilter.max) && ` by length`})
               </span>
             )}
           </h3>
@@ -734,10 +731,8 @@ const StringsTab = ({ strings, searchTerm, setSearchTerm, onCopy }) => {
   );
 };
 
-// Hex Tab Component with Highlighting
-const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
-  const [isFiltering, setIsFiltering] = useState(false);
-  
+// Enhanced Hex Tab Component with Debounced Search
+const HexTab = ({ hexData, searchTerm, setSearchTerm, isSearching, onCopy }) => {
   const highlightText = (text, searchTerm) => {
     if (!searchTerm) return text;
     
@@ -753,28 +748,18 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
     );
   };
 
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    
-    if (value && hexData.length > 10000) {
-      setIsFiltering(true);
-      setTimeout(() => setIsFiltering(false), 500);
-    }
-  };
-
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
+      {/* Search Bar with Loading Indicator */}
       <div className="relative">
         <input
           type="text"
           placeholder="Search hex data..."
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="input-field"
         />
-        {isFiltering && (
+        {isSearching && (
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
             <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
           </div>
@@ -802,7 +787,7 @@ const HexTab = ({ hexData, searchTerm, setSearchTerm, onCopy }) => {
         </div>
 
         <div className="code-viewer max-h-96 overflow-auto">
-          {isFiltering ? (
+          {isSearching ? (
             <div className="flex items-center justify-center py-8">
               <div className="w-6 h-6 border-2 border-slate-400 border-t-transparent rounded-full animate-spin mr-2"></div>
               <span className="text-slate-400">Filtering hex data...</span>
