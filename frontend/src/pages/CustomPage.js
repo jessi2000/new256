@@ -357,28 +357,30 @@ const CustomPage = () => {
                   </div>
                 ))}
               </div>
-            ) : scripts.length === 0 ? (
-              <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
-                <Code size={48} className="mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">No custom scripts found</h3>
-                <p className="text-gray-500 mb-4">Add scripts manually to the custom-scripts directory</p>
-                <div className="bg-gray-700/30 rounded-lg p-4 text-left max-w-md mx-auto">
-                  <p className="text-sm text-gray-400 mb-2">Example config.json:</p>
-                  <pre className="text-xs text-gray-300">
+            ) : filteredScripts.length === 0 ? (
+              searchTerm ? (
+                <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
+                  <Search size={48} className="mx-auto mb-4 text-gray-600" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No scripts match your search</h3>
+                  <p className="text-gray-500">Try adjusting your search term: "{searchTerm}"</p>
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
+                  <Code size={48} className="mx-auto mb-4 text-gray-600" />
+                  <h3 className="text-xl font-semibold text-gray-400 mb-2">No custom scripts found</h3>
+                  <p className="text-gray-500 mb-4">Add scripts manually to the custom-scripts directory</p>
+                  <div className="bg-gray-700/30 rounded-lg p-4 text-left max-w-md mx-auto">
+                    <p className="text-sm text-gray-400 mb-2">Example config.json:</p>
+                    <pre className="text-xs text-gray-300">
 {`{
   "name": "Test Script",
   "command": "python script.py",
   "description": "A test script"
 }`}
-                  </pre>
+                    </pre>
+                  </div>
                 </div>
-              </div>
-            ) : filteredScripts.length === 0 ? (
-              <div className="text-center py-12 bg-gray-800 border border-gray-700 rounded-xl">
-                <Search size={48} className="mx-auto mb-4 text-gray-600" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">No scripts found</h3>
-                <p className="text-gray-500">Try adjusting your search term</p>
-              </div>
+              )
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredScripts.map((script) => (
