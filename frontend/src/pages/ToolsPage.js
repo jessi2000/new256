@@ -886,7 +886,7 @@ const ToolsPage = () => {
               // List view
               <div
                 key={tool.id}
-                className="bg-slate-900/80 border border-slate-700/50 rounded-xl p-4 backdrop-blur-sm hover:bg-slate-800/90 hover:border-slate-600/70 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer group"
+                className="bg-gradient-to-r from-slate-950/90 to-blue-950/90 border border-slate-700/40 rounded-xl p-4 backdrop-blur-sm hover:from-slate-900/95 hover:to-blue-900/95 hover:border-slate-600/60 hover:shadow-xl hover:shadow-blue-900/20 transition-all duration-300 cursor-pointer group"
                 onClick={() => openToolModal(tool)}
                 style={{ animationDelay: `${index * 0.02}s` }}
               >
