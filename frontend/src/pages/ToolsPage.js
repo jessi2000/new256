@@ -37,6 +37,13 @@ const ToolsPage = () => {
     const loadedTools = loadTools();
     setAvailableTools(loadedTools);
   }, []);
+  const [availableTools, setAvailableTools] = useState([]);
+
+  // Load tools on component mount
+  useEffect(() => {
+    const loadedTools = loadTools();
+    setAvailableTools(loadedTools);
+  }, []);
   const [tools, setTools] = useState([]);
 
   // Load tools on component mount
