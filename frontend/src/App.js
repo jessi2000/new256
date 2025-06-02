@@ -160,7 +160,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center mt-6">
           <p className="text-gray-500 text-xs">
-            **Copyright**: © 2025 SectoolBox. All rights reserved.
+            © 2025 SectoolBox. All rights reserved.
           </p>
         </div>
       </div>
