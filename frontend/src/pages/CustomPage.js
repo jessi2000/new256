@@ -163,7 +163,7 @@ const CustomPage = () => {
             <Terminal size={40} className="text-blue-400 mr-3" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Script Library
+            Custom File Scans
           </h1>
         </div>
 
