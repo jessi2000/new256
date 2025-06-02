@@ -1383,4 +1383,148 @@ const MetadataTab = ({ metadata, exifData, entropy, onCopy }) => {
   );
 };
 
+// Security Tab Component
+const SecurityTab = ({ securityAnalysis, metadata, entropy }) => {
+  if (!securityAnalysis) {
+    return (
+      <div className="tool-card">
+        <div className="text-center py-8 text-gray-400">
+          <Shield size={48} className="mx-auto mb-4 opacity-50" />
+          <p>Security analysis not available</p>
+        </div>
+      </div>
+    );
+  }
+
+  const getRiskColor = (level) => {
+    switch (level) {
+      case 'HIGH': return 'text-red-400 bg-red-900/20 border-red-500/30';
+      case 'MEDIUM': return 'text-yellow-400 bg-yellow-900/20 border-yellow-500/30';
+      case 'LOW': return 'text-green-400 bg-green-900/20 border-green-500/30';
+      default: return 'text-gray-400 bg-gray-900/20 border-gray-500/30';
+    }
+  };
+
+  const getRiskIcon = (level) => {
+    switch (level) {
+      case 'HIGH': return <AlertTriangle size={20} className="text-red-400" />;
+      case 'MEDIUM': return <AlertCircle size={20} className="text-yellow-400" />;
+      case 'LOW': return <Shield size={20} className="text-green-400" />;
+      default: return <HelpCircle size={20} className="text-gray-400" />;
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Risk Level Overview */}
+      <div className={`tool-card border-2 ${getRiskColor(securityAnalysis.riskLevel)}`}>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="heading-md flex items-center">
+            {getRiskIcon(securityAnalysis.riskLevel)}
+            <span className="ml-2">Security Risk Assessment</span>
+          </h3>
+          <div className={`px-3 py-1 rounded-full text-sm font-medium ${getRiskColor(securityAnalysis.riskLevel)}`}>
+            {securityAnalysis.riskLevel} RISK
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div>
+            <span className="text-gray-400 block mb-1">File Size:</span>
+            <span className="text-gray-200">{(metadata?.size / 1024).toFixed(2)} KB</span>
+          </div>
+          <div>
+            <span className="text-gray-400 block mb-1">Entropy Level:</span>
+            <span className="text-gray-200">{entropy?.value.toFixed(2) || 'N/A'}</span>
+          </div>
+          <div>
+            <span className="text-gray-400 block mb-1">Analysis Method:</span>
+            <span className="text-green-400">Client-side Only</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Security Findings */}
+      {securityAnalysis.findings.length > 0 && (
+        <div className="tool-card">
+          <h3 className="heading-md mb-4 flex items-center">
+            <AlertTriangle size={20} className="mr-2 text-red-400" />
+            Security Findings
+          </h3>
+          <div className="space-y-2">
+            {securityAnalysis.findings.map((finding, index) => (
+              <div key={index} className="flex items-center space-x-2 p-2 bg-red-900/20 rounded border border-red-500/30">
+                <AlertTriangle size={16} className="text-red-400 flex-shrink-0" />
+                <span className="text-red-200 text-sm">{finding}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Security Warnings */}
+      {securityAnalysis.warnings.length > 0 && (
+        <div className="tool-card">
+          <h3 className="heading-md mb-4 flex items-center">
+            <AlertCircle size={20} className="mr-2 text-yellow-400" />
+            Security Warnings
+          </h3>
+          <div className="space-y-2">
+            {securityAnalysis.warnings.map((warning, index) => (
+              <div key={index} className="flex items-center space-x-2 p-2 bg-yellow-900/20 rounded border border-yellow-500/30">
+                <AlertCircle size={16} className="text-yellow-400 flex-shrink-0" />
+                <span className="text-yellow-200 text-sm">{warning}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recommendations */}
+      {securityAnalysis.recommendations.length > 0 && (
+        <div className="tool-card">
+          <h3 className="heading-md mb-4 flex items-center">
+            <CheckCircle size={20} className="mr-2 text-blue-400" />
+            Security Recommendations
+          </h3>
+          <div className="space-y-2">
+            {securityAnalysis.recommendations.map((recommendation, index) => (
+              <div key={index} className="flex items-center space-x-2 p-2 bg-blue-900/20 rounded border border-blue-500/30">
+                <CheckCircle size={16} className="text-blue-400 flex-shrink-0" />
+                <span className="text-blue-200 text-sm">{recommendation}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Security Summary */}
+      <div className="tool-card">
+        <h3 className="heading-md mb-4 flex items-center">
+          <Shield size={20} className="mr-2 text-green-400" />
+          Security Summary
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="text-center p-3 bg-gray-800/30 rounded">
+            <div className="text-2xl font-bold text-green-400">{securityAnalysis.findings.length}</div>
+            <div className="text-gray-400">Findings</div>
+          </div>
+          <div className="text-center p-3 bg-gray-800/30 rounded">
+            <div className="text-2xl font-bold text-yellow-400">{securityAnalysis.warnings.length}</div>
+            <div className="text-gray-400">Warnings</div>
+          </div>
+          <div className="text-center p-3 bg-gray-800/30 rounded">
+            <div className="text-2xl font-bold text-blue-400">{securityAnalysis.recommendations.length}</div>
+            <div className="text-gray-400">Recommendations</div>
+          </div>
+          <div className="text-center p-3 bg-gray-800/30 rounded">
+            <div className="text-2xl font-bold text-green-400">100%</div>
+            <div className="text-gray-400">Local Analysis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default FileAnalysisPage;
