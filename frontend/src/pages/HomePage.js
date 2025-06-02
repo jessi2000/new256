@@ -341,7 +341,7 @@ const HomePage = () => {
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-slate-200 flex items-center space-x-3">
                 <Calendar size={28} className="text-slate-400" />
-                <span>Latest Updates</span>
+                <span>System Announcements</span>
               </h2>
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
             </div>
