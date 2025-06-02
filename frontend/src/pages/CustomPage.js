@@ -61,10 +61,7 @@ const CustomPage = () => {
           }
         });
         
-        console.log('Scripts response:', response.data);
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
+        console.log('Scripts loaded successfully:', response.data.length, 'scripts');
         setScripts(response.data);
         
         if (response.data.length === 0) {
