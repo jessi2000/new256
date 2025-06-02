@@ -46,6 +46,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "Custom scripts functionality is working correctly. Script listing and execution both function as expected."
+      - working: true
+        agent: "testing"
+        comment: "Verified that custom scripts are loading properly. The Port Scanner script is accessible and listed in the custom scripts endpoint. No 'Failed to load custom scripts' errors were observed."
 
   - task: "MongoDB Integration"
     implemented: true
