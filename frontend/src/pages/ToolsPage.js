@@ -152,6 +152,34 @@ const ToolsPage = () => {
       if (typeof result === 'object' && result.layers) {
         setBase64Result(result);
         setToolOutput(result.finalResult);
+      } else if (typeof result === 'object' && result.analysis) {
+        // Handle Encoding Detective results
+        let output = `🔍 ENCODING DETECTIVE ANALYSIS\n`;
+        output += `═══════════════════════════════════\n\n`;
+        output += `📊 SUMMARY:\n`;
+        output += `• Total Layers: ${result.analysis.totalLayers}\n`;
+        output += `• Encodings Found: ${result.analysis.encodingsDetected.join(', ') || 'None'}\n`;
+        output += `• Overall Confidence: ${result.analysis.confidence}\n\n`;
+        
+        if (result.layers.length > 0) {
+          output += `🔍 LAYER-BY-LAYER ANALYSIS:\n`;
+          output += `─────────────────────────────────\n`;
+          result.layers.forEach((layer, index) => {
+            output += `\n${layer.layer}. ${layer.encoding.toUpperCase()} (${layer.confidence} confidence)\n`;
+            output += `   Score: ${layer.score}/100\n`;
+            output += `   Input:  "${layer.input.substring(0, 50)}${layer.input.length > 50 ? '...' : ''}"\n`;
+            output += `   Output: "${layer.output.substring(0, 50)}${layer.output.length > 50 ? '...' : ''}"\n`;
+            if (layer.alternatives && layer.alternatives.length > 1) {
+              output += `   Alternatives: ${layer.alternatives.slice(1).map(a => a.encoding).join(', ')}\n`;
+            }
+          });
+        }
+        
+        output += `\n🎯 FINAL RESULT:\n`;
+        output += `─────────────────────────────────\n`;
+        output += `"${result.finalResult}"`;
+        
+        setToolOutput(output);
       } else {
         setToolOutput(result);
       }
