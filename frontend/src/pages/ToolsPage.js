@@ -769,7 +769,7 @@ const ToolsPage = () => {
 
         {/* Search and Filter */}
         <div className="mb-8 space-y-4">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
             <div className="relative max-w-md">
               <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -781,7 +781,7 @@ const ToolsPage = () => {
               />
             </div>
 
-            {/* View Mode Toggle */}
+            {/* View Mode Toggle - Right next to search */}
             <div className="flex items-center space-x-2 bg-gray-800 p-1 rounded-lg border border-gray-700">
               <button
                 onClick={() => setViewMode('grid')}
