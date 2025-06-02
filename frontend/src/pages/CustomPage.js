@@ -32,14 +32,16 @@ const CustomPage = () => {
   const [dragActive, setDragActive] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [hasFetched, setHasFetched] = useState(false); // Prevent duplicate fetches
+
+  // Use useRef to prevent duplicate calls
+  const hasInitialized = React.useRef(false);
 
   useEffect(() => {
-    if (!hasFetched) {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
       fetchScripts();
-      setHasFetched(true);
     }
-  }, [hasFetched]);
+  }, []); // Empty dependency array
 
   const fetchScripts = async () => {
     setLoading(true);
