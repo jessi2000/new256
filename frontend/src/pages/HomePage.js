@@ -266,20 +266,22 @@ const HomePage = () => {
               <History size={28} className="text-slate-400" />
               <span>Changelog</span>
             </h2>
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
           </div>
 
           <div className="grid gap-4">
             {changelogEntries.map((entry) => (
               <div
                 key={entry.id}
-                className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:bg-slate-900/60 hover:border-slate-600/70 transition-all duration-300 group"
+                className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:bg-slate-900/60 hover:border-slate-600/70 transition-all duration-300 group relative"
               >
+                <div className="absolute top-4 right-4">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                </div>
                 <div className="flex items-start space-x-4">
                   <div className={`p-2 rounded-lg ${entry.important ? 'bg-red-600/20' : 'bg-slate-600/20'} group-hover:scale-110 transition-transform duration-300`}>
                     {entry.important ? <AlertCircle size={20} className="text-red-400" /> : getChangelogIcon(entry.type)}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 pr-8">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-slate-200 group-hover:text-white transition-colors">
                         {entry.title}
