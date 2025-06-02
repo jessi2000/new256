@@ -1161,24 +1161,6 @@ const MetadataTab = ({ metadata, exifData, entropy, onCopy }) => {
         )}
       </div>
 
-      {/* File Health Check */}
-      <div className="tool-card">
-        <h3 className="heading-md mb-4 flex items-center">
-          <AlertCircle size={20} className="mr-2 text-amber-400" />
-          File Health Assessment
-        </h3>
-        <div className="space-y-2">
-          {healthChecks.map((check, index) => (
-            <div key={index} className="flex items-center space-x-2">
-              {check.type === 'success' && <CheckCircle size={16} className="text-green-400" />}
-              {check.type === 'warning' && <AlertCircle size={16} className="text-amber-400" />}
-              {check.type === 'error' && <AlertCircle size={16} className="text-red-400" />}
-              <span className="text-sm text-gray-300">{check.text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Advanced EXIF Data */}
       {exifData && Object.keys(exifData).length > 0 && (
         <div className="tool-card">
