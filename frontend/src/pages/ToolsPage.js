@@ -744,7 +744,7 @@ const ToolsPage = () => {
           </div>
           
           <p className="text-gray-400 text-lg max-w-3xl mx-auto animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-            Professional toolkit for security analysis and CTF challenges
+            Toolkit for security analysis and CTF challenges
           </p>
         </div>
 
