@@ -176,7 +176,7 @@ const Footer = () => {
           {/* Right: Our Team */}
           <div className="text-center md:text-right">
             <h3 className="text-lg font-bold text-slate-200 mb-4">Our Team</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mb-3">
               {/* Team Member 1 */}
               <div className="bg-gray-800/30 rounded-lg p-3 hover:bg-gray-700/40 transition-colors duration-300">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
@@ -213,6 +213,9 @@ const Footer = () => {
                 </a>
               </div>
             </div>
+            <p className="text-gray-500 text-xs">
+              © {new Date().getFullYear()} • Built for Security Professionals
+            </p>
           </div>
         </div>
       </div>
