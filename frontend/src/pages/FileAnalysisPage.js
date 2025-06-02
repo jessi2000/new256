@@ -76,9 +76,10 @@ const FileAnalysisPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [lengthFilter, setLengthFilter] = useState({ min: '', max: '' });
   const [isSearching, setIsSearching] = useState(false);
+  const [securityAnalysis, setSecurityAnalysis] = useState(null);
 
   // Debounced search values to prevent oversearching
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = useDebounce(sanitizeTextInput(searchTerm, 100), 300);
   const debouncedLengthFilter = useDebounce(lengthFilter, 300);
 
   // Filter strings based on search term and length
