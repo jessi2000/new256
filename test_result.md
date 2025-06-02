@@ -74,6 +74,18 @@ backend:
         agent: "testing"
         comment: "The three new custom scripts (ExifTool Analyzer, File Inspector, String Extractor) have been successfully implemented and are working correctly. Each script correctly processes uploaded files and provides detailed analysis results."
 
+  - task: "File Upload for Scripts"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The /api/upload-file-for-script endpoint is working correctly. It successfully accepts file uploads, stores them in the temporary directory, and returns appropriate metadata about the uploaded file."
+
   - task: "MongoDB Integration"
     implemented: true
     working: true
