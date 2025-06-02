@@ -377,6 +377,25 @@ const CustomPage = () => {
                       </div>
                     </div>
                   )}
+                  {executionResult && (
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-gray-300">Output:</label>
+                        <button
+                          onClick={() => copyToClipboard(executionResult)}
+                          className="flex items-center space-x-1 text-sm text-slate-400 hover:text-slate-300 transition-colors"
+                        >
+                          <Copy size={14} />
+                          <span>Copy</span>
+                        </button>
+                      </div>
+                      <div className="bg-gray-900 border border-gray-600 rounded-lg p-4 max-h-96 overflow-y-auto">
+                        <pre className="whitespace-pre-wrap text-gray-100 text-sm font-mono">
+                          {executionResult}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
