@@ -30,6 +30,7 @@ const CustomPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchScripts();
