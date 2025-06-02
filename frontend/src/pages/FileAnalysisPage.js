@@ -852,8 +852,8 @@ const FileAnalysisPage = () => {
   );
 };
 
-// Overview Tab Component - Enhanced with real analysis
-const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData }) => {
+// Overview Tab Component - Enhanced with real analysis and security info
+const OverviewTab = ({ metadata, entropy, stringCount, hashResults, exifData, securityAnalysis }) => {
   // File type analysis
   const getFileTypeAnalysis = (type, size) => {
     const typeCategories = {
