@@ -337,49 +337,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Legacy Announcements (if any exist from backend) */}
-        {announcements.length > 0 && (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-slate-200 flex items-center space-x-3">
-                <Calendar size={28} className="text-slate-400" />
-                <span>System Announcements</span>
-              </h2>
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            </div>
-
-            <div className="grid gap-4">
-              {announcements.slice(0, 3).map((announcement) => (
-                <div
-                  key={announcement.id}
-                  className="bg-slate-900/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 hover:bg-slate-900/60 hover:border-slate-600/70 transition-all duration-300 group"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className={`p-2 rounded-lg ${announcement.is_important ? 'bg-red-600/20 text-red-400' : 'bg-slate-600/20 text-slate-400'} group-hover:scale-110 transition-transform duration-300`}>
-                      {announcement.is_important ? <AlertCircle size={20} /> : <CheckCircle size={20} />}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-slate-200 mb-2 group-hover:text-white transition-colors">
-                        {announcement.title}
-                      </h3>
-                      <p className="text-slate-400 mb-3 group-hover:text-slate-300 transition-colors">
-                        {announcement.content}
-                      </p>
-                      <div className="text-sm text-slate-500 flex items-center space-x-2">
-                        <Clock size={14} />
-                        <span>{new Date(announcement.created_at).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* No announcements section - removed as requested */}
       </div>
     </div>
   );
