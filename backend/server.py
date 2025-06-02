@@ -60,30 +60,29 @@ limiter = Limiter(key_func=get_remote_address)
 
 # Security headers setup
 secure = Secure(
-    csp={
-        "default-src": "'self'",
-        "script-src": "'self' 'unsafe-inline' 'unsafe-eval'",  # Needed for React
-        "style-src": "'self' 'unsafe-inline'",  # Needed for Tailwind CSS
-        "img-src": "'self' data: https:",
-        "font-src": "'self' data:",
-        "connect-src": "'self' https:",
-        "media-src": "'self'",
-        "object-src": "'none'",
-        "frame-src": "'none'",
-        "base-uri": "'self'",
-        "form-action": "'self'",
-        "upgrade-insecure-requests": True
-    },
-    hsts={
-        "max-age": 31536000,
-        "include-subdomains": True,
-        "preload": True
-    },
-    referrer="strict-origin-when-cross-origin",
-    cache="no-cache, no-store, must-revalidate",
-    xss="1; mode=block",
-    frame="DENY",
-    content="nosniff"
+    csp=Secure.ContentSecurityPolicy(
+        default_src="'self'",
+        script_src="'self' 'unsafe-inline' 'unsafe-eval'",  # Needed for React
+        style_src="'self' 'unsafe-inline'",  # Needed for Tailwind CSS
+        img_src="'self' data: https:",
+        font_src="'self' data:",
+        connect_src="'self' https:",
+        media_src="'self'",
+        object_src="'none'",
+        frame_src="'none'",
+        base_uri="'self'",
+        form_action="'self'",
+        upgrade_insecure_requests=True
+    ),
+    hsts=Secure.StrictTransportSecurity(
+        max_age=31536000,
+        include_subdomains=True,
+        preload=True
+    ),
+    referrer=Secure.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN,
+    cache=Secure.CacheControl.NO_CACHE,
+    content=Secure.ContentTypeOptions.NOSNIFF,
+    frame=Secure.FrameOptions.DENY
 )
 
 # Application lifespan management
