@@ -20,6 +20,7 @@ import toast from 'react-hot-toast';
 import CryptoJS from 'crypto-js';
 
 const ToolsPage = () => {
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedTool, setSelectedTool] = useState(null);
@@ -29,6 +30,23 @@ const ToolsPage = () => {
   const [selectedAction, setSelectedAction] = useState('encode');
   const [base64Result, setBase64Result] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+
+  // Handle navigation from HomePage search
+  useEffect(() => {
+    if (location.state?.openTool) {
+      const toolToOpen = tools.find(tool => 
+        tool.name.toLowerCase() === location.state.openTool.toLowerCase()
+      );
+      if (toolToOpen) {
+        setSelectedTool(toolToOpen);
+        if (location.state.searchTerm) {
+          setSearchTerm(location.state.searchTerm);
+        }
+      }
+      // Clear the state to prevent reopening on subsequent visits
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Multi-layer Base64 decoding function
   const multiLayerBase64Decode = (input) => {
