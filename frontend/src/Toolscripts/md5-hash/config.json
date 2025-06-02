@@ -1,0 +1,9 @@
+{
+  "id": "md5-hash",
+  "name": "MD5 Hash",
+  "description": "Generate MD5 hash",
+  "category": "hash",
+  "icon": "Hash",
+  "iconColor": "text-blue-400",
+  "action": "execute"
+}

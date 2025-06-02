@@ -1,0 +1,10 @@
+{
+  "id": "caesar-cipher",
+  "name": "Caesar Cipher",
+  "description": "Classical substitution cipher with shift",
+  "category": "crypto",
+  "icon": "Lock",
+  "iconColor": "text-red-400",
+  "action": "execute",
+  "hasShift": true
+}

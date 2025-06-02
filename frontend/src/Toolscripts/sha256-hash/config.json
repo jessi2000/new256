@@ -1,0 +1,9 @@
+{
+  "id": "sha256-hash",
+  "name": "SHA256 Hash",
+  "description": "Generate SHA256 hash",
+  "category": "hash",
+  "icon": "Hash",
+  "iconColor": "text-purple-400",
+  "action": "execute"
+}

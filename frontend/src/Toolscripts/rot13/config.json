@@ -1,0 +1,9 @@
+{
+  "id": "rot13",
+  "name": "ROT13 Cipher",
+  "description": "ROT13 substitution cipher",
+  "category": "crypto",
+  "icon": "RotateCcw",
+  "iconColor": "text-yellow-400",
+  "action": "execute"
+}
