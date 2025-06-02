@@ -164,6 +164,26 @@ const HomePage = () => {
               </p>
             </div>
 
+            {/* Announcement Box */}
+            <div className="max-w-2xl mx-auto mb-8 animate-fadeInUp" style={{ animationDelay: '0.6s' }}>
+              <div className="bg-gradient-to-r from-slate-800/95 to-slate-900/95 border border-slate-600/60 rounded-xl backdrop-blur-sm shadow-lg p-6 group hover:from-slate-700/95 hover:to-slate-800/95 hover:border-slate-500/80 transition-all duration-300">
+                <div className="flex items-start space-x-4">
+                  <div className="p-2 bg-blue-600/20 text-blue-400 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                    <Star size={20} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-slate-200 mb-2 group-hover:text-white transition-colors">
+                      🎉 New Features Available!
+                    </h3>
+                    <p className="text-slate-400 group-hover:text-slate-300 transition-colors text-sm">
+                      Enhanced file analysis with advanced image scanning, improved tool performance, and new cryptographic utilities. 
+                      <span className="text-blue-400 hover:text-blue-300 ml-1 cursor-pointer">Learn more →</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Centered Search Section */}
             <div className="max-w-2xl mx-auto mb-12 animate-floatSlow flex justify-center">
               <form onSubmit={handleToolSearch} className="relative w-full max-w-lg">
